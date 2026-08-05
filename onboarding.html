@@ -86,6 +86,9 @@
     if (sessionStorage.getItem('sr_access') !== 'true') {
       window.location.href = BASE + 'index.html';
     }
+    if (sessionStorage.getItem('sr_onboarded') !== 'true') {
+  window.location.href = BASE + 'onboarding.html';
+}
 
     var answers = {};
     var current = 0;

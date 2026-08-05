@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARIA — Virorah Situation Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#060B18;color:#fff;font-family:'DM Sans',sans-serif;overflow:hidden}
+    body{display:flex}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.55}}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes micPulse{0%{box-shadow:0 0 0 0 rgba(0,229,195,0.4)}70%{box-shadow:0 0 0 24px rgba(0,229,195,0)}100%{box-shadow:0 0 0 0 rgba(0,229,195,0)}}
+    @keyframes micPulseRed{0%{box-shadow:0 0 0 0 rgba(255,77,109,0.4)}70%{box-shadow:0 0 0 24px rgba(255,77,109,0)}100%{box-shadow:0 0 0 0 rgba(255,77,109,0)}}
+    @keyframes orbGlow{0%,100%{filter:drop-shadow(0 0 12px rgba(0,229,195,0.3))}50%{filter:drop-shadow(0 0 28px rgba(0,229,195,0.6))}}
+    @keyframes waveBar{0%,100%{height:4px}50%{height:22px}}
+
+    .sidebar{width:220px;flex-shrink:0;background:rgba(13,21,38,0.98);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;padding:20px 12px;height:100vh;overflow-y:auto}
+    .logo{display:flex;align-items:center;gap:10px;padding:6px 4px;margin-bottom:28px}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:#00E5C3;box-shadow:0 0 10px #00E5C3;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+    .logo-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+    .logo-name span{color:#00E5C3}
+    .logo-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:2px}
+    .nav-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:4px 10px;margin:16px 0 6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;color:rgba(255,255,255,0.45);font-size:13px;font-family:'DM Sans',sans-serif;margin-bottom:2px}
+    .nav-item:hover{background:rgba(255,255,255,0.04);color:#fff}
+    .nav-item.active{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.25);color:#00E5C3;font-weight:500}
+    .nav-item .icon{font-size:16px;flex-shrink:0}
+    .meridian-chip{margin-top:auto;padding:12px 14px;border-radius:10px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.15)}
+    .meridian-chip .label{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+    .meridian-chip .val{font-size:11px;color:rgba(255,255,255,0.45)}
+
+    .main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;background-image:linear-gradient(rgba(0,229,195,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.02) 1px,transparent 1px);background-size:48px 48px}
+
+    /* TOP BAR */
+    .top-bar{padding:20px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0}
+    .top-bar-left{display:flex;align-items:center;gap:16px}
+    .aria-label-wrap .aria-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff}
+    .aria-label-wrap .aria-sub{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px}
+    .mode-pills{display:flex;gap:6px}
+    .mode-pill{padding:7px 14px;border-radius:20px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid rgba(255,255,255,0.08);background:transparent;color:rgba(255,255,255,0.4);transition:all .2s}
+    .mode-pill:hover{border-color:rgba(0,229,195,0.2);color:#fff}
+    .mode-pill.active{background:rgba(0,229,195,0.12);border-color:rgba(0,229,195,0.35);color:#00E5C3;font-weight:500}
+    .end-btn{padding:8px 16px;background:rgba(255,77,109,0.08);color:#FF4D6D;border:1px solid rgba(255,77,109,0.2);border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .end-btn:hover{background:rgba(255,77,109,0.15)}
+
+    /* CONTENT AREA */
+    .content-area{flex:1;display:flex;overflow:hidden}
+
+    /* ORB PANEL */
+    .orb-panel{width:340px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;border-right:1px solid rgba(255,255,255,0.04)}
+    .orb-wrap{animation:float 4s ease-in-out infinite;margin-bottom:24px}
+    .orb-status{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;text-align:center;transition:all .3s}
+    .orb-status.listening{color:#FF4D6D}
+    .orb-status.thinking{color:#FFB547}
+    .orb-status.speaking{color:#00E5C3}
+    .wave-bars{display:flex;align-items:center;gap:3px;height:28px;margin-bottom:20px}
+    .wave-bar{width:3px;background:#FF4D6D;border-radius:2px;animation:waveBar .5s ease-in-out infinite;height:4px}
+    .wave-bar:nth-child(2){animation-delay:.1s}
+    .wave-bar:nth-child(3){animation-delay:.2s}
+    .wave-bar:nth-child(4){animation-delay:.3s}
+    .wave-bar:nth-child(5){animation-delay:.4s}
+    .mic-btn{width:80px;height:80px;border-radius:50%;background:#00E5C3;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:32px;transition:all .25s;margin-bottom:12px}
+    .mic-btn:hover{opacity:.88;transform:scale(1.05)}
+    .mic-btn.listening{background:#FF4D6D;animation:micPulseRed 1s ease-in-out infinite}
+    .mic-btn.speaking{background:rgba(0,229,195,0.2);border:2px solid #00E5C3;animation:micPulse 2s ease-in-out infinite;cursor:default}
+    .mic-btn.thinking{background:rgba(255,181,71,0.2);border:2px solid #FFB547;cursor:default}
+    .mic-hint{font-size:11px;color:rgba(255,255,255,0.2);font-family:'DM Mono',monospace;text-align:center;line-height:1.5}
+    .voice-transcript{font-size:13px;color:rgba(255,255,255,0.4);text-align:center;max-width:240px;min-height:20px;font-style:italic;margin-top:12px;line-height:1.5}
+
+    /* CHAT PANEL */
+    .chat-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+    .messages{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:14px}
+    .msg{display:flex;gap:10px;animation:msgIn .25s ease}
+    .msg-aria{justify-content:flex-start}
+    .msg-you{justify-content:flex-end}
+    .msg-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px}
+    .avatar-aria{background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.2);font-size:10px;color:#00E5C3;font-family:'DM Mono',monospace;font-weight:700}
+    .avatar-you{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08)}
+    .bubble{max-width:72%;padding:12px 16px;border-radius:14px;font-size:13px;line-height:1.6}
+    .bubble-aria{background:#0D1526;border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.8);border-radius:4px 14px 14px 14px}
+    .bubble-you{background:rgba(0,229,195,0.10);border:1px solid rgba(0,229,195,0.18);color:#fff;border-radius:14px 4px 14px 14px}
+    .msg-name{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+    .typing-dots{display:flex;gap:4px;padding:4px 0}
+    .typing-dot{width:6px;height:6px;border-radius:50%;background:#00E5C3;animation:pulse .8s ease-in-out infinite}
+    .typing-dot:nth-child(2){animation-delay:.15s}
+    .typing-dot:nth-child(3){animation-delay:.3s}
+
+    /* TEXT INPUT */
+    .text-input-area{padding:16px 24px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:10px;flex-shrink:0}
+    .text-input{flex:1;padding:12px 16px;background:#0D1526;border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;resize:none;transition:border .2s;max-height:100px;line-height:1.5}
+    .text-input:focus{border-color:rgba(0,229,195,0.3)}
+    .text-input::placeholder{color:rgba(255,255,255,0.2)}
+    .send-text-btn{padding:10px 18px;background:#00E5C3;color:#060B18;border:none;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;transition:opacity .2s;flex-shrink:0}
+    .send-text-btn:hover{opacity:.88}
+
+    /* EMPTY STATE */
+    .empty-prompt{text-align:center;padding:40px 20px;color:rgba(255,255,255,0.2);font-size:13px;line-height:1.6}
+    .empty-prompt-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:600;color:rgba(255,255,255,0.35);margin-bottom:8px}
+
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
+    @media(max-width:768px){.sidebar{display:none}.orb-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.04);padding:20px;flex-direction:row;gap:20px;justify-content:center}.content-area{flex-direction:column}}
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <div>
+        <div class="logo-name">Vi<span>R</span>orah</div>
+        <div class="logo-sub">Situation Room</div>
+      </div>
+    </div>
+    <div class="nav-section">Core Tools</div>
+    <a href="dashboard.html" class="nav-item"><span class="icon">⊞</span> Dashboard</a>
+    <a href="er-case-navigator.html" class="nav-item"><span class="icon">⚡</span> ER Case Navigator</a>
+    <a href="conversation-simulator.html" class="nav-item"><span class="icon">🎭</span> Conversation Simulator</a>
+    <a href="hr-data-storyteller.html" class="nav-item"><span class="icon">📊</span> HR Data Storyteller</a>
+    <a href="policy-compass.html" class="nav-item"><span class="icon">🧭</span> Policy Compass</a>
+    <a href="stakeholder-influence.html" class="nav-item"><span class="icon">🎯</span> Stakeholder Influence</a>
+    <div class="nav-section">Intelligence</div>
+    <a href="aria.html" class="nav-item active"><span class="icon">✦</span> ARIA</a>
+    <a href="case-library.html" class="nav-item"><span class="icon">◎</span> Case Library</a>
+    <a href="debrief.html" class="nav-item"><span class="icon">📋</span> The Debrief</a>
+    <div class="nav-section">Account</div>
+    <a href="data-dashboard.html" class="nav-item"><span class="icon">🔒</span> Data & Privacy</a>
+    <a href="index.html" class="nav-item" onclick="sessionStorage.clear()"><span class="icon">↩</span> Sign out</a>
+    <div class="meridian-chip">
+      <div class="label">MERIDIAN Active</div>
+      <div class="val" id="meridian-chip-val">Loading...</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <div class="aria-label-wrap">
+          <div class="aria-name">✦ ARIA</div>
+          <div class="aria-sub">Voice Intelligence · MERIDIAN Active</div>
+        </div>
+        <div class="mode-pills">
+          <div class="mode-pill active" onclick="setMode(this,'case_partner')">Case Partner</div>
+          <div class="mode-pill" onclick="setMode(this,'conversation_coach')">Conversation Coach</div>
+          <div class="mode-pill" onclick="setMode(this,'reflection')">Reflection</div>
+        </div>
+      </div>
+      <button class="end-btn" onclick="endSession()">End Session</button>
+    </div>
+
+    <div class="content-area">
+
+      <!-- ORB PANEL -->
+      <div class="orb-panel">
+        <div class="orb-wrap">
+          <svg id="aria-orb" width="160" height="160" viewBox="0 0 160 160" style="animation:orbGlow 3s ease-in-out infinite">
+            <defs>
+              <radialGradient id="orbGrad" cx="50%" cy="50%">
+                <stop offset="0%" stop-color="#00E5C3" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#00E5C3" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="80" cy="80" r="74" fill="none" stroke="#00E5C3" stroke-width="0.5" stroke-opacity="0.2" stroke-dasharray="6 10" style="animation:spin 18s linear infinite;transform-origin:80px 80px"/>
+            <circle cx="80" cy="80" r="55" fill="none" stroke="#00E5C3" stroke-width="0.5" stroke-opacity="0.12" stroke-dasharray="3 8" style="animation:spin 12s linear reverse infinite;transform-origin:80px 80px"/>
+            <circle cx="80" cy="80" r="50" fill="url(#orbGrad)"/>
+            <polygon points="80,30 118,100 42,100" fill="none" stroke="#00E5C3" stroke-width="1" stroke-opacity="0.5"/>
+            <circle id="eye-l" cx="62" cy="82" r="7" fill="#00E5C3" opacity="0.8" style="animation:pulse 2.5s ease-in-out infinite"/>
+            <circle id="eye-r" cx="98" cy="82" r="7" fill="#00E5C3" opacity="0.8" style="animation:pulse 2.5s ease-in-out 0.4s infinite"/>
+            <line id="mouth-line" x1="60" y1="100" x2="100" y2="100" stroke="#00E5C3" stroke-width="1.5" stroke-opacity="0.4" stroke-linecap="round"/>
+            <circle cx="62" cy="58" r="3" fill="#00E5C3" opacity="0.4" style="animation:pulse 3s ease-in-out 0.2s infinite"/>
+            <circle cx="98" cy="58" r="3" fill="#00E5C3" opacity="0.4" style="animation:pulse 3s ease-in-out 0.6s infinite"/>
+            <circle cx="80" cy="44" r="2" fill="#00E5C3" opacity="0.3" style="animation:pulse 2s ease-in-out 0.8s infinite"/>
+          </svg>
+        </div>
+
+        <div class="orb-status" id="orb-status">Ready</div>
+        <div id="wave-bars" style="display:none" class="wave-bars">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div>
+        </div>
+
+        <button class="mic-btn" id="mic-btn" onclick="handleMic()">🎤</button>
+        <div class="mic-hint">Tap to speak<br>Tap again to stop</div>
+        <div class="voice-transcript" id="voice-transcript"></div>
+      </div>
+
+      <!-- CHAT PANEL -->
+      <div class="chat-panel">
+        <div class="messages" id="messages">
+          <div class="empty-prompt">
+            <div class="empty-prompt-title">ARIA is ready.</div>
+            Tap the mic to speak, or type below.<br>
+            Choose a mode above — Case Partner, Conversation Coach, or Reflection.
+          </div>
+        </div>
+        <div class="text-input-area">
+          <textarea class="text-input" id="text-input" placeholder="Or type here..." rows="1"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendText()}"></textarea>
+          <button class="send-text-btn" onclick="sendText()">→</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    var WORKER = 'https://situation-room-api.kumarvivek-srv.workers.dev';
+    var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
+    var currentMode = 'case_partner';
+    var history = [];
+    var isListening = false;
+    var isSpeaking = false;
+    var recognition = null;
+    var voices = [];
+
+    if (sessionStorage.getItem('sr_access') !== 'true') {
+      window.location.href = BASE + 'index.html';
+    }
+
+    var meridianRaw = sessionStorage.getItem('sr_meridian');
+    var meridian = meridianRaw ? JSON.parse(meridianRaw) : {};
+    document.getElementById('meridian-chip-val').innerText =
+      (meridian.state || 'Not set') + ' · ' + (meridian.industry || 'Not set');
+
+    window.speechSynthesis.onvoiceschanged = function(){ voices = window.speechSynthesis.getVoices(); };
+    setTimeout(function(){ voices = window.speechSynthesis.getVoices(); }, 600);
+
+    function setMode(el, mode) {
+      document.querySelectorAll('.mode-pill').forEach(function(p){ p.classList.remove('active'); });
+      el.classList.add('active');
+      currentMode = mode;
+      history = [];
+      document.getElementById('messages').innerHTML =
+        '<div class="empty-prompt"><div class="empty-prompt-title">Mode: ' + el.innerText + '</div>Tap the mic or type to begin.</div>';
+      setOrbStatus('Ready', '');
+    }
+
+    function setOrbStatus(text, state) {
+      var el = document.getElementById('orb-status');
+      el.innerText = text;
+      el.className = 'orb-status' + (state ? ' ' + state : '');
+      var bars = document.getElementById('wave-bars');
+      bars.style.display = state === 'listening' ? 'flex' : 'none';
+      var mic = document.getElementById('mic-btn');
+      mic.className = 'mic-btn' + (state ? ' ' + state : '');
+      if (state === 'listening') mic.innerText = '⏹';
+      else if (state === 'thinking') mic.innerText = '💭';
+      else if (state === 'speaking') mic.innerText = '🔊';
+      else mic.innerText = '🎤';
+    }
+
+    function addMessage(role, text, isTyping) {
+      var container = document.getElementById('messages');
+      var empties = container.querySelectorAll('.empty-prompt');
+      empties.forEach(function(e){ e.remove(); });
+      var div = document.createElement('div');
+      div.className = 'msg ' + (role === 'aria' ? 'msg-aria' : 'msg-you');
+      var avatarHtml = role === 'aria'
+        ? '<div class="msg-avatar avatar-aria">A</div>'
+        : '<div class="msg-avatar avatar-you">👤</div>';
+      if (isTyping) {
+        div.id = 'aria-typing';
+        div.innerHTML = avatarHtml + '<div><div class="msg-name">ARIA</div><div class="bubble bubble-aria"><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>';
+      } else {
+        div.innerHTML = (role === 'aria' ? avatarHtml : '') +
+          '<div><div class="msg-name">' + (role === 'aria' ? 'ARIA' : 'You') + '</div><div class="bubble ' + (role === 'aria' ? 'bubble-aria' : 'bubble-you') + '">' + text + '</div></div>' +
+          (role === 'you' ? avatarHtml : '');
+      }
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function removeTyping() {
+      var t = document.getElementById('aria-typing');
+      if (t) t.remove();
+    }
+
+    function speak(text, onEnd) {
+      window.speechSynthesis.cancel();
+      isSpeaking = true;
+      setOrbStatus('Speaking...', 'speaking');
+      var utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'en-IN';
+      utt.rate = 0.9;
+      utt.pitch = 1.05;
+      if (voices.length > 0) {
+        var v = voices.find(function(x){ return x.lang === 'en-IN'; }) ||
+                voices.find(function(x){ return x.lang.startsWith('en-GB'); }) ||
+                voices.find(function(x){ return x.lang.startsWith('en'); });
+        if (v) utt.voice = v;
+      }
+      utt.onend = function(){ isSpeaking = false; setOrbStatus('Ready', ''); if (onEnd) onEnd(); };
+      utt.onerror = function(){ isSpeaking = false; setOrbStatus('Ready', ''); };
+      window.speechSynthesis.speak(utt);
+    }
+
+    async function callARIA(userMessage) {
+      history.push({ role: 'user', content: userMessage });
+      addMessage('user', userMessage);
+      addMessage('aria', '', true);
+      setOrbStatus('Thinking...', 'thinking');
+      try {
+        var res = await fetch(WORKER, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ tool: 'aria', mode: currentMode, history: history, meridian: meridian })
+        });
+        var data = await res.json();
+        removeTyping();
+        if (data.success) {
+          var response = data.data.response;
+          history.push({ role: 'assistant', content: response });
+          addMessage('aria', response);
+          speak(response);
+        } else {
+          setOrbStatus('Error. Try again.', '');
+          addMessage('aria', 'Something went wrong. Please try again.');
+        }
+      } catch(err) {
+        removeTyping();
+        setOrbStatus('Connection error.', '');
+        addMessage('aria', 'Connection error. Please check your network.');
+      }
+    }
+
+    function initRecognition() {
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) { alert('Voice recognition requires Chrome.'); return null; }
+      var r = new SR();
+      r.continuous = false;
+      r.interimResults = true;
+      r.lang = 'en-IN';
+      r.onstart = function(){ isListening = true; setOrbStatus('Listening...', 'listening'); document.getElementById('voice-transcript').innerText = ''; };
+      r.onresult = function(e) {
+        var interim = ''; var final = '';
+        for (var i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) final += e.results[i][0].transcript;
+          else interim += e.results[i][0].transcript;
+        }
+        document.getElementById('voice-transcript').innerText = final || interim;
+        if (final) { isListening = false; document.getElementById('voice-transcript').innerText = ''; callARIA(final.trim()); }
+      };
+      r.onerror = function(e){ isListening = false; if (e.error !== 'no-speech') setOrbStatus('Mic error. Tap to retry.', ''); else setOrbStatus('Ready', ''); };
+      r.onend = function(){ isListening = false; if (!isSpeaking) setOrbStatus('Ready', ''); };
+      return r;
+    }
+
+    function handleMic() {
+      if (isSpeaking) { window.speechSynthesis.cancel(); isSpeaking = false; setOrbStatus('Ready', ''); return; }
+      if (isListening) { if (recognition) recognition.stop(); isListening = false; setOrbStatus('Ready', ''); return; }
+      recognition = initRecognition();
+      if (!recognition) return;
+      try { recognition.start(); } catch(e) { console.error(e); }
+    }
+
+    function sendText() {
+      var input = document.getElementById('text-input');
+      var text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      callARIA(text);
+    }
+
+    function endSession() {
+      window.speechSynthesis.cancel();
+      if (recognition) try { recognition.stop(); } catch(e) {}
+      history = [];
+      document.getElementById('messages').innerHTML =
+        '<div class="empty-prompt"><div class="empty-prompt-title">Session ended.</div>Tap the mic or type to start a new conversation.</div>';
+      setOrbStatus('Ready', '');
+    }
+  </script>
+
+</body>
+</html>

@@ -22,9 +22,10 @@
     .btn{display:block;width:100%;padding:14px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;border:none;border-radius:10px;cursor:pointer;margin-bottom:12px;transition:opacity .2s}
     .btn:hover{opacity:0.9}
     .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .btn-outline{background:transparent;color:#00E5C3;border:1px solid rgba(0,229,195,0.3)}
     .note{margin-top:20px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.18);border-radius:10px;padding:12px 14px;font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;text-align:left}
     .note strong{color:#00E5C3;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
-    .status{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px}
+    .status{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px;min-height:16px}
     .footer{margin-top:32px;font-size:11px;color:rgba(255,255,255,0.15);font-family:'DM Mono',monospace}
   </style>
 </head>
@@ -49,8 +50,8 @@
     <h2>Welcome back</h2>
     <p>Sign in to access your case library, ARIA, and MERIDIAN-calibrated tools.</p>
     <button class="btn" id="signin-btn" disabled>Loading...</button>
-    <button class="btn" id="signup-btn" disabled style="background:transparent;color:#00E5C3;border:1px solid rgba(0,229,195,0.3);">Create account</button>
-    <div class="status" id="status">Initialising auth...</div>
+    <button class="btn btn-outline" id="signup-btn" disabled>Create account</button>
+    <div class="status" id="status">Starting...</div>
     <div class="note">
       <strong>MERIDIAN Active</strong>
       Every tool calibrated to your exact professional reality. Not generic advice. Your advice.
@@ -60,50 +61,66 @@
   <div class="footer">Viorah Pvt Ltd &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; 2026</div>
 
   <script>
-    var PK = pk_test_YnJpZWYta29pLTc2LmNsZXJrLmFjY291bnRzLmRldiQ;
+    var PK = 'pk_test_YnJpZWYta29pLTc2LmNsZXJrLmFjY291bnRzLmRldiQ';
     var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
+    var statusEl = document.getElementById('status');
+    var btn1 = document.getElementById('signin-btn');
+    var btn2 = document.getElementById('signup-btn');
 
-    document.getElementById('status').innerText = 'Loading Clerk...';
+    function setStatus(msg) {
+      statusEl.innerText = msg;
+    }
+
+    setStatus('Loading auth library...');
 
     var s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
-    s.onerror = function() {
-      document.getElementById('status').innerText = 'Network error loading auth.';
-    };
-    s.onload = function() {
-      document.getElementById('status').innerText = 'Clerk script ready. Initialising...';
-      window.Clerk.load({ publishableKey: PK })
-        .then(function() {
-          if (window.Clerk.user) {
-            document.getElementById('status').innerText = 'Signed in. Redirecting...';
-            window.location.href = BASE + 'dashboard.html';
-            return;
-          }
-          var btn1 = document.getElementById('signin-btn');
-          var btn2 = document.getElementById('signup-btn');
-          btn1.innerText = 'Sign in';
-          btn1.disabled = false;
-          btn2.innerText = 'Create account';
-          btn2.disabled = false;
-          document.getElementById('status').innerText = 'Auth ready.';
 
-          btn1.onclick = function() {
-            window.Clerk.openSignIn({
-              afterSignInUrl: BASE + 'dashboard.html',
-              afterSignUpUrl: BASE + 'onboarding.html'
-            });
-          };
-          btn2.onclick = function() {
-            window.Clerk.openSignUp({
-              afterSignUpUrl: BASE + 'onboarding.html',
-              afterSignInUrl: BASE + 'dashboard.html'
-            });
-          };
-        })
-        .catch(function(e) {
-          document.getElementById('status').innerText = 'Auth error: ' + e.message;
-        });
+    s.onerror = function() {
+      setStatus('Failed to load auth library. Check your connection.');
     };
+
+    s.onload = function() {
+      setStatus('Auth library loaded. Creating instance...');
+      try {
+        var clerk = new window.Clerk(PK);
+        setStatus('Instance created. Initialising...');
+        clerk.load()
+          .then(function() {
+            setStatus('Auth initialised. Checking session...');
+            if (clerk.user) {
+              setStatus('Session found. Redirecting...');
+              window.location.href = BASE + 'dashboard.html';
+              return;
+            }
+            setStatus('Auth ready.');
+            btn1.innerText = 'Sign in';
+            btn1.disabled = false;
+            btn2.innerText = 'Create account';
+            btn2.disabled = false;
+
+            btn1.onclick = function() {
+              clerk.openSignIn({
+                afterSignInUrl: BASE + 'dashboard.html',
+                afterSignUpUrl: BASE + 'onboarding.html'
+              });
+            };
+
+            btn2.onclick = function() {
+              clerk.openSignUp({
+                afterSignUpUrl: BASE + 'onboarding.html',
+                afterSignInUrl: BASE + 'dashboard.html'
+              });
+            };
+          })
+          .catch(function(e) {
+            setStatus('Load error: ' + e.message);
+          });
+      } catch(e) {
+        setStatus('Instance error: ' + e.message);
+      }
+    };
+
     document.head.appendChild(s);
   </script>
 

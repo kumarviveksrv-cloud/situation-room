@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stakeholder Influence — Virorah Situation Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#060B18;color:#fff;font-family:'DM Sans',sans-serif;overflow:hidden}
+    body{display:flex}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.55}}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .sidebar{width:220px;flex-shrink:0;background:rgba(13,21,38,0.98);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;padding:20px 12px;height:100vh;overflow-y:auto}
+    .logo{display:flex;align-items:center;gap:10px;padding:6px 4px;margin-bottom:28px}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:#00E5C3;box-shadow:0 0 10px #00E5C3;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+    .logo-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+    .logo-name span{color:#00E5C3}
+    .logo-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:2px}
+    .nav-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:4px 10px;margin:16px 0 6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;color:rgba(255,255,255,0.45);font-size:13px;font-family:'DM Sans',sans-serif;margin-bottom:2px}
+    .nav-item:hover{background:rgba(255,255,255,0.04);color:#fff}
+    .nav-item.active{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.25);color:#00E5C3;font-weight:500}
+    .nav-item .icon{font-size:16px;flex-shrink:0}
+    .meridian-chip{margin-top:auto;padding:12px 14px;border-radius:10px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.15)}
+    .meridian-chip .label{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+    .meridian-chip .val{font-size:11px;color:rgba(255,255,255,0.45)}
+    .main{flex:1;overflow-y:auto;height:100vh;padding:28px 32px;background-image:linear-gradient(rgba(0,229,195,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.02) 1px,transparent 1px);background-size:48px 48px}
+    .page-header{margin-bottom:28px;animation:fadeIn .3s ease}
+    .breadcrumb{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.06em;margin-bottom:8px}
+    .breadcrumb a{color:rgba(255,255,255,0.3);text-decoration:none}
+    .breadcrumb a:hover{color:#00E5C3}
+    .page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px}
+    .page-sub{font-size:13px;color:rgba(255,255,255,0.45)}
+    .intake-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;margin-bottom:20px;animation:fadeIn .3s ease}
+    .form-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;display:block}
+    .form-section{margin-bottom:22px}
+    textarea{width:100%;padding:14px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;resize:vertical;outline:none;transition:border .2s}
+    textarea:focus{border-color:rgba(0,229,195,0.35)}
+    textarea::placeholder{color:rgba(255,255,255,0.2)}
+    .motivator-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .mot-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 10px;cursor:pointer;transition:all .2s;text-align:center;color:rgba(255,255,255,0.55);font-size:12px;font-family:'DM Sans',sans-serif}
+    .mot-btn:hover{border-color:rgba(0,229,195,0.25);color:#fff}
+    .mot-btn.selected{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.35);color:#00E5C3;font-weight:500}
+    .mot-icon{font-size:18px;display:block;margin-bottom:4px}
+    .submit-btn{width:100%;padding:16px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:12px;cursor:pointer;transition:opacity .2s}
+    .submit-btn:hover{opacity:.88}
+    .submit-btn:disabled{opacity:.3;cursor:not-allowed}
+    .loading-state{text-align:center;padding:80px 20px;animation:fadeIn .3s ease}
+    .loading-orb{width:64px;height:64px;margin:0 auto 24px}
+    .loading-orb svg{animation:spin 2s linear infinite}
+    .loading-text{font-family:'DM Mono',monospace;font-size:12px;color:#00E5C3;letter-spacing:.08em}
+
+    /* OUTPUT */
+    .output-section{animation:fadeIn .4s ease;max-width:840px}
+    .stack-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+    .stack-layer{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden}
+    .stack-header{display:flex;align-items:center;gap:16px;padding:18px 22px;cursor:pointer;transition:background .2s}
+    .stack-header:hover{background:rgba(255,255,255,0.02)}
+    .stack-number{width:36px;height:36px;border-radius:50%;background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.25);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#00E5C3;flex-shrink:0}
+    .stack-name-wrap{flex:1}
+    .stack-layer-label{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+    .stack-layer-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:#fff}
+    .stack-chevron{font-size:14px;color:rgba(255,255,255,0.3);transition:transform .25s}
+    .stack-body{padding:0 22px 18px;border-top:1px solid rgba(255,255,255,0.04);display:none}
+    .stack-body.open{display:block}
+    .stack-body-text{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7;margin-top:14px}
+
+    .three-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px}
+    .output-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px}
+    .output-card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;margin-bottom:12px;color:#fff}
+    .output-card-text{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6}
+
+    .opening-card{background:linear-gradient(135deg,rgba(0,229,195,0.08),rgba(0,229,195,0.02));border:1px solid rgba(0,229,195,0.2);border-radius:12px;padding:22px 24px;margin-bottom:24px}
+    .opening-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+    .opening-text{font-family:'Syne',sans-serif;font-size:16px;font-weight:600;color:#fff;line-height:1.6;font-style:italic}
+
+    .objection-card{background:#0D1526;border:1px solid rgba(255,77,109,0.15);border-radius:12px;padding:22px 24px;margin-bottom:24px}
+    .objection-label{font-family:'DM Mono',monospace;font-size:10px;color:#FF4D6D;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+    .objection-q{font-size:14px;font-weight:500;color:#fff;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .response-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+    .response-text{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6}
+
+    .action-row{display:flex;gap:12px;margin-bottom:32px}
+    .btn-primary{padding:14px 28px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s}
+    .btn-primary:hover{opacity:.88}
+    .btn-secondary{padding:14px 28px;background:transparent;color:#00E5C3;font-family:'DM Sans',sans-serif;font-size:14px;border:1px solid rgba(0,229,195,0.3);border-radius:10px;cursor:pointer;transition:all .2s}
+    .btn-secondary:hover{background:rgba(0,229,195,0.06)}
+    .btn-ghost{padding:14px 28px;background:transparent;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;font-size:14px;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;transition:all .2s}
+    .btn-ghost:hover{border-color:rgba(255,255,255,0.15);color:#fff}
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
+    @media(max-width:768px){.sidebar{display:none}.main{padding:20px 16px}.three-cards{grid-template-columns:1fr}.motivator-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <div>
+        <div class="logo-name">Vi<span>R</span>orah</div>
+        <div class="logo-sub">Situation Room</div>
+      </div>
+    </div>
+    <div class="nav-section">Core Tools</div>
+    <a href="dashboard.html" class="nav-item"><span class="icon">⊞</span> Dashboard</a>
+    <a href="er-case-navigator.html" class="nav-item"><span class="icon">⚡</span> ER Case Navigator</a>
+    <a href="conversation-simulator.html" class="nav-item"><span class="icon">🎭</span> Conversation Simulator</a>
+    <a href="hr-data-storyteller.html" class="nav-item"><span class="icon">📊</span> HR Data Storyteller</a>
+    <a href="policy-compass.html" class="nav-item"><span class="icon">🧭</span> Policy Compass</a>
+    <a href="stakeholder-influence.html" class="nav-item active"><span class="icon">🎯</span> Stakeholder Influence</a>
+    <div class="nav-section">Intelligence</div>
+    <a href="aria.html" class="nav-item"><span class="icon">✦</span> ARIA</a>
+    <a href="case-library.html" class="nav-item"><span class="icon">◎</span> Case Library</a>
+    <a href="debrief.html" class="nav-item"><span class="icon">📋</span> The Debrief</a>
+    <div class="nav-section">Account</div>
+    <a href="data-dashboard.html" class="nav-item"><span class="icon">🔒</span> Data & Privacy</a>
+    <a href="index.html" class="nav-item" onclick="sessionStorage.clear()"><span class="icon">↩</span> Sign out</a>
+    <div class="meridian-chip">
+      <div class="label">MERIDIAN Active</div>
+      <div class="val" id="meridian-chip-val">Loading...</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div id="intake-view">
+      <div class="page-header">
+        <div class="breadcrumb"><a href="dashboard.html">Dashboard</a> · Stakeholder Influence</div>
+        <div class="page-title">🎯 Stakeholder Influence Builder</div>
+        <div class="page-sub">Build the complete INFLUENCE Stack for any business case, leadership conversation, or decision you need to move.</div>
+      </div>
+
+      <div class="intake-card">
+        <div class="form-section">
+          <label class="form-label">What do you need to achieve?</label>
+          <textarea id="objective" placeholder="Be specific and measurable. Not 'get L&D budget approved' but 'get approval for a ₹12L leadership development investment for 20 senior managers before Q3 planning closes.'" rows="3"></textarea>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Who do you need to move?</label>
+          <textarea id="stakeholder" placeholder="Their role, their seniority, their relationship with you, their history on this topic. The more context, the sharper the stack." rows="3"></textarea>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">What drives this person? (Primary motivator)</label>
+          <div class="motivator-grid">
+            <div class="mot-btn" onclick="selectMot(this,'Financial — cost, ROI, revenue impact')"><span class="mot-icon">💰</span>Financial</div>
+            <div class="mot-btn" onclick="selectMot(this,'Political — visibility, reputation, credit')"><span class="mot-icon">🏆</span>Political</div>
+            <div class="mot-btn" onclick="selectMot(this,'Ethical — doing the right thing, fairness')"><span class="mot-icon">⚖️</span>Ethical</div>
+            <div class="mot-btn" onclick="selectMot(this,'Relational — trust, loyalty, relationships')"><span class="mot-icon">🤝</span>Relational</div>
+            <div class="mot-btn" onclick="selectMot(this,'Strategic — long-term vision, competitive advantage')"><span class="mot-icon">🎯</span>Strategic</div>
+            <div class="mot-btn" onclick="selectMot(this,'Risk aversion — avoiding problems, compliance')"><span class="mot-icon">🛡️</span>Risk aversion</div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Known objection history (optional)</label>
+          <textarea id="objections" placeholder="Has this person pushed back on similar requests before? What arguments have they used? Any past decisions that reveal their thinking?" rows="2"></textarea>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">What assets do you have? (optional)</label>
+          <textarea id="assets" placeholder="Data, case studies, allies who support you, timing advantages, pilot results, industry benchmarks, peer company examples..." rows="2"></textarea>
+        </div>
+
+        <button class="submit-btn" id="submit-btn" onclick="runInfluence()" disabled>Build INFLUENCE Stack →</button>
+      </div>
+    </div>
+
+    <div id="loading-view" style="display:none">
+      <div class="page-header">
+        <div class="page-title">🎯 Stakeholder Influence Builder</div>
+      </div>
+      <div class="loading-state">
+        <div class="loading-orb">
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(0,229,195,0.15)" stroke-width="2"/>
+            <circle cx="32" cy="32" r="28" fill="none" stroke="#00E5C3" stroke-width="2" stroke-dasharray="44 132" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="loading-text">BUILDING YOUR INFLUENCE STACK...</div>
+        <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace">Calibrating to your stakeholder's motivators...</div>
+      </div>
+    </div>
+
+    <div id="output-view" style="display:none">
+      <div class="page-header">
+        <div class="breadcrumb"><a href="dashboard.html">Dashboard</a> · <a href="stakeholder-influence.html">Stakeholder Influence</a> · INFLUENCE Stack</div>
+        <div class="page-title">INFLUENCE Stack</div>
+        <div class="page-sub">Five layers. Walk through them in sequence. Own the room.</div>
+      </div>
+
+      <div class="output-section">
+
+        <div class="opening-card">
+          <div class="opening-label">Open with these exact words</div>
+          <div class="opening-text" id="opening-text">—</div>
+        </div>
+
+        <div class="stack-grid" id="stack-grid"></div>
+
+        <div class="objection-card">
+          <div class="objection-label">Their strongest objection</div>
+          <div class="objection-q" id="objection-q">—</div>
+          <div class="response-label">Your prepared counter</div>
+          <div class="response-text" id="objection-response">—</div>
+        </div>
+
+        <div class="three-cards">
+          <div class="output-card">
+            <div class="output-card-title">✅ Success definition</div>
+            <div class="output-card-text" id="success-def">—</div>
+          </div>
+          <div class="output-card" style="grid-column:span 2">
+            <div class="output-card-title">🔀 Decision Runway — the smallest yes you need today</div>
+            <div class="output-card-text" id="decision-runway">—</div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-primary" onclick="practiceConversation()">Practice This Conversation →</button>
+          <button class="btn-secondary" onclick="buildAnother()">Build Another Stack</button>
+          <button class="btn-ghost" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    var WORKER = 'https://situation-room-api.kumarvivek-srv.workers.dev';
+    var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
+    var selectedMotivator = '';
+    var currentResult = null;
+
+    if (sessionStorage.getItem('sr_access') !== 'true') {
+      window.location.href = BASE + 'index.html';
+    }
+
+    var meridianRaw = sessionStorage.getItem('sr_meridian');
+    var meridian = meridianRaw ? JSON.parse(meridianRaw) : {};
+    document.getElementById('meridian-chip-val').innerText =
+      (meridian.state || 'Not set') + ' · ' + (meridian.industry || 'Not set');
+
+    document.getElementById('objective').addEventListener('input', checkSubmit);
+    document.getElementById('stakeholder').addEventListener('input', checkSubmit);
+
+    function selectMot(el, motivator) {
+      document.querySelectorAll('.mot-btn').forEach(function(b){ b.classList.remove('selected'); });
+      el.classList.add('selected');
+      selectedMotivator = motivator;
+      checkSubmit();
+    }
+
+    function checkSubmit() {
+      var obj = document.getElementById('objective').value.trim();
+      var stk = document.getElementById('stakeholder').value.trim();
+      document.getElementById('submit-btn').disabled = !(obj.length > 20 && stk.length > 10 && selectedMotivator);
+    }
+
+    function showView(view) {
+      ['intake-view','loading-view','output-view'].forEach(function(v){
+        document.getElementById(v).style.display = 'none';
+      });
+      document.getElementById(view).style.display = 'block';
+    }
+
+    async function runInfluence() {
+      var objective = document.getElementById('objective').value.trim();
+      var stakeholder = document.getElementById('stakeholder').value.trim();
+      var objections = document.getElementById('objections').value.trim();
+      var assets = document.getElementById('assets').value.trim();
+      if (!objective || !stakeholder || !selectedMotivator) return;
+      showView('loading-view');
+      try {
+        var res = await fetch(WORKER, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            tool: 'influence',
+            objective: objective,
+            stakeholderRole: stakeholder,
+            stakeholderMotivator: selectedMotivator,
+            objectionHistory: objections,
+            assets: assets,
+            meridian: meridian
+          })
+        });
+        var data = await res.json();
+        if (data.success) {
+          currentResult = data.data;
+          renderOutput(data.data, objective, stakeholder);
+        } else {
+          alert('Error: ' + (data.error || 'Unknown error'));
+          showView('intake-view');
+        }
+      } catch(err) {
+        alert('Connection error: ' + err.message);
+        showView('intake-view');
+      }
+    }
+
+    var stackMeta = [
+      { num:'1', label:'Layer 1', name:'Credibility Foundation', key:'credibility' },
+      { num:'2', label:'Layer 2', name:'Data Anchor', key:'dataAnchor' },
+      { num:'3', label:'Layer 3', name:'Narrative Bridge', key:'narrative' },
+      { num:'4', label:'Layer 4', name:'Risk Mirror', key:'riskMirror' },
+      { num:'5', label:'Layer 5', name:'Decision Runway', key:'decisionRunway' },
+    ];
+
+    function renderOutput(r, objective, stakeholder) {
+      document.getElementById('opening-text').innerText = r.meetingOpening || '—';
+
+      var stackHtml = '';
+      var stack = r.stack || {};
+      stackMeta.forEach(function(m, i) {
+        stackHtml += '<div class="stack-layer">' +
+          '<div class="stack-header" onclick="toggleLayer(this,' + i + ')">' +
+          '<div class="stack-number">' + m.num + '</div>' +
+          '<div class="stack-name-wrap">' +
+          '<div class="stack-layer-label">' + m.label + '</div>' +
+          '<div class="stack-layer-name">' + m.name + '</div>' +
+          '</div>' +
+          '<div class="stack-chevron" id="chevron-' + i + '">›</div>' +
+          '</div>' +
+          '<div class="stack-body" id="body-' + i + '">' +
+          '<div class="stack-body-text">' + (stack[m.key] || '—') + '</div>' +
+          '</div>' +
+          '</div>';
+      });
+      document.getElementById('stack-grid').innerHTML = stackHtml;
+
+      document.getElementById('objection-q').innerText = r.anticipatedObjection || '—';
+      document.getElementById('objection-response').innerText = r.objectionResponse || '—';
+      document.getElementById('success-def').innerText = r.successDefinition || '—';
+      document.getElementById('decision-runway').innerText = (r.stack && r.stack.decisionRunway) || '—';
+
+      sessionStorage.setItem('sr_influence_context', JSON.stringify({
+        objective: objective,
+        stakeholder: stakeholder,
+        motivator: selectedMotivator
+      }));
+
+      showView('output-view');
+
+      setTimeout(function(){ toggleLayer(document.querySelector('.stack-header'), 0); }, 300);
+    }
+
+    function toggleLayer(headerEl, index) {
+      var body = document.getElementById('body-' + index);
+      var chevron = document.getElementById('chevron-' + index);
+      var isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
+    }
+
+    function practiceConversation() {
+      var ctx = sessionStorage.getItem('sr_influence_context');
+      if (ctx) {
+        var parsed = JSON.parse(ctx);
+        sessionStorage.setItem('sr_practice_context', JSON.stringify({
+          narrative: 'Influence objective: ' + parsed.objective + '. Stakeholder: ' + parsed.stakeholder
+        }));
+      }
+      window.location.href = BASE + 'conversation-simulator.html';
+    }
+
+    function buildAnother() {
+      document.getElementById('objective').value = '';
+      document.getElementById('stakeholder').value = '';
+      document.getElementById('objections').value = '';
+      document.getElementById('assets').value = '';
+      document.querySelectorAll('.mot-btn').forEach(function(b){ b.classList.remove('selected'); });
+      selectedMotivator = '';
+      document.getElementById('submit-btn').disabled = true;
+      showView('intake-view');
+    }
+  </script>
+
+</body>
+</html>

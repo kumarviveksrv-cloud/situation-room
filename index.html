@@ -196,31 +196,32 @@
   <div class="footer">Viorah Pvt Ltd &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; 2026</div>
 
   <script>
-    const CLERK_KEY = 'pk_test_YnJpZWYta29pLTc2LmNsZXJrLmFjY291bnRzLmRldiQ';
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
-    script.setAttribute('data-clerk-publishable-key', CLERK_KEY);
-    script.async = true;
-    script.onload = async () => {
-      try {
-        await window.Clerk.load({ publishableKey: CLERK_KEY });
+  window.addEventListener('load', async function() {
+    try {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+      script.async = true;
+      document.head.appendChild(script);
+      script.onload = async () => {
+        await window.Clerk.load({
+          publishableKey: 'pk_test_YnJpZWYta29pLTc2LmNsZXJrLmFjY291bnRzLmRldiQ'
+        });
         document.getElementById('loading').style.display = 'none';
         if (window.Clerk.user) {
-          document.getElementById('signed-in').style.display = 'block';
-          setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+          window.location.href = '/situation-room/dashboard.html';
         } else {
-          document.getElementById('clerk-auth').style.display = 'block';
-          window.Clerk.mountSignIn(document.getElementById('clerk-auth'), {
-            afterSignInUrl: 'dashboard.html',
-            afterSignUpUrl: 'onboarding.html',
+          const authDiv = document.getElementById('clerk-auth');
+          authDiv.style.display = 'block';
+          authDiv.style.minHeight = '300px';
+          window.Clerk.mountSignIn(authDiv, {
+            afterSignInUrl: 'https://kumarviveksrv-cloud.github.io/situation-room/dashboard.html',
+            afterSignUpUrl: 'https://kumarviveksrv-cloud.github.io/situation-room/onboarding.html',
           });
         }
-      } catch(e) {
-        document.getElementById('loading').innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:12px;">Configure Clerk key to enable auth.</div>';
-      }
-    };
-    document.head.appendChild(script);
-  </script>
-
-</body>
-</html>
+      };
+    } catch(e) {
+      console.error('Clerk error:', e);
+      document.getElementById('loading').innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:12px;font-family:monospace;">Auth initialising... refresh in 10 seconds.</div>';
+    }
+  });
+</script>

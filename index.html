@@ -83,7 +83,7 @@
     s.onload = function() {
       setStatus('Auth library loaded. Creating instance...');
       try {
-        var clerk = new window.Clerk(PK);
+        var ClerkConstructor = window.Clerk.default || window.Clerk; var clerk = new ClerkConstructor(PK);
         setStatus('Instance created. Initialising...');
         clerk.load()
           .then(function() {

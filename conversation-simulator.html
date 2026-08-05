@@ -236,7 +236,7 @@
           <span style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25)" id="exchange-indicator">0 / 8 exchanges</span>
           <div class="voice-toggle" id="voice-toggle" onclick="toggleVoiceMode()">
             <div class="voice-toggle-dot"></div>
-            <span id="voice-toggle-label">Text mode</span>
+            <span id="voice-toggle-label">🎤 Switch to Voice</span>
           </div>
           <button class="hdr-btn hdr-btn-outline" onclick="endPractice()">End Practice & Get Debrief</button>
         </div>
@@ -398,13 +398,13 @@
       var voiceWrap = document.getElementById('voice-input-wrap');
       if (voiceMode) {
         toggle.classList.add('active');
-        label.innerText = 'Voice mode';
+        label.innerText = '⌨️ Switch to Text';
         textWrap.style.display = 'none';
         voiceWrap.style.display = 'flex';
         setVoiceStatus('Tap the mic to speak', '');
       } else {
         toggle.classList.remove('active');
-        label.innerText = 'Text mode';
+        label.innerText = '🎤 Switch to Voice';
         textWrap.style.display = 'flex';
         voiceWrap.style.display = 'none';
         stopListening();

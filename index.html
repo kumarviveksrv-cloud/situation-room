@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Viorah Situation Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <script
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+    data-clerk-publishable-key="pk_test_YnJpZWYta29pLTc2LmNsZXJrLmFjY291bnRzLmRldiQ"
+    crossorigin="anonymous"
+  ></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:#060B18;color:#fff;font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background-image:linear-gradient(rgba(0,229,195,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.03) 1px,transparent 1px);background-size:48px 48px}
@@ -21,7 +26,7 @@
     .card p{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:28px;line-height:1.6}
     .btn{display:block;width:100%;padding:14px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;border:none;border-radius:10px;cursor:pointer;margin-bottom:12px;transition:opacity .2s}
     .btn:hover{opacity:0.9}
-    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .btn:disabled{opacity:0.4;cursor:not-allowed}
     .btn-outline{background:transparent;color:#00E5C3;border:1px solid rgba(0,229,195,0.3)}
     .note{margin-top:20px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.18);border-radius:10px;padding:12px 14px;font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;text-align:left}
     .note strong{color:#00E5C3;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
@@ -51,7 +56,7 @@
     <p>Sign in to access your case library, ARIA, and MERIDIAN-calibrated tools.</p>
     <button class="btn" id="signin-btn" disabled>Loading...</button>
     <button class="btn btn-outline" id="signup-btn" disabled>Create account</button>
-    <div class="status" id="status">Starting...</div>
+    <div class="status" id="status">Waiting for auth...</div>
     <div class="note">
       <strong>MERIDIAN Active</strong>
       Every tool calibrated to your exact professional reality. Not generic advice. Your advice.
@@ -61,67 +66,53 @@
   <div class="footer">Viorah Pvt Ltd &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; 2026</div>
 
   <script>
-    var PK = 'pk_test_YnJpZWYta29pLTc2LmNsZXJrLmFjY291bnRzLmRldiQ';
     var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
-    var statusEl = document.getElementById('status');
     var btn1 = document.getElementById('signin-btn');
     var btn2 = document.getElementById('signup-btn');
+    var statusEl = document.getElementById('status');
+    var checks = 0;
 
-    function setStatus(msg) {
-      statusEl.innerText = msg;
+    function setStatus(msg) { statusEl.innerText = msg; }
+
+    function onClerkReady() {
+      setStatus('Auth ready.');
+      if (window.Clerk.user) {
+        setStatus('Session found. Redirecting...');
+        window.location.href = BASE + 'dashboard.html';
+        return;
+      }
+      btn1.innerText = 'Sign in';
+      btn1.disabled = false;
+      btn2.innerText = 'Create account';
+      btn2.disabled = false;
+
+      btn1.onclick = function() {
+        window.Clerk.openSignIn({
+          afterSignInUrl: BASE + 'dashboard.html',
+          afterSignUpUrl: BASE + 'onboarding.html'
+        });
+      };
+      btn2.onclick = function() {
+        window.Clerk.openSignUp({
+          afterSignUpUrl: BASE + 'onboarding.html',
+          afterSignInUrl: BASE + 'dashboard.html'
+        });
+      };
     }
 
-    setStatus('Loading auth library...');
-
-    var s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
-
-    s.onerror = function() {
-      setStatus('Failed to load auth library. Check your connection.');
-    };
-
-    s.onload = function() {
-      setStatus('Auth library loaded. Creating instance...');
-      try {
-        var ClerkConstructor = window.Clerk.default || window.Clerk; var clerk = new ClerkConstructor(PK);
-        setStatus('Instance created. Initialising...');
-        clerk.load()
-          .then(function() {
-            setStatus('Auth initialised. Checking session...');
-            if (clerk.user) {
-              setStatus('Session found. Redirecting...');
-              window.location.href = BASE + 'dashboard.html';
-              return;
-            }
-            setStatus('Auth ready.');
-            btn1.innerText = 'Sign in';
-            btn1.disabled = false;
-            btn2.innerText = 'Create account';
-            btn2.disabled = false;
-
-            btn1.onclick = function() {
-              clerk.openSignIn({
-                afterSignInUrl: BASE + 'dashboard.html',
-                afterSignUpUrl: BASE + 'onboarding.html'
-              });
-            };
-
-            btn2.onclick = function() {
-              clerk.openSignUp({
-                afterSignUpUrl: BASE + 'onboarding.html',
-                afterSignInUrl: BASE + 'dashboard.html'
-              });
-            };
-          })
-          .catch(function(e) {
-            setStatus('Load error: ' + e.message);
-          });
-      } catch(e) {
-        setStatus('Instance error: ' + e.message);
+    var poll = setInterval(function() {
+      checks++;
+      setStatus('Checking auth... (' + checks + ')');
+      if (checks > 150) {
+        clearInterval(poll);
+        setStatus('Timeout. Please refresh the page.');
+        return;
       }
-    };
-
-    document.head.appendChild(s);
+      if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+        clearInterval(poll);
+        onClerkReady();
+      }
+    }, 200);
   </script>
 
 </body>

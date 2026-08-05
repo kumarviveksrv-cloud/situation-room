@@ -3,124 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Virorah Situation Room</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
+  <title>Viorah Situation Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      background: #060B18;
-      color: #fff;
-      font-family: 'DM Sans', sans-serif;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px 20px;
-      background-image:
-        linear-gradient(rgba(0,229,195,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,229,195,0.03) 1px, transparent 1px);
-      background-size: 48px 48px;
-    }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.94)} }
-    @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-    .orb { width:64px; height:64px; margin:0 auto 20px; animation:float 3s ease-in-out infinite; }
-    .orb svg { width:64px; height:64px; }
-    .brand-name { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; color:#fff; text-align:center; }
-    .brand-name span { color:#00E5C3; }
-    .brand-sub { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-top:6px; text-align:center; }
-    .tagline { font-size:14px; color:rgba(255,255,255,0.45); margin-top:12px; max-width:280px; line-height:1.6; text-align:center; }
-    .brand { margin-bottom:40px; display:flex; flex-direction:column; align-items:center; }
-    .auth-card { background:#0D1526; border:1px solid rgba(255,255,255,0.05); border-radius:16px; padding:32px 28px; width:100%; max-width:420px; }
-    .loading { text-align:center; padding:60px 0; font-family:'DM Mono',monospace; font-size:12px; color:rgba(255,255,255,0.3); }
-    .meridian-note { margin-top:20px; background:rgba(0,229,195,0.08); border:1px solid rgba(0,229,195,0.18); border-radius:10px; padding:12px 14px; font-size:12px; color:rgba(255,255,255,0.5); line-height:1.5; }
-    .meridian-note strong { color:#00E5C3; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
-    .footer { margin-top:32px; text-align:center; font-size:11px; color:rgba(255,255,255,0.15); font-family:'DM Mono',monospace; }
-    #clerk-auth { min-height:280px; }
-    #clerk-auth .cl-rootBox { background:transparent !important; }
-    #clerk-auth .cl-card { background:transparent !important; box-shadow:none !important; border:none !important; }
-    #clerk-auth .cl-headerTitle { color:#fff !important; font-family:'Syne',sans-serif !important; }
-    #clerk-auth .cl-headerSubtitle { color:rgba(255,255,255,0.5) !important; }
-    #clerk-auth .cl-formFieldInput { background:rgba(255,255,255,0.05) !important; border:1px solid rgba(255,255,255,0.1) !important; color:#fff !important; border-radius:8px !important; }
-    #clerk-auth .cl-formButtonPrimary { background:#00E5C3 !important; color:#060B18 !important; font-family:'Syne',sans-serif !important; font-weight:700 !important; border-radius:8px !important; border:none !important; }
-    #clerk-auth .cl-footerActionLink { color:#00E5C3 !important; }
-    #clerk-auth .cl-dividerLine { background:rgba(255,255,255,0.1) !important; }
-    #clerk-auth .cl-dividerText { color:rgba(255,255,255,0.3) !important; }
-    #clerk-auth .cl-socialButtonsBlockButton { background:rgba(255,255,255,0.05) !important; border:1px solid rgba(255,255,255,0.1) !important; border-radius:8px !important; color:#fff !important; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#060B18;color:#fff;font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background-image:linear-gradient(rgba(0,229,195,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.03) 1px,transparent 1px);background-size:48px 48px}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    .orb{width:72px;height:72px;margin:0 auto 24px;animation:float 3s ease-in-out infinite}
+    .brand-name{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;text-align:center}
+    .brand-name span{color:#00E5C3}
+    .sub{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-align:center;margin-top:6px}
+    .tagline{font-size:15px;color:rgba(255,255,255,0.5);text-align:center;margin-top:10px;margin-bottom:40px}
+    .card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:36px 32px;width:100%;max-width:400px;text-align:center}
+    .card h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px}
+    .card p{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:28px;line-height:1.6}
+    .btn{display:block;width:100%;padding:14px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;border:none;border-radius:10px;cursor:pointer;margin-bottom:12px;transition:opacity .2s}
+    .btn:hover{opacity:0.9}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .note{margin-top:20px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.18);border-radius:10px;padding:12px 14px;font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;text-align:left}
+    .note strong{color:#00E5C3;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
+    .status{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px}
+    .footer{margin-top:32px;font-size:11px;color:rgba(255,255,255,0.15);font-family:'DM Mono',monospace}
   </style>
 </head>
 <body>
 
-  <div class="brand">
-    <div class="orb">
-      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="32" r="29" fill="none" stroke="#00E5C3" stroke-width="0.5" stroke-opacity="0.3" stroke-dasharray="4 8" style="animation:spin 12s linear infinite;transform-origin:32px 32px;" />
-        <circle cx="32" cy="32" r="20" fill="rgba(0,229,195,0.08)" />
-        <polygon points="32,12 50,42 14,42" fill="none" stroke="#00E5C3" stroke-width="0.8" stroke-opacity="0.6" />
-        <circle cx="24" cy="28" r="3" fill="#00E5C3" style="animation:pulse 2s ease-in-out infinite;" />
-        <circle cx="40" cy="28" r="3" fill="#00E5C3" style="animation:pulse 2s ease-in-out 0.3s infinite;" />
-        <line x1="22" y1="37" x2="42" y2="37" stroke="#00E5C3" stroke-width="1" stroke-opacity="0.5" />
-      </svg>
-    </div>
-    <div class="brand-name">Vi<span>R</span>orah</div>
-    <div class="brand-sub">Situation Room</div>
-    <div class="tagline">Walk into any room ready for anything.</div>
+  <div class="orb">
+    <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" width="72" height="72">
+      <circle cx="36" cy="36" r="33" fill="none" stroke="#00E5C3" stroke-width="0.5" stroke-opacity="0.25" stroke-dasharray="4 8" style="animation:spin 14s linear infinite;transform-origin:36px 36px"/>
+      <circle cx="36" cy="36" r="22" fill="rgba(0,229,195,0.07)"/>
+      <polygon points="36,14 56,48 16,48" fill="none" stroke="#00E5C3" stroke-width="1" stroke-opacity="0.5"/>
+      <circle cx="27" cy="32" r="3.5" fill="#00E5C3" style="animation:pulse 2s ease-in-out infinite"/>
+      <circle cx="45" cy="32" r="3.5" fill="#00E5C3" style="animation:pulse 2s ease-in-out .3s infinite"/>
+      <line x1="24" y1="42" x2="48" y2="42" stroke="#00E5C3" stroke-width="1.2" stroke-opacity="0.4"/>
+    </svg>
   </div>
 
-  <div class="auth-card">
-    <div id="loading" class="loading">Initialising...</div>
-    <div id="clerk-auth" style="display:none;"></div>
-    <div class="meridian-note">
+  <div class="brand-name">Vi<span>R</span>orah</div>
+  <div class="sub">Situation Room</div>
+  <div class="tagline">Walk into any room ready for anything.</div>
+
+  <div class="card">
+    <h2>Welcome back</h2>
+    <p>Sign in to access your case library, ARIA, and MERIDIAN-calibrated tools.</p>
+    <button class="btn" id="signin-btn" disabled>Loading...</button>
+    <button class="btn" id="signup-btn" disabled style="background:transparent;color:#00E5C3;border:1px solid rgba(0,229,195,0.3);">Create account</button>
+    <div class="status" id="status">Initialising auth...</div>
+    <div class="note">
       <strong>MERIDIAN Active</strong>
-      Every tool is calibrated to your exact professional reality. Not generic advice. Your advice.
+      Every tool calibrated to your exact professional reality. Not generic advice. Your advice.
     </div>
   </div>
 
-  <div class="footer">Virorah Private Limited &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; 2026</div>
+  <div class="footer">Viorah Pvt Ltd &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; 2026</div>
 
   <script>
     var PK = 'pk_test_YnJpZWYta29pLTc2LmNsZXJrLmFjY291bnRzLmRldiQ';
     var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
-    var attempts = 0;
 
-    function tryInitClerk() {
-      attempts++;
-      if (attempts > 50) {
-        document.getElementById('loading').innerText = 'Please refresh the page.';
-        return;
-      }
-      if (typeof window.Clerk === 'undefined') {
-        setTimeout(tryInitClerk, 300);
-        return;
-      }
+    document.getElementById('status').innerText = 'Loading Clerk...';
+
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+    s.onerror = function() {
+      document.getElementById('status').innerText = 'Network error loading auth.';
+    };
+    s.onload = function() {
+      document.getElementById('status').innerText = 'Clerk script ready. Initialising...';
       window.Clerk.load({ publishableKey: PK })
         .then(function() {
-          document.getElementById('loading').style.display = 'none';
           if (window.Clerk.user) {
+            document.getElementById('status').innerText = 'Signed in. Redirecting...';
             window.location.href = BASE + 'dashboard.html';
-          } else {
-            var div = document.getElementById('clerk-auth');
-            div.style.display = 'block';
-            window.Clerk.mountSignIn(div, {
+            return;
+          }
+          var btn1 = document.getElementById('signin-btn');
+          var btn2 = document.getElementById('signup-btn');
+          btn1.innerText = 'Sign in';
+          btn1.disabled = false;
+          btn2.innerText = 'Create account';
+          btn2.disabled = false;
+          document.getElementById('status').innerText = 'Auth ready.';
+
+          btn1.onclick = function() {
+            window.Clerk.openSignIn({
               afterSignInUrl: BASE + 'dashboard.html',
               afterSignUpUrl: BASE + 'onboarding.html'
             });
-          }
+          };
+          btn2.onclick = function() {
+            window.Clerk.openSignUp({
+              afterSignUpUrl: BASE + 'onboarding.html',
+              afterSignInUrl: BASE + 'dashboard.html'
+            });
+          };
         })
-        .catch(function(err) {
-          console.error('Clerk error:', err);
-          document.getElementById('loading').innerText = 'Auth error — check console.';
+        .catch(function(e) {
+          document.getElementById('status').innerText = 'Auth error: ' + e.message;
         });
-    }
-
-    tryInitClerk();
+    };
+    document.head.appendChild(s);
   </script>
 
 </body>

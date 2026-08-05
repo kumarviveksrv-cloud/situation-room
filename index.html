@@ -203,7 +203,7 @@
     script.async = true;
     script.onload = async () => {
       try {
-        await window.Clerk.load();
+        await window.Clerk.load({ publishableKey: CLERK_KEY });
         document.getElementById('loading').style.display = 'none';
         if (window.Clerk.user) {
           document.getElementById('signed-in').style.display = 'block';

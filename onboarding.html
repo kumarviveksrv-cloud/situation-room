@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MERIDIAN Setup — Virorah Situation Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#060B18;--card:#0D1526;--teal:#00E5C3;--teal-dim:rgba(0,229,195,0.10);--teal-border:rgba(0,229,195,0.22);--white:#fff;--grey:rgba(255,255,255,0.45);--border:rgba(255,255,255,0.06)}
+    html,body{min-height:100%;background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif}
+    body{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 20px 60px;background-image:linear-gradient(rgba(0,229,195,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.025) 1px,transparent 1px);background-size:48px 48px}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+    /* HEADER */
+    .header{width:100%;max-width:540px;display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+    .logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white)}
+    .logo span{color:var(--teal)}
+    .step-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--grey);letter-spacing:.06em}
+
+    /* PROGRESS */
+    .progress-wrap{width:100%;max-width:540px;margin-bottom:40px}
+    .progress-bar{width:100%;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+    .progress-fill{height:100%;background:var(--teal);border-radius:2px;transition:width .4s ease}
+
+    /* STEP CARD */
+    .step-card{width:100%;max-width:540px;animation:fadeIn .35s ease both}
+    .step-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+    .step-q{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;line-height:1.3;margin-bottom:6px}
+    .step-hint{font-size:13px;color:var(--grey);margin-bottom:28px;line-height:1.5}
+
+    /* OPTION CARDS */
+    .options{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+    .opt{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
+    .opt:hover{border-color:rgba(0,229,195,0.3);background:#111E35}
+    .opt.selected{background:var(--teal-dim);border-color:var(--teal-border)}
+    .opt-icon{font-size:20px;flex-shrink:0}
+    .opt-text .opt-title{font-size:14px;font-weight:500}
+    .opt-text .opt-sub{font-size:12px;color:var(--grey);margin-top:2px}
+    .opt-check{margin-left:auto;width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+    .opt.selected .opt-check{background:var(--teal);border-color:var(--teal)}
+    .opt.selected .opt-check::after{content:'✓';font-size:11px;color:#060B18;font-weight:700}
+
+    /* DROPDOWN (for states) */
+    .select-wrap{margin-bottom:28px}
+    select{width:100%;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300E5C3' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;transition:border .2s}
+    select:focus{border-color:var(--teal-border)}
+    select option{background:#0D1526;color:#fff}
+
+    /* BTN */
+    .btn-row{display:flex;gap:12px}
+    .btn-back{padding:14px 20px;background:transparent;color:var(--grey);font-family:'Syne',sans-serif;font-weight:600;font-size:14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s}
+    .btn-back:hover{border-color:rgba(255,255,255,0.15);color:var(--white)}
+    .btn-next{flex:1;padding:14px;background:var(--teal);color:#060B18;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;letter-spacing:.01em}
+    .btn-next:hover{opacity:.88}
+    .btn-next:disabled{opacity:.35;cursor:not-allowed}
+
+    /* COMPLETION */
+    .completion{width:100%;max-width:540px;text-align:center;animation:fadeIn .5s ease}
+    .completion .big-icon{font-size:56px;margin-bottom:20px}
+    .completion h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:10px}
+    .completion p{font-size:14px;color:var(--grey);line-height:1.6;margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto}
+    .completion .meridian-summary{background:var(--teal-dim);border:1px solid var(--teal-border);border-radius:12px;padding:20px;text-align:left;margin-bottom:32px}
+    .completion .m-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+    .completion .m-item{font-size:13px;color:var(--grey);margin-bottom:6px}
+    .completion .m-item strong{color:var(--white);font-weight:500}
+    .btn-enter{display:block;width:100%;padding:16px;background:var(--teal);color:#060B18;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;border:none;border-radius:12px;cursor:pointer;letter-spacing:.01em}
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">Vi<span>R</span>orah <span style="font-weight:400;color:var(--grey);font-size:13px;font-family:'DM Sans',sans-serif">· MERIDIAN Setup</span></div>
+    <div class="step-count" id="step-count">Step 1 of 7</div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:14%"></div></div>
+  </div>
+
+  <div id="step-container"></div>
+
+  <script>
+    var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
+    if (sessionStorage.getItem('sr_access') !== 'true') {
+      window.location.href = BASE + 'index.html';
+    }
+
+    var answers = {};
+    var current = 0;
+
+    var steps = [
+      {
+        id: 'state',
+        label: 'Step 1 of 7 · Location',
+        q: 'Which state are you based in?',
+        hint: 'This calibrates labour law jurisdiction, regional HR norms, and compliance flags.',
+        type: 'select',
+        options: ['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Delhi (NCT)','Jammu & Kashmir','Ladakh','Puducherry','Chandigarh','Other']
+      },
+      {
+        id: 'industry',
+        label: 'Step 2 of 7 · Industry',
+        q: 'Which industry do you work in?',
+        hint: 'Calibrates attrition benchmarks, typical ER case patterns, and compensation norms.',
+        type: 'cards',
+        options: [
+          {icon:'💻', title:'IT / ITES', sub:'Software, tech services, BPO, SaaS'},
+          {icon:'🏭', title:'Manufacturing', sub:'Industrial, automotive, FMCG production'},
+          {icon:'🏦', title:'BFSI', sub:'Banking, financial services, insurance'},
+          {icon:'🏥', title:'Healthcare', sub:'Hospitals, pharma, medical devices'},
+          {icon:'🛍️', title:'Retail / D2C', sub:'E-commerce, consumer goods, lifestyle'},
+          {icon:'🚀', title:'Startup', sub:'Early to growth stage, funding-backed'},
+          {icon:'🏛️', title:'PSU / Government', sub:'Public sector undertaking'},
+          {icon:'📚', title:'Education', sub:'Schools, colleges, EdTech'},
+          {icon:'🌐', title:'Other', sub:'Hospitality, NGO, consulting, media'}
+        ]
+      },
+      {
+        id: 'org_type',
+        label: 'Step 3 of 7 · Organisation Type',
+        q: 'What type of organisation is it?',
+        hint: 'Power dynamics, founder culture, and formal vs informal authority differ significantly.',
+        type: 'cards',
+        options: [
+          {icon:'👨‍👩‍👧', title:'Family-owned business', sub:'Promoter-led, relationship-driven culture'},
+          {icon:'🇮🇳', title:'Indian MNC', sub:'Indian company with regional or global presence'},
+          {icon:'🌍', title:'Global MNC', sub:'Foreign parent company with India operations'},
+          {icon:'⚡', title:'Pure startup', sub:'Founder-led, policy-light, fast-moving'},
+          {icon:'🏛️', title:'PSU / Government body', sub:'Public sector with formal hierarchy'},
+          {icon:'🤝', title:'NGO / Non-profit', sub:'Mission-driven, grant or donation funded'}
+        ]
+      },
+      {
+        id: 'org_size',
+        label: 'Step 4 of 7 · Organisation Size',
+        q: 'How large is your organisation?',
+        hint: 'Determines ER complexity, compliance thresholds, and HR bandwidth context.',
+        type: 'cards',
+        options: [
+          {icon:'🌱', title:'Under 50 people', sub:'Small team, everyone knows everyone'},
+          {icon:'🌿', title:'51 — 200 people', sub:'Growing, first formal HR structures'},
+          {icon:'🌳', title:'201 — 500 people', sub:'Mid-size, policies becoming critical'},
+          {icon:'🏢', title:'501 — 2,000 people', sub:'Large, multi-team complexity'},
+          {icon:'🏙️', title:'2,000+ people', sub:'Enterprise, multi-location, full HR function'}
+        ]
+      },
+      {
+        id: 'seniority',
+        label: 'Step 5 of 7 · Your Seniority',
+        q: 'What is your seniority level?',
+        hint: 'Calibrates how assertive recommendations should be and your escalation paths.',
+        type: 'cards',
+        options: [
+          {icon:'🌱', title:'HR Executive / Officer', sub:'0 — 3 years, building foundations'},
+          {icon:'⚡', title:'HR Manager / HRBP', sub:'3 — 7 years, managing situations independently'},
+          {icon:'🎯', title:'Senior Manager / Lead', sub:'7 — 12 years, leading the function'},
+          {icon:'🏆', title:'HR Director / Head of HR', sub:'12+ years, setting direction'},
+          {icon:'👑', title:'CHRO / VP HR', sub:'Executive team, board-level influence'},
+          {icon:'💼', title:'Independent Consultant', sub:'Serving multiple clients, self-employed'}
+        ]
+      },
+      {
+        id: 'union',
+        label: 'Step 6 of 7 · Workforce Type',
+        q: 'Is your workforce unionised?',
+        hint: 'Changes ER case handling, disciplinary processes, and termination risk significantly.',
+        type: 'cards',
+        options: [
+          {icon:'✅', title:'Yes — fully unionised', sub:'Recognised union with collective bargaining'},
+          {icon:'⚖️', title:'Partially unionised', sub:'Some workforce cohorts have union representation'},
+          {icon:'❌', title:'No — non-unionised', sub:'No union presence or recognition'}
+        ]
+      },
+      {
+        id: 'function',
+        label: 'Step 7 of 7 · Your HR Function',
+        q: 'What is your primary area of HR work?',
+        hint: 'Surfaces the most relevant tools and frameworks for your daily work.',
+        type: 'cards',
+        options: [
+          {icon:'🔄', title:'HR Generalist / HRBP', sub:'Full spectrum — ER, OD, L&D, comp'},
+          {icon:'📚', title:'Learning & Development', sub:'Training, capability building, L&D ROI'},
+          {icon:'🔍', title:'Talent Acquisition', sub:'Hiring, sourcing, employer branding'},
+          {icon:'💰', title:'Compensation & Benefits', sub:'Comp benchmarking, salary structures'},
+          {icon:'🏗️', title:'Organisation Development', sub:'Culture, change management, OD'},
+          {icon:'⚡', title:'ER Specialist', sub:'Employee relations, grievances, discipline'}
+        ]
+      }
+    ];
+
+    function render() {
+      var container = document.getElementById('step-container');
+      var s = steps[current];
+      var pct = Math.round(((current + 1) / steps.length) * 100);
+      document.getElementById('progress').style.width = pct + '%';
+      document.getElementById('step-count').innerText = 'Step ' + (current + 1) + ' of ' + steps.length;
+
+      var html = '<div class="step-card">';
+      html += '<div class="step-label">' + s.label + '</div>';
+      html += '<div class="step-q">' + s.q + '</div>';
+      html += '<div class="step-hint">' + s.hint + '</div>';
+
+      if (s.type === 'select') {
+        html += '<div class="select-wrap"><select id="step-input" onchange="selectState(this.value)">';
+        html += '<option value="">Select your state...</option>';
+        s.options.forEach(function(o) {
+          var sel = answers[s.id] === o ? 'selected' : '';
+          html += '<option value="' + o + '" ' + sel + '>' + o + '</option>';
+        });
+        html += '</select></div>';
+      } else {
+        html += '<div class="options">';
+        s.options.forEach(function(o, i) {
+          var isSelected = answers[s.id] === o.title;
+          html += '<div class="opt' + (isSelected ? ' selected' : '') + '" onclick="selectOpt(' + i + ')">';
+          html += '<div class="opt-icon">' + o.icon + '</div>';
+          html += '<div class="opt-text"><div class="opt-title">' + o.title + '</div><div class="opt-sub">' + o.sub + '</div></div>';
+          html += '<div class="opt-check"></div>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+
+      html += '<div class="btn-row">';
+      if (current > 0) html += '<button class="btn-back" onclick="goBack()">← Back</button>';
+      html += '<button class="btn-next" id="btn-next" onclick="goNext()" ' + (!answers[s.id] ? 'disabled' : '') + '>';
+      html += current < steps.length - 1 ? 'Continue →' : 'Complete Setup →';
+      html += '</button>';
+      html += '</div>';
+      html += '</div>';
+
+      container.innerHTML = html;
+    }
+
+    function selectState(val) {
+      if (val) {
+        answers[steps[current].id] = val;
+        document.getElementById('btn-next').disabled = false;
+      }
+    }
+
+    function selectOpt(i) {
+      var s = steps[current];
+      answers[s.id] = s.options[i].title;
+      document.querySelectorAll('.opt').forEach(function(el, idx) {
+        el.classList.toggle('selected', idx === i);
+        el.querySelector('.opt-check').innerHTML = idx === i ? '✓' : '';
+        if (idx === i) {
+          el.querySelector('.opt-check').style.background = 'var(--teal)';
+          el.querySelector('.opt-check').style.borderColor = 'var(--teal)';
+          el.querySelector('.opt-check').style.color = '#060B18';
+          el.querySelector('.opt-check').style.fontSize = '11px';
+          el.querySelector('.opt-check').style.display = 'flex';
+          el.querySelector('.opt-check').style.alignItems = 'center';
+          el.querySelector('.opt-check').style.justifyContent = 'center';
+          el.querySelector('.opt-check').style.fontWeight = '700';
+        } else {
+          el.querySelector('.opt-check').style.background = 'transparent';
+          el.querySelector('.opt-check').style.borderColor = 'rgba(255,255,255,0.15)';
+        }
+      });
+      document.getElementById('btn-next').disabled = false;
+    }
+
+    function goNext() {
+      if (!answers[steps[current].id]) return;
+      if (current < steps.length - 1) {
+        current++;
+        render();
+        window.scrollTo(0, 0);
+      } else {
+        showCompletion();
+      }
+    }
+
+    function goBack() {
+      if (current > 0) {
+        current--;
+        render();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function showCompletion() {
+      sessionStorage.setItem('sr_meridian', JSON.stringify(answers));
+      sessionStorage.setItem('sr_onboarded', 'true');
+
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('step-count').innerText = 'Setup complete';
+
+      var container = document.getElementById('step-container');
+      var html = '<div class="completion">';
+      html += '<div class="big-icon">✦</div>';
+      html += '<h2>MERIDIAN is active.</h2>';
+      html += '<p>Every tool in the Situation Room is now calibrated to your exact professional reality. Not generic advice. Your advice.</p>';
+      html += '<div class="meridian-summary">';
+      html += '<div class="m-label">Your MERIDIAN Profile</div>';
+      html += '<div class="m-item">📍 <strong>' + answers.state + '</strong></div>';
+      html += '<div class="m-item">🏢 <strong>' + answers.industry + '</strong> · ' + answers.org_type + '</div>';
+      html += '<div class="m-item">👥 <strong>' + answers.org_size + '</strong></div>';
+      html += '<div class="m-item">🎯 <strong>' + answers.seniority + '</strong></div>';
+      html += '<div class="m-item">⚡ <strong>' + answers.function + '</strong> · Union: ' + answers.union + '</div>';
+      html += '</div>';
+      html += '<button class="btn-enter" onclick="enterSituationRoom()">Enter the Situation Room →</button>';
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function enterSituationRoom() {
+      window.location.href = BASE + 'dashboard.html';
+    }
+
+    render();
+  </script>
+
+</body>
+</html>

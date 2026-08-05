@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Library — Virorah Situation Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#060B18;color:#fff;font-family:'DM Sans',sans-serif;overflow:hidden}
+    body{display:flex}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.55}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .sidebar{width:220px;flex-shrink:0;background:rgba(13,21,38,0.98);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;padding:20px 12px;height:100vh;overflow-y:auto}
+    .logo{display:flex;align-items:center;gap:10px;padding:6px 4px;margin-bottom:28px}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:#00E5C3;box-shadow:0 0 10px #00E5C3;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+    .logo-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+    .logo-name span{color:#00E5C3}
+    .logo-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:2px}
+    .nav-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:4px 10px;margin:16px 0 6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;color:rgba(255,255,255,0.45);font-size:13px;font-family:'DM Sans',sans-serif;margin-bottom:2px}
+    .nav-item:hover{background:rgba(255,255,255,0.04);color:#fff}
+    .nav-item.active{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.25);color:#00E5C3;font-weight:500}
+    .nav-item .icon{font-size:16px;flex-shrink:0}
+    .meridian-chip{margin-top:auto;padding:12px 14px;border-radius:10px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.15)}
+    .meridian-chip .label{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+    .meridian-chip .val{font-size:11px;color:rgba(255,255,255,0.45)}
+    .main{flex:1;overflow-y:auto;height:100vh;padding:28px 32px;background-image:linear-gradient(rgba(0,229,195,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.02) 1px,transparent 1px);background-size:48px 48px}
+    .page-header{margin-bottom:28px;animation:fadeIn .3s ease}
+    .breadcrumb{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.06em;margin-bottom:8px}
+    .breadcrumb a{color:rgba(255,255,255,0.3);text-decoration:none}
+    .breadcrumb a:hover{color:#00E5C3}
+    .page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px}
+    .page-sub{font-size:13px;color:rgba(255,255,255,0.45)}
+
+    /* STATS ROW */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;animation:fadeIn .3s ease}
+    .stat-mini{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 18px}
+    .stat-mini-label{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+    .stat-mini-value{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:#00E5C3}
+
+    /* FILTERS */
+    .filters-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;animation:fadeIn .3s ease .1s both}
+    .filter-btn{padding:8px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;cursor:pointer;font-size:12px;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;transition:all .2s}
+    .filter-btn:hover{border-color:rgba(0,229,195,0.2);color:#fff}
+    .filter-btn.active{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.3);color:#00E5C3;font-weight:500}
+
+    /* CASE CARDS */
+    .cases-grid{display:flex;flex-direction:column;gap:10px;animation:fadeIn .3s ease .15s both}
+    .case-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:18px 20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:16px}
+    .case-card:hover{background:#111E35;border-color:rgba(0,229,195,0.2);transform:translateX(3px)}
+    .case-icon-wrap{width:42px;height:42px;border-radius:10px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .case-info{flex:1;min-width:0}
+    .case-type-tag{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+    .case-title{font-size:14px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+    .case-meta-row{display:flex;align-items:center;gap:10px}
+    .case-date{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3)}
+    .case-status{font-family:'DM Mono',monospace;font-size:9px;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+    .status-open{color:#FFB547;background:rgba(255,181,71,0.1);border:1px solid rgba(255,181,71,0.2)}
+    .status-closed{color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)}
+    .case-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+    .risk-badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 10px;border-radius:4px;font-weight:500}
+    .risk-critical{color:#FF4D6D;background:rgba(255,77,109,0.12);border:1px solid rgba(255,77,109,0.25)}
+    .risk-high{color:#FFB547;background:rgba(255,181,71,0.12);border:1px solid rgba(255,181,71,0.25)}
+    .risk-medium{color:#00E5C3;background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.25)}
+    .risk-low{color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)}
+    .case-chevron{color:rgba(255,255,255,0.2);font-size:16px}
+
+    /* EMPTY STATE */
+    .empty-state{text-align:center;padding:80px 20px;animation:fadeIn .4s ease}
+    .empty-icon{font-size:52px;margin-bottom:20px;opacity:0.4}
+    .empty-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;color:rgba(255,255,255,0.6)}
+    .empty-sub{font-size:13px;color:rgba(255,255,255,0.3);margin-bottom:28px;line-height:1.6;max-width:360px;margin-left:auto;margin-right:auto}
+    .empty-cta{padding:14px 28px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block}
+
+    /* DETAIL PANEL */
+    .detail-overlay{position:fixed;inset:0;background:rgba(6,11,24,0.85);backdrop-filter:blur(4px);z-index:100;display:none;justify-content:flex-end}
+    .detail-panel{width:620px;max-width:100%;background:#0A1220;border-left:1px solid rgba(255,255,255,0.07);height:100%;overflow-y:auto;padding:32px;animation:slideIn .3s ease}
+    @keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+    .detail-close{position:absolute;top:20px;right:24px;background:transparent;border:none;color:rgba(255,255,255,0.4);font-size:20px;cursor:pointer;padding:8px;border-radius:6px;transition:all .2s}
+    .detail-close:hover{color:#fff;background:rgba(255,255,255,0.06)}
+    .detail-type{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+    .detail-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px}
+    .detail-date{font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:24px}
+    .detail-section{margin-bottom:24px}
+    .detail-section-title{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+    .detail-narrative{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px}
+    .pact-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .pact-mini-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px}
+    .pact-mini-dim{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+    .pact-mini-status{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.4}
+    .steps-list{display:flex;flex-direction:column;gap:8px}
+    .step-item{display:flex;gap:10px;align-items:flex-start}
+    .step-num{width:20px;height:20px;border-radius:50%;background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.25);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;flex-shrink:0;margin-top:1px;font-weight:700}
+    .step-text{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5}
+    .retro-section{margin-top:20px}
+    .retro-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+    textarea.retro-input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.6;resize:vertical;min-height:80px;outline:none;transition:border .2s}
+    textarea.retro-input:focus{border-color:rgba(0,229,195,0.3)}
+    textarea.retro-input::placeholder{color:rgba(255,255,255,0.2)}
+    .detail-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+    .btn-sm-primary{padding:10px 20px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;border:none;border-radius:8px;cursor:pointer;transition:opacity .2s}
+    .btn-sm-primary:hover{opacity:.88}
+    .btn-sm-ghost{padding:10px 20px;background:transparent;color:rgba(255,255,255,0.4);font-family:'DM Sans',sans-serif;font-size:13px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;transition:all .2s}
+    .btn-sm-ghost:hover{border-color:rgba(255,255,255,0.15);color:#fff}
+    .btn-sm-danger{padding:10px 20px;background:rgba(255,77,109,0.08);color:#FF4D6D;font-family:'DM Sans',sans-serif;font-size:13px;border:1px solid rgba(255,77,109,0.2);border-radius:8px;cursor:pointer;transition:all .2s}
+    .btn-sm-danger:hover{background:rgba(255,77,109,0.15)}
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
+    @media(max-width:768px){.sidebar{display:none}.main{padding:20px 16px}.stats-row{grid-template-columns:1fr 1fr}.detail-panel{width:100%}}
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <div>
+        <div class="logo-name">Vi<span>R</span>orah</div>
+        <div class="logo-sub">Situation Room</div>
+      </div>
+    </div>
+    <div class="nav-section">Core Tools</div>
+    <a href="dashboard.html" class="nav-item"><span class="icon">⊞</span> Dashboard</a>
+    <a href="er-case-navigator.html" class="nav-item"><span class="icon">⚡</span> ER Case Navigator</a>
+    <a href="conversation-simulator.html" class="nav-item"><span class="icon">🎭</span> Conversation Simulator</a>
+    <a href="hr-data-storyteller.html" class="nav-item"><span class="icon">📊</span> HR Data Storyteller</a>
+    <a href="policy-compass.html" class="nav-item"><span class="icon">🧭</span> Policy Compass</a>
+    <a href="stakeholder-influence.html" class="nav-item"><span class="icon">🎯</span> Stakeholder Influence</a>
+    <div class="nav-section">Intelligence</div>
+    <a href="aria.html" class="nav-item"><span class="icon">✦</span> ARIA</a>
+    <a href="case-library.html" class="nav-item active"><span class="icon">◎</span> Case Library</a>
+    <a href="debrief.html" class="nav-item"><span class="icon">📋</span> The Debrief</a>
+    <div class="nav-section">Account</div>
+    <a href="data-dashboard.html" class="nav-item"><span class="icon">🔒</span> Data & Privacy</a>
+    <a href="index.html" class="nav-item" onclick="sessionStorage.clear()"><span class="icon">↩</span> Sign out</a>
+    <div class="meridian-chip">
+      <div class="label">MERIDIAN Active</div>
+      <div class="val" id="meridian-chip-val">Loading...</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="dashboard.html">Dashboard</a> · Case Library</div>
+      <div class="page-title">◎ Case Library</div>
+      <div class="page-sub">Every case you've navigated. Your permanent professional record.</div>
+    </div>
+
+    <div class="stats-row" id="stats-row">
+      <div class="stat-mini">
+        <div class="stat-mini-label">Total Cases</div>
+        <div class="stat-mini-value" id="stat-total">0</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-label">Open</div>
+        <div class="stat-mini-value" style="color:#FFB547" id="stat-open">0</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-label">Critical / High Risk</div>
+        <div class="stat-mini-value" style="color:#FF4D6D" id="stat-critical">0</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-label">Case Types</div>
+        <div class="stat-mini-value" id="stat-types">0</div>
+      </div>
+    </div>
+
+    <div class="filters-row">
+      <div class="filter-btn active" onclick="filterCases(this,'all')">All cases</div>
+      <div class="filter-btn" onclick="filterCases(this,'open')">Open</div>
+      <div class="filter-btn" onclick="filterCases(this,'Disciplinary')">Disciplinary</div>
+      <div class="filter-btn" onclick="filterCases(this,'Grievance')">Grievance</div>
+      <div class="filter-btn" onclick="filterCases(this,'Harassment Investigation')">Harassment</div>
+      <div class="filter-btn" onclick="filterCases(this,'PIP')">PIP</div>
+      <div class="filter-btn" onclick="filterCases(this,'Termination')">Termination</div>
+      <div class="filter-btn" onclick="filterCases(this,'Counter-offer')">Counter-offer</div>
+    </div>
+
+    <div class="cases-grid" id="cases-grid"></div>
+
+  </div>
+
+  <!-- DETAIL OVERLAY -->
+  <div class="detail-overlay" id="detail-overlay" onclick="closeDetail(event)">
+    <div class="detail-panel" id="detail-panel">
+      <button class="detail-close" onclick="closeDetailBtn()">✕</button>
+      <div class="detail-type" id="detail-type">—</div>
+      <div class="detail-title" id="detail-title">—</div>
+      <div class="detail-date" id="detail-date">—</div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">Situation summary</div>
+        <div class="detail-narrative" id="detail-narrative">—</div>
+      </div>
+
+      <div class="detail-section" id="pact-section" style="display:none">
+        <div class="detail-section-title">PACT Assessment</div>
+        <div class="pact-mini-grid" id="pact-mini-grid"></div>
+      </div>
+
+      <div class="detail-section" id="steps-section" style="display:none">
+        <div class="detail-section-title">Recommended next steps</div>
+        <div class="steps-list" id="steps-list"></div>
+      </div>
+
+      <div class="retro-section">
+        <div class="retro-label">What I'd do differently</div>
+        <textarea class="retro-input" id="retro-input" placeholder="Add a retrospective note — what worked, what you'd change, what you learned..."></textarea>
+      </div>
+
+      <div class="detail-actions">
+        <button class="btn-sm-primary" onclick="saveRetro()">Save note</button>
+        <button class="btn-sm-ghost" onclick="window.location.href='er-case-navigator.html'">Open new case</button>
+        <button class="btn-sm-danger" onclick="deleteCase()">Delete case</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
+    var allCases = [];
+    var currentFilter = 'all';
+    var selectedCaseId = null;
+
+    if (sessionStorage.getItem('sr_access') !== 'true') {
+      window.location.href = BASE + 'index.html';
+    }
+
+    var meridianRaw = sessionStorage.getItem('sr_meridian');
+    var meridian = meridianRaw ? JSON.parse(meridianRaw) : {};
+    document.getElementById('meridian-chip-val').innerText =
+      (meridian.state || 'Not set') + ' · ' + (meridian.industry || 'Not set');
+
+    var CASE_ICONS = {
+      'Disciplinary': '⚖️',
+      'Grievance': '📢',
+      'PIP': '📈',
+      'Termination': '🚪',
+      'Redundancy': '🔄',
+      'Harassment Investigation': '🛡️',
+      'Absence Management': '📅',
+      'Counter-offer': '💰'
+    };
+
+    function loadCases() {
+      var raw = sessionStorage.getItem('sr_cases');
+      allCases = raw ? JSON.parse(raw) : [];
+      updateStats();
+      renderCases();
+    }
+
+    function updateStats() {
+      document.getElementById('stat-total').innerText = allCases.length;
+      document.getElementById('stat-open').innerText = allCases.filter(function(c){ return c.status === 'Open'; }).length;
+      document.getElementById('stat-critical').innerText = allCases.filter(function(c){
+        return c.result && (c.result.overallRisk === 'Critical' || c.result.overallRisk === 'High');
+      }).length;
+      var types = new Set(allCases.map(function(c){ return c.type; }));
+      document.getElementById('stat-types').innerText = types.size;
+    }
+
+    function filterCases(el, filter) {
+      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      el.classList.add('active');
+      currentFilter = filter;
+      renderCases();
+    }
+
+    function renderCases() {
+      var grid = document.getElementById('cases-grid');
+      var filtered = allCases.filter(function(c){
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'open') return c.status === 'Open';
+        return c.type === currentFilter;
+      });
+
+      filtered.sort(function(a,b){ return b.id - a.id; });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state">' +
+          '<div class="empty-icon">◎</div>' +
+          '<div class="empty-title">' + (currentFilter === 'all' ? 'No cases yet' : 'No ' + currentFilter + ' cases') + '</div>' +
+          '<div class="empty-sub">' + (currentFilter === 'all'
+            ? 'Navigate your first ER case and it will appear here. Your case library builds over time — it\'s your permanent professional record.'
+            : 'No cases of this type saved yet. Run a case through the ER Case Navigator to add one.') +
+          '</div>' +
+          '<a href="er-case-navigator.html" class="empty-cta">Open ER Case Navigator →</a>' +
+          '</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(function(c){
+        var risk = c.result ? c.result.overallRisk : 'Unknown';
+        var riskClass = 'risk-' + (risk || 'medium').toLowerCase().replace(' ','');
+        var icon = CASE_ICONS[c.type] || '⚡';
+        var statusClass = c.status === 'Open' ? 'status-open' : 'status-closed';
+        var retroNote = c.retroNote ? ' · <span style="color:#00E5C3;font-size:9px">✎ note</span>' : '';
+        return '<div class="case-card" onclick="openDetail(' + c.id + ')">' +
+          '<div class="case-icon-wrap">' + icon + '</div>' +
+          '<div class="case-info">' +
+          '<div class="case-type-tag">' + (c.type || 'Unknown') + '</div>' +
+          '<div class="case-title">' + (c.narrative || 'Case ' + c.id) + '</div>' +
+          '<div class="case-meta-row">' +
+          '<span class="case-date">' + (c.date || 'Today') + '</span>' +
+          '<span class="case-status ' + statusClass + '">' + (c.status || 'Open') + '</span>' +
+          retroNote +
+          '</div>' +
+          '</div>' +
+          '<div class="case-right">' +
+          '<span class="risk-badge ' + riskClass + '">' + risk + '</span>' +
+          '<span class="case-chevron">›</span>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    function openDetail(id) {
+      var c = allCases.find(function(x){ return x.id === id; });
+      if (!c) return;
+      selectedCaseId = id;
+
+      document.getElementById('detail-type').innerText = c.type || 'Case';
+      document.getElementById('detail-title').innerText = c.type + ' — ' + (c.date || 'Today');
+      document.getElementById('detail-date').innerText = 'Saved on ' + (c.date || 'today') + ' · Status: ' + (c.status || 'Open');
+      document.getElementById('detail-narrative').innerText = c.narrative || 'No summary available.';
+      document.getElementById('retro-input').value = c.retroNote || '';
+
+      var pactSection = document.getElementById('pact-section');
+      var pactGrid = document.getElementById('pact-mini-grid');
+      if (c.result && c.result.pact) {
+        pactSection.style.display = 'block';
+        var p = c.result.pact;
+        pactGrid.innerHTML = [
+          {dim:'P — Process', data:p.process},
+          {dim:'A — Accountability', data:p.accountability},
+          {dim:'C — Consequence', data:p.consequence},
+          {dim:'T — Trust', data:p.trust}
+        ].map(function(item){
+          if (!item.data) return '';
+          return '<div class="pact-mini-card">' +
+            '<div class="pact-mini-dim">' + item.dim + ' <span style="color:#FFB547;font-size:9px">' + (item.data.score||'') + '</span></div>' +
+            '<div class="pact-mini-status">' + (item.data.status || '—') + '</div>' +
+            '</div>';
+        }).join('');
+      } else {
+        pactSection.style.display = 'none';
+      }
+
+      var stepsSection = document.getElementById('steps-section');
+      var stepsList = document.getElementById('steps-list');
+      if (c.result && c.result.nextSteps && c.result.nextSteps.length > 0) {
+        stepsSection.style.display = 'block';
+        stepsList.innerHTML = c.result.nextSteps.map(function(s,i){
+          return '<div class="step-item"><div class="step-num">' + (i+1) + '</div><div class="step-text">' + s + '</div></div>';
+        }).join('');
+      } else {
+        stepsSection.style.display = 'none';
+      }
+
+      document.getElementById('detail-overlay').style.display = 'flex';
+    }
+
+    function closeDetail(e) {
+      if (e.target === document.getElementById('detail-overlay')) closeDetailBtn();
+    }
+
+    function closeDetailBtn() {
+      document.getElementById('detail-overlay').style.display = 'none';
+      selectedCaseId = null;
+    }
+
+    function saveRetro() {
+      if (!selectedCaseId) return;
+      var note = document.getElementById('retro-input').value.trim();
+      allCases = allCases.map(function(c){
+        if (c.id === selectedCaseId) c.retroNote = note;
+        return c;
+      });
+      sessionStorage.setItem('sr_cases', JSON.stringify(allCases));
+      renderCases();
+      var btn = event.target;
+      btn.innerText = 'Saved ✓';
+      btn.style.background = 'rgba(0,229,195,0.3)';
+      setTimeout(function(){ btn.innerText = 'Save note'; btn.style.background = ''; }, 2000);
+    }
+
+    function deleteCase() {
+      if (!selectedCaseId) return;
+      if (!confirm('Delete this case from your library? This cannot be undone.')) return;
+      allCases = allCases.filter(function(c){ return c.id !== selectedCaseId; });
+      sessionStorage.setItem('sr_cases', JSON.stringify(allCases));
+      closeDetailBtn();
+      updateStats();
+      renderCases();
+    }
+
+    loadCases();
+  </script>
+
+</body>
+</html>

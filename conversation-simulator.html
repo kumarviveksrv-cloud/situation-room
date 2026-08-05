@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conversation Simulator — Virorah Situation Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#060B18;color:#fff;font-family:'DM Sans',sans-serif;overflow:hidden}
+    body{display:flex}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.55}}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .sidebar{width:220px;flex-shrink:0;background:rgba(13,21,38,0.98);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;padding:20px 12px;height:100vh;overflow-y:auto}
+    .logo{display:flex;align-items:center;gap:10px;padding:6px 4px;margin-bottom:28px}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:#00E5C3;box-shadow:0 0 10px #00E5C3;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+    .logo-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+    .logo-name span{color:#00E5C3}
+    .logo-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:2px}
+    .nav-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:4px 10px;margin:16px 0 6px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;color:rgba(255,255,255,0.45);font-size:13px;font-family:'DM Sans',sans-serif;margin-bottom:2px}
+    .nav-item:hover{background:rgba(255,255,255,0.04);color:#fff}
+    .nav-item.active{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.25);color:#00E5C3;font-weight:500}
+    .nav-item .icon{font-size:16px;flex-shrink:0}
+    .meridian-chip{margin-top:auto;padding:12px 14px;border-radius:10px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.15)}
+    .meridian-chip .label{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+    .meridian-chip .val{font-size:11px;color:rgba(255,255,255,0.45)}
+    .main{flex:1;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+    .page-header{padding:24px 32px 0;flex-shrink:0;animation:fadeIn .3s ease}
+    .breadcrumb{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.06em;margin-bottom:8px}
+    .breadcrumb a{color:rgba(255,255,255,0.3);text-decoration:none}
+    .breadcrumb a:hover{color:#00E5C3}
+    .page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px}
+    .page-sub{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:20px}
+
+    /* SETUP VIEW */
+    .setup-scroll{flex:1;overflow-y:auto;padding:0 32px 32px}
+    .intake-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;margin-bottom:16px;animation:fadeIn .3s ease}
+    .form-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;display:block}
+    .form-section{margin-bottom:22px}
+    .roles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .role-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 10px;cursor:pointer;transition:all .2s;text-align:center;color:rgba(255,255,255,0.55);font-size:12px;font-family:'DM Sans',sans-serif}
+    .role-btn:hover{border-color:rgba(0,229,195,0.25);color:#fff}
+    .role-btn.selected{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.35);color:#00E5C3;font-weight:500}
+    .role-icon{font-size:18px;display:block;margin-bottom:4px}
+    textarea{width:100%;padding:14px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;resize:vertical;outline:none;transition:border .2s}
+    textarea:focus{border-color:rgba(0,229,195,0.35)}
+    textarea::placeholder{color:rgba(255,255,255,0.2)}
+    .difficulty-wrap{display:flex;gap:10px}
+    .diff-btn{flex:1;padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;cursor:pointer;transition:all .2s;text-align:center;font-size:13px;color:rgba(255,255,255,0.55);font-family:'DM Sans',sans-serif}
+    .diff-btn:hover{border-color:rgba(0,229,195,0.2)}
+    .diff-btn.selected{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.35);color:#00E5C3;font-weight:500}
+    .diff-standard.selected{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.35);color:#00E5C3}
+    .diff-challenging.selected{background:rgba(255,77,109,0.08);border-color:rgba(255,77,109,0.3);color:#FF4D6D}
+    .submit-btn{width:100%;padding:16px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:12px;cursor:pointer;transition:opacity .2s}
+    .submit-btn:hover{opacity:.88}
+    .submit-btn:disabled{opacity:.3;cursor:not-allowed}
+
+    /* CHAT VIEW */
+    .chat-header{padding:16px 32px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+    .chat-header-left .role-tag{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+    .chat-header-left .role-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+    .chat-header-right{display:flex;gap:10px}
+    .hdr-btn{padding:8px 16px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .hdr-btn-outline{background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.1)}
+    .hdr-btn-outline:hover{border-color:rgba(255,255,255,0.2);color:#fff}
+    .hdr-btn-danger{background:rgba(255,77,109,0.08);color:#FF4D6D;border:1px solid rgba(255,77,109,0.2)}
+    .hdr-btn-danger:hover{background:rgba(255,77,109,0.15)}
+    .messages{flex:1;overflow-y:auto;padding:24px 32px;display:flex;flex-direction:column;gap:16px}
+    .msg{display:flex;gap:12px;animation:msgIn .25s ease}
+    .msg-them{justify-content:flex-start}
+    .msg-you{justify-content:flex-end}
+    .msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+    .avatar-them{background:rgba(255,77,109,0.15);border:1px solid rgba(255,77,109,0.25)}
+    .avatar-you{background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.2)}
+    .msg-bubble{max-width:68%;padding:13px 16px;border-radius:14px;font-size:13px;line-height:1.6}
+    .bubble-them{background:#0D1526;border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.8);border-radius:4px 14px 14px 14px}
+    .bubble-you{background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.2);color:#fff;border-radius:14px 4px 14px 14px}
+    .msg-label{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+    .typing{display:flex;gap:4px;align-items:center;padding:4px 0}
+    .typing span{width:6px;height:6px;border-radius:50%;background:#00E5C3;animation:pulse .8s ease-in-out infinite}
+    .typing span:nth-child(2){animation-delay:.15s}
+    .typing span:nth-child(3){animation-delay:.3s}
+    .chat-input-wrap{padding:16px 32px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:12px;flex-shrink:0}
+    .chat-input{flex:1;padding:14px 16px;background:#0D1526;border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;resize:none;line-height:1.5;max-height:120px;transition:border .2s}
+    .chat-input:focus{border-color:rgba(0,229,195,0.35)}
+    .chat-input::placeholder{color:rgba(255,255,255,0.2)}
+    .send-btn{padding:12px 20px;background:#00E5C3;color:#060B18;border:none;border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;transition:opacity .2s;flex-shrink:0}
+    .send-btn:hover{opacity:.88}
+    .send-btn:disabled{opacity:.3;cursor:not-allowed}
+    .exchange-count{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25);text-align:center;padding:4px 0;flex-shrink:0}
+
+    /* DEBRIEF VIEW */
+    .debrief-scroll{flex:1;overflow-y:auto;padding:0 32px 32px}
+    .debrief-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;margin-bottom:16px;animation:fadeIn .4s ease}
+    .debrief-section-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .debrief-item{display:flex;gap:10px;margin-bottom:12px}
+    .debrief-dot{width:6px;height:6px;border-radius:50%;background:#00E5C3;margin-top:6px;flex-shrink:0}
+    .debrief-item-text{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6}
+    .highlight-card{background:linear-gradient(135deg,rgba(0,229,195,0.08),rgba(0,229,195,0.03));border:1px solid rgba(0,229,195,0.2);border-radius:12px;padding:20px;margin-bottom:16px}
+    .highlight-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+    .highlight-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6}
+    .prep-brief{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:22px;margin-bottom:24px}
+    .prep-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+    .prep-text{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8;white-space:pre-wrap}
+    .action-row{display:flex;gap:12px;margin-top:8px}
+    .btn-primary{padding:14px 28px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s}
+    .btn-primary:hover{opacity:.88}
+    .btn-ghost{padding:14px 28px;background:transparent;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;font-size:14px;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;transition:all .2s}
+    .btn-ghost:hover{border-color:rgba(255,255,255,0.15);color:#fff}
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
+    @media(max-width:768px){.sidebar{display:none}.roles-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <div>
+        <div class="logo-name">Vi<span>R</span>orah</div>
+        <div class="logo-sub">Situation Room</div>
+      </div>
+    </div>
+    <div class="nav-section">Core Tools</div>
+    <a href="dashboard.html" class="nav-item"><span class="icon">⊞</span> Dashboard</a>
+    <a href="er-case-navigator.html" class="nav-item"><span class="icon">⚡</span> ER Case Navigator</a>
+    <a href="conversation-simulator.html" class="nav-item active"><span class="icon">🎭</span> Conversation Simulator</a>
+    <a href="hr-data-storyteller.html" class="nav-item"><span class="icon">📊</span> HR Data Storyteller</a>
+    <a href="policy-compass.html" class="nav-item"><span class="icon">🧭</span> Policy Compass</a>
+    <a href="stakeholder-influence.html" class="nav-item"><span class="icon">🎯</span> Stakeholder Influence</a>
+    <div class="nav-section">Intelligence</div>
+    <a href="aria.html" class="nav-item"><span class="icon">✦</span> ARIA</a>
+    <a href="case-library.html" class="nav-item"><span class="icon">◎</span> Case Library</a>
+    <a href="debrief.html" class="nav-item"><span class="icon">📋</span> The Debrief</a>
+    <div class="nav-section">Account</div>
+    <a href="data-dashboard.html" class="nav-item"><span class="icon">🔒</span> Data & Privacy</a>
+    <a href="index.html" class="nav-item" onclick="sessionStorage.clear()"><span class="icon">↩</span> Sign out</a>
+    <div class="meridian-chip">
+      <div class="label">MERIDIAN Active</div>
+      <div class="val" id="meridian-chip-val">Loading...</div>
+    </div>
+  </div>
+
+  <div class="main" id="main-panel">
+
+    <!-- SETUP VIEW -->
+    <div id="setup-view" style="display:flex;flex-direction:column;height:100%">
+      <div class="page-header">
+        <div class="breadcrumb"><a href="dashboard.html">Dashboard</a> · Conversation Simulator</div>
+        <div class="page-title">🎭 Conversation Simulator</div>
+        <div class="page-sub">Practice the exact conversation you need to have tomorrow. Safe space. Real stakes.</div>
+      </div>
+      <div class="setup-scroll">
+        <div class="intake-card">
+          <div class="form-section">
+            <label class="form-label">Who are you speaking with?</label>
+            <div class="roles-grid">
+              <div class="role-btn" onclick="selectRole(this,'Direct report')"><span class="role-icon">👤</span>Direct report</div>
+              <div class="role-btn" onclick="selectRole(this,'Your manager')"><span class="role-icon">👆</span>Your manager</div>
+              <div class="role-btn" onclick="selectRole(this,'Skip-level leader')"><span class="role-icon">🏢</span>Skip-level leader</div>
+              <div class="role-btn" onclick="selectRole(this,'Peer / colleague')"><span class="role-icon">🤝</span>Peer / colleague</div>
+              <div class="role-btn" onclick="selectRole(this,'CHRO / HR Head')"><span class="role-icon">👑</span>CHRO / HR Head</div>
+              <div class="role-btn" onclick="selectRole(this,'CFO / Finance head')"><span class="role-icon">💰</span>CFO / Finance head</div>
+              <div class="role-btn" onclick="selectRole(this,'CEO / Founder')"><span class="role-icon">⚡</span>CEO / Founder</div>
+              <div class="role-btn" onclick="selectRole(this,'Employee on PIP')"><span class="role-icon">📋</span>Employee on PIP</div>
+              <div class="role-btn" onclick="selectRole(this,'Legal counsel')"><span class="role-icon">⚖️</span>Legal counsel</div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <label class="form-label">What's the conversation about?</label>
+            <textarea id="scenario" placeholder="Describe the situation. What happened? What needs to be addressed? What's the history between you?" rows="4" minlength="20"></textarea>
+          </div>
+
+          <div class="form-section">
+            <label class="form-label">What does success look like for you?</label>
+            <textarea id="objective" placeholder="What do you want to achieve by the end of this conversation? Be specific." rows="3"></textarea>
+          </div>
+
+          <div class="form-section">
+            <label class="form-label">Difficulty level</label>
+            <div class="difficulty-wrap">
+              <div class="diff-btn diff-standard" onclick="selectDiff(this,'standard')">
+                <div style="font-size:18px;margin-bottom:4px">😐</div>
+                <div style="font-weight:600">Realistic</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px">Pushes back but stays professional</div>
+              </div>
+              <div class="diff-btn diff-challenging" onclick="selectDiff(this,'challenging')">
+                <div style="font-size:18px;margin-bottom:4px">😤</div>
+                <div style="font-weight:600">Challenging</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px">Defensive, emotional, resistant</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="submit-btn" id="start-btn" onclick="startSimulation()" disabled>Begin Practice →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT VIEW -->
+    <div id="chat-view" style="display:none;flex-direction:column;height:100%">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div class="role-tag">You are speaking with</div>
+          <div class="role-name" id="chat-role-name">—</div>
+        </div>
+        <div class="chat-header-right">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.25);display:flex;align-items:center;gap:6px">
+            <span id="exchange-indicator">0 / 5 exchanges</span>
+          </div>
+          <button class="hdr-btn hdr-btn-outline" onclick="endPractice()">End Practice & Get Debrief</button>
+        </div>
+      </div>
+
+      <div class="messages" id="messages-container"></div>
+
+      <div class="chat-input-wrap">
+        <textarea class="chat-input" id="chat-input" placeholder="Type your response..." rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">Send →</button>
+      </div>
+    </div>
+
+    <!-- LOADING VIEW -->
+    <div id="loading-view" style="display:none;flex-direction:column;height:100%;justify-content:center;align-items:center">
+      <div style="width:64px;height:64px;margin-bottom:24px">
+        <svg width="64" height="64" viewBox="0 0 64 64" style="animation:spin 2s linear infinite">
+          <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(0,229,195,0.15)" stroke-width="2"/>
+          <circle cx="32" cy="32" r="28" fill="none" stroke="#00E5C3" stroke-width="2" stroke-dasharray="44 132" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div id="loading-text" style="font-family:'DM Mono',monospace;font-size:12px;color:#00E5C3;letter-spacing:.08em">PREPARING YOUR PRACTICE...</div>
+    </div>
+
+    <!-- DEBRIEF VIEW -->
+    <div id="debrief-view" style="display:none;flex-direction:column;height:100%">
+      <div class="page-header">
+        <div class="breadcrumb"><a href="dashboard.html">Dashboard</a> · <a href="conversation-simulator.html">Conversation Simulator</a> · Coaching Debrief</div>
+        <div class="page-title">Coaching Debrief</div>
+        <div class="page-sub">Here's what happened in your practice session.</div>
+      </div>
+      <div class="debrief-scroll">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="debrief-card">
+            <div class="debrief-section-title">✅ What worked</div>
+            <div id="what-worked"></div>
+          </div>
+          <div class="debrief-card">
+            <div class="debrief-section-title">🎯 What to improve</div>
+            <div id="what-improve"></div>
+          </div>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-label">The moment that would have changed everything</div>
+          <div class="highlight-text" id="inflection-point">—</div>
+        </div>
+
+        <div class="highlight-card" style="background:linear-gradient(135deg,rgba(255,181,71,0.07),rgba(255,181,71,0.02));border-color:rgba(255,181,71,0.2)">
+          <div class="highlight-label" style="color:#FFB547">One technique to try in the real conversation</div>
+          <div class="highlight-text" id="technique">—</div>
+        </div>
+
+        <div class="prep-brief">
+          <div class="prep-label">Preparation Brief — Read this before the real conversation</div>
+          <div class="prep-text" id="prep-brief-text">—</div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-primary" onclick="practiceAgain()">Practice Again</button>
+          <button class="btn-ghost" onclick="newScenario()">New Scenario</button>
+          <button class="btn-ghost" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    var WORKER = 'https://situation-room-api.kumarvivek-srv.workers.dev';
+    var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
+    var selectedRole = '';
+    var selectedDiff = 'standard';
+    var conversationHistory = [];
+    var exchangeCount = 0;
+    var MAX_EXCHANGES = 8;
+    var currentScenario = '';
+    var currentObjective = '';
+
+    if (sessionStorage.getItem('sr_access') !== 'true') {
+      window.location.href = BASE + 'index.html';
+    }
+
+    var meridianRaw = sessionStorage.getItem('sr_meridian');
+    var meridian = meridianRaw ? JSON.parse(meridianRaw) : {};
+    document.getElementById('meridian-chip-val').innerText =
+      (meridian.state || 'Not set') + ' · ' + (meridian.industry || 'Not set');
+
+    var practiceCtx = sessionStorage.getItem('sr_practice_context');
+    if (practiceCtx) {
+      try {
+        var ctx = JSON.parse(practiceCtx);
+        if (ctx.narrative) document.getElementById('scenario').value = 'Context from ER case: ' + ctx.narrative;
+        sessionStorage.removeItem('sr_practice_context');
+      } catch(e) {}
+    }
+
+    document.getElementById('scenario').addEventListener('input', checkStart);
+    document.getElementById('objective').addEventListener('input', checkStart);
+
+    function selectRole(el, role) {
+      document.querySelectorAll('.role-btn').forEach(function(b){ b.classList.remove('selected'); });
+      el.classList.add('selected');
+      selectedRole = role;
+      checkStart();
+    }
+
+    function selectDiff(el, diff) {
+      document.querySelectorAll('.diff-btn').forEach(function(b){ b.classList.remove('selected'); });
+      el.classList.add('selected');
+      selectedDiff = diff;
+    }
+
+    function checkStart() {
+      var s = document.getElementById('scenario').value.trim();
+      var o = document.getElementById('objective').value.trim();
+      document.getElementById('start-btn').disabled = !(selectedRole && s.length > 20 && o.length > 10);
+    }
+
+    function showView(view) {
+      ['setup-view','chat-view','loading-view','debrief-view'].forEach(function(v){
+        var el = document.getElementById(v);
+        el.style.display = 'none';
+      });
+      var target = document.getElementById(view);
+      target.style.display = 'flex';
+    }
+
+    function addMessage(role, text, isTyping) {
+      var container = document.getElementById('messages-container');
+      var div = document.createElement('div');
+      div.className = 'msg ' + (role === 'you' ? 'msg-you' : 'msg-them');
+      var avatar = role === 'you'
+        ? '<div class="msg-avatar avatar-you">🧑</div>'
+        : '<div class="msg-avatar avatar-them">🎭</div>';
+      var label = role === 'you' ? 'You' : selectedRole;
+
+      if (isTyping) {
+        div.id = 'typing-indicator';
+        div.innerHTML = (role !== 'you' ? avatar : '') +
+          '<div><div class="msg-label">' + label + '</div>' +
+          '<div class="msg-bubble bubble-them"><div class="typing"><span></span><span></span><span></span></div></div></div>' +
+          (role === 'you' ? avatar : '');
+      } else {
+        div.innerHTML = (role !== 'you' ? avatar : '') +
+          '<div><div class="msg-label">' + label + '</div>' +
+          '<div class="msg-bubble ' + (role === 'you' ? 'bubble-you' : 'bubble-them') + '">' + text + '</div></div>' +
+          (role === 'you' ? avatar : '');
+      }
+
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      return div;
+    }
+
+    function removeTyping() {
+      var t = document.getElementById('typing-indicator');
+      if (t) t.remove();
+    }
+
+    function updateExchangeCounter() {
+      document.getElementById('exchange-indicator').innerText = exchangeCount + ' / ' + MAX_EXCHANGES + ' exchanges';
+    }
+
+    async function startSimulation() {
+      currentScenario = document.getElementById('scenario').value.trim();
+      currentObjective = document.getElementById('objective').value.trim();
+      document.getElementById('chat-role-name').innerText = selectedRole;
+      conversationHistory = [];
+      exchangeCount = 0;
+      showView('loading-view');
+      document.getElementById('loading-text').innerText = 'SETTING THE SCENE...';
+
+      var openingMessage = { role: 'user', content: '[START] Open the conversation naturally as the ' + selectedRole + '. One or two sentences. Do not wait for me to start.' };
+      conversationHistory.push(openingMessage);
+
+      try {
+        var res = await fetch(WORKER, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            tool: 'practice',
+            scenario: currentScenario,
+            objective: currentObjective,
+            stakeholderRole: selectedRole,
+            difficulty: selectedDiff,
+            history: conversationHistory,
+            meridian: meridian
+          })
+        });
+        var data = await res.json();
+        if (data.success) {
+          var response = data.data.response;
+          conversationHistory.push({ role: 'assistant', content: response });
+          showView('chat-view');
+          document.getElementById('messages-container').innerHTML = '';
+          addMessage('them', response);
+          updateExchangeCounter();
+        } else {
+          alert('Error starting simulation: ' + (data.error || 'Unknown'));
+          showView('setup-view');
+        }
+      } catch(err) {
+        alert('Connection error: ' + err.message);
+        showView('setup-view');
+      }
+    }
+
+    async function sendMessage() {
+      var input = document.getElementById('chat-input');
+      var text = input.value.trim();
+      if (!text) return;
+      if (exchangeCount >= MAX_EXCHANGES) {
+        endPractice();
+        return;
+      }
+
+      input.value = '';
+      input.style.height = 'auto';
+      document.getElementById('send-btn').disabled = true;
+
+      addMessage('you', text);
+      conversationHistory.push({ role: 'user', content: text });
+      exchangeCount++;
+      updateExchangeCounter();
+
+      addMessage('them', '', true);
+
+      try {
+        var res = await fetch(WORKER, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            tool: 'practice',
+            scenario: currentScenario,
+            objective: currentObjective,
+            stakeholderRole: selectedRole,
+            difficulty: selectedDiff,
+            history: conversationHistory,
+            meridian: meridian
+          })
+        });
+        var data = await res.json();
+        removeTyping();
+        if (data.success) {
+          var response = data.data.response;
+          conversationHistory.push({ role: 'assistant', content: response });
+          addMessage('them', response);
+
+          if (exchangeCount >= MAX_EXCHANGES) {
+            setTimeout(function(){
+              var info = document.createElement('div');
+              info.style.cssText = 'text-align:center;font-family:DM Mono,monospace;font-size:11px;color:rgba(255,255,255,0.3);padding:8px 0';
+              info.innerText = 'Maximum exchanges reached. Click "End Practice" to get your debrief.';
+              document.getElementById('messages-container').appendChild(info);
+              document.getElementById('messages-container').scrollTop = 999999;
+            }, 500);
+          }
+        } else {
+          alert('Error: ' + (data.error || 'Unknown'));
+        }
+      } catch(err) {
+        removeTyping();
+        alert('Connection error: ' + err.message);
+      }
+
+      document.getElementById('send-btn').disabled = false;
+      input.focus();
+    }
+
+    async function endPractice() {
+      showView('loading-view');
+      document.getElementById('loading-text').innerText = 'GENERATING YOUR DEBRIEF...';
+
+      try {
+        var res = await fetch(WORKER, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            tool: 'practice',
+            scenario: currentScenario,
+            objective: currentObjective,
+            stakeholderRole: selectedRole,
+            difficulty: selectedDiff,
+            history: conversationHistory,
+            meridian: meridian,
+            requestDebrief: true
+          })
+        });
+        var data = await res.json();
+        if (data.success) {
+          renderDebrief(data.data);
+        } else {
+          alert('Debrief error: ' + (data.error || 'Unknown'));
+          showView('chat-view');
+        }
+      } catch(err) {
+        alert('Connection error: ' + err.message);
+        showView('chat-view');
+      }
+    }
+
+    function renderDebrief(r) {
+      var workedHtml = (r.whatWorked || []).map(function(w){
+        return '<div class="debrief-item"><div class="debrief-dot"></div><div class="debrief-item-text">' + w + '</div></div>';
+      }).join('');
+      document.getElementById('what-worked').innerHTML = workedHtml;
+
+      var improveHtml = (r.whatToImprove || []).map(function(w){
+        return '<div class="debrief-item"><div class="debrief-dot" style="background:#FFB547"></div><div class="debrief-item-text">' + w + '</div></div>';
+      }).join('');
+      document.getElementById('what-improve').innerHTML = improveHtml;
+
+      document.getElementById('inflection-point').innerText = r.inflectionPoint || '—';
+      document.getElementById('technique').innerText = r.techniqueForNextTime || '—';
+      document.getElementById('prep-brief-text').innerText = r.preparationBrief || '—';
+
+      showView('debrief-view');
+    }
+
+    function practiceAgain() {
+      conversationHistory = [];
+      exchangeCount = 0;
+      startSimulation();
+    }
+
+    function newScenario() {
+      document.getElementById('scenario').value = '';
+      document.getElementById('objective').value = '';
+      document.querySelectorAll('.role-btn').forEach(function(b){ b.classList.remove('selected'); });
+      selectedRole = '';
+      document.getElementById('start-btn').disabled = true;
+      document.getElementById('messages-container').innerHTML = '';
+      showView('setup-view');
+    }
+  </script>
+
+</body>
+</html>

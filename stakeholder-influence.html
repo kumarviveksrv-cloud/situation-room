@@ -221,6 +221,39 @@
           </div>
         </div>
 
+        <!-- HUMACITY FINANCIAL INTELLIGENCE -->
+        <div class="humacity-card" id="humacity-card" style="display:none">
+          <div class="humacity-header">
+            <div class="humacity-badge">HUMACITY</div>
+            <div class="humacity-title">Financial Intelligence for This Conversation</div>
+          </div>
+          <div class="humacity-exposure">
+            <div class="humacity-exposure-label">The Number to Lead With</div>
+            <div class="humacity-exposure-value" id="h-financial-argument"></div>
+          </div>
+          <div class="humacity-ledger">
+            <div class="humacity-ledger-label">Talent Premium Angle</div>
+            <div id="h-talent-premium"></div>
+          </div>
+          <div class="humacity-row">
+            <div class="humacity-block">
+              <div class="humacity-block-label red">Cost of No</div>
+              <div class="humacity-block-text" id="h-cost-of-no"></div>
+            </div>
+            <div class="humacity-block">
+              <div class="humacity-block-label green">Human P&amp;L Entry</div>
+              <div class="humacity-block-text" id="h-value-ledger"></div>
+            </div>
+          </div>
+          <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+            <div style="font-size:11px;color:rgba(255,255,255,0.3);line-height:1.6;max-width:520px">
+              <span style="color:#00E5C3;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase">What is Humacity?</span><br>
+              Humacity is the philosophy that every people decision has a financial dimension. It translates HR outcomes into four asset classes: Trust Capital, Culture Yield, Signal Intelligence, and Belonging Premium, creating the organisation's Human P&amp;L. HR is not a support function. It is a P&amp;L operator.
+            </div>
+            <a href="https://humacity.com" target="_blank" style="font-family:'DM Mono',monospace;font-size:11px;color:#00E5C3;text-decoration:none;border:1px solid rgba(0,229,195,0.25);padding:8px 14px;border-radius:6px;white-space:nowrap;flex-shrink:0;transition:all .2s">Explore Humacity &rarr;</a>
+          </div>
+        </div>
+
         <div class="action-row">
           <button class="btn-primary" onclick="practiceConversation()">Practice This Conversation →</button>
           <button class="btn-secondary" onclick="buildAnother()">Build Another Stack</button>
@@ -339,11 +372,20 @@
       document.getElementById('success-def').innerText = r.successDefinition || '—';
       document.getElementById('decision-runway').innerText = (r.stack && r.stack.decisionRunway) || '—';
 
-      sessionStorage.setItem('sr_influence_context', JSON.stringify({
+     sessionStorage.setItem('sr_influence_context', JSON.stringify({
         objective: objective,
         stakeholder: stakeholder,
         motivator: selectedMotivator
       }));
+
+      if (r.humacity) {
+        document.getElementById('humacity-card').style.display = 'block';
+        var h = r.humacity;
+        document.getElementById('h-financial-argument').innerText = h.financialArgument || '';
+        document.getElementById('h-talent-premium').innerText = h.talentPremiumAngle || '';
+        document.getElementById('h-cost-of-no').innerText = h.costOfNo || '';
+        document.getElementById('h-value-ledger').innerText = h.valueLedgerEntry || '';
+      }
 
       showView('output-view');
 

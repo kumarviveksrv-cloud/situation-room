@@ -66,6 +66,8 @@
 
   <script>
     var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
+    var WORKER = 'https://situation-room-api.kumarvivek-srv.workers.dev';
+
     if (sessionStorage.getItem('sr_access') !== 'true') {
       window.location.href = BASE + 'index.html';
     }
@@ -253,9 +255,27 @@
       html += '<div class="m-item">🎯 <strong>'+answers.seniority+'</strong></div>';
       html += '<div class="m-item">⚡ <strong>'+answers.function+'</strong> · Union: '+answers.union+'</div>';
       html += '</div>';
-      html += '<button class="btn-enter" onclick="window.location.href=BASE+\'dashboard.html\'">Enter the Situation Room →</button>';
+      html += '<button class="btn-enter" onclick="enterSituationRoom()">Enter the Situation Room →</button>';
       html += '</div>';
       document.getElementById('step-container').innerHTML = html;
+    }
+
+    function enterSituationRoom() {
+      var userId = localStorage.getItem('sr_user_id');
+      if (!userId) {
+        userId = 'usr_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        localStorage.setItem('sr_user_id', userId);
+      }
+      fetch(WORKER, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          tool: 'save_meridian',
+          userId: userId,
+          meridian: answers
+        })
+      }).catch(function(e){ console.log('Meridian save:', e); });
+      window.location.href = BASE + 'dashboard.html';
     }
 
     render();

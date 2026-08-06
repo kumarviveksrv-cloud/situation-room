@@ -2,7 +2,7 @@
   "name": "Virorah Situation Room",
   "short_name": "Situation Room",
   "description": "Walk into any room ready for anything. HR intelligence, calibrated to your exact professional reality.",
-  "start_url": "/situation-room/dashboard.html",
+  "start_url": "/situation-room/index.html",
   "scope": "/situation-room/",
   "display": "standalone",
   "orientation": "portrait-primary",

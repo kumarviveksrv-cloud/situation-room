@@ -11,14 +11,11 @@
     body{display:flex}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.55}}
     @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
     @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
     @keyframes micPulse{0%{box-shadow:0 0 0 0 rgba(0,229,195,0.4)}70%{box-shadow:0 0 0 24px rgba(0,229,195,0)}100%{box-shadow:0 0 0 0 rgba(0,229,195,0)}}
     @keyframes micPulseRed{0%{box-shadow:0 0 0 0 rgba(255,77,109,0.4)}70%{box-shadow:0 0 0 24px rgba(255,77,109,0)}100%{box-shadow:0 0 0 0 rgba(255,77,109,0)}}
-    @keyframes orbGlow{0%,100%{filter:drop-shadow(0 0 12px rgba(0,229,195,0.3))}50%{filter:drop-shadow(0 0 28px rgba(0,229,195,0.6))}}
     @keyframes waveBar{0%,100%{height:4px}50%{height:22px}}
-
     .sidebar{width:220px;flex-shrink:0;background:rgba(13,21,38,0.98);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;padding:20px 12px;height:100vh;overflow-y:auto}
     .logo{display:flex;align-items:center;gap:10px;padding:6px 4px;margin-bottom:28px}
     .logo-dot{width:8px;height:8px;border-radius:50%;background:#00E5C3;box-shadow:0 0 10px #00E5C3;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
@@ -33,11 +30,8 @@
     .meridian-chip{margin-top:auto;padding:12px 14px;border-radius:10px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.15)}
     .meridian-chip .label{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
     .meridian-chip .val{font-size:11px;color:rgba(255,255,255,0.45)}
-
     .main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;background-image:linear-gradient(rgba(0,229,195,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.02) 1px,transparent 1px);background-size:48px 48px}
-
-    /* TOP BAR */
-    .top-bar{padding:20px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0}
+    .top-bar{padding:18px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0}
     .top-bar-left{display:flex;align-items:center;gap:16px}
     .aria-label-wrap .aria-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff}
     .aria-label-wrap .aria-sub{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px}
@@ -47,32 +41,25 @@
     .mode-pill.active{background:rgba(0,229,195,0.12);border-color:rgba(0,229,195,0.35);color:#00E5C3;font-weight:500}
     .end-btn{padding:8px 16px;background:rgba(255,77,109,0.08);color:#FF4D6D;border:1px solid rgba(255,77,109,0.2);border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
     .end-btn:hover{background:rgba(255,77,109,0.15)}
-
-    /* CONTENT AREA */
     .content-area{flex:1;display:flex;overflow:hidden}
-
-    /* ORB PANEL */
-    .orb-panel{width:340px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;border-right:1px solid rgba(255,255,255,0.04)}
-    .orb-wrap{animation:float 4s ease-in-out infinite;margin-bottom:24px}
-    .orb-status{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;text-align:center;transition:all .3s}
+    .orb-panel{width:320px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;border-right:1px solid rgba(255,255,255,0.04);gap:16px}
+    .orb-status{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);text-align:center;transition:all .3s}
     .orb-status.listening{color:#FF4D6D}
     .orb-status.thinking{color:#FFB547}
     .orb-status.speaking{color:#00E5C3}
-    .wave-bars{display:flex;align-items:center;gap:3px;height:28px;margin-bottom:20px}
+    .wave-bars{display:flex;align-items:center;gap:3px;height:28px}
     .wave-bar{width:3px;background:#FF4D6D;border-radius:2px;animation:waveBar .5s ease-in-out infinite;height:4px}
     .wave-bar:nth-child(2){animation-delay:.1s}
     .wave-bar:nth-child(3){animation-delay:.2s}
     .wave-bar:nth-child(4){animation-delay:.3s}
     .wave-bar:nth-child(5){animation-delay:.4s}
-    .mic-btn{width:80px;height:80px;border-radius:50%;background:#00E5C3;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:32px;transition:all .25s;margin-bottom:12px}
+    .mic-btn{width:72px;height:72px;border-radius:50%;background:#00E5C3;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:28px;transition:all .25s}
     .mic-btn:hover{opacity:.88;transform:scale(1.05)}
     .mic-btn.listening{background:#FF4D6D;animation:micPulseRed 1s ease-in-out infinite}
     .mic-btn.speaking{background:rgba(0,229,195,0.2);border:2px solid #00E5C3;animation:micPulse 2s ease-in-out infinite;cursor:default}
     .mic-btn.thinking{background:rgba(255,181,71,0.2);border:2px solid #FFB547;cursor:default}
     .mic-hint{font-size:11px;color:rgba(255,255,255,0.2);font-family:'DM Mono',monospace;text-align:center;line-height:1.5}
-    .voice-transcript{font-size:13px;color:rgba(255,255,255,0.4);text-align:center;max-width:240px;min-height:20px;font-style:italic;margin-top:12px;line-height:1.5}
-
-    /* CHAT PANEL */
+    .voice-transcript{font-size:12px;color:rgba(255,255,255,0.4);text-align:center;max-width:260px;min-height:18px;font-style:italic;line-height:1.5}
     .chat-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
     .messages{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:14px}
     .msg{display:flex;gap:10px;animation:msgIn .25s ease}
@@ -89,23 +76,18 @@
     .typing-dot{width:6px;height:6px;border-radius:50%;background:#00E5C3;animation:pulse .8s ease-in-out infinite}
     .typing-dot:nth-child(2){animation-delay:.15s}
     .typing-dot:nth-child(3){animation-delay:.3s}
-
-    /* TEXT INPUT */
     .text-input-area{padding:16px 24px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:10px;flex-shrink:0}
     .text-input{flex:1;padding:12px 16px;background:#0D1526;border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;resize:none;transition:border .2s;max-height:100px;line-height:1.5}
     .text-input:focus{border-color:rgba(0,229,195,0.3)}
     .text-input::placeholder{color:rgba(255,255,255,0.2)}
     .send-text-btn{padding:10px 18px;background:#00E5C3;color:#060B18;border:none;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;transition:opacity .2s;flex-shrink:0}
     .send-text-btn:hover{opacity:.88}
-
-    /* EMPTY STATE */
     .empty-prompt{text-align:center;padding:40px 20px;color:rgba(255,255,255,0.2);font-size:13px;line-height:1.6}
     .empty-prompt-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:600;color:rgba(255,255,255,0.35);margin-bottom:8px}
-
     ::-webkit-scrollbar{width:4px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
-    @media(max-width:768px){.sidebar{display:none}.orb-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.04);padding:20px;flex-direction:row;gap:20px;justify-content:center}.content-area{flex-direction:column}}
+    @media(max-width:768px){.sidebar{display:none}.orb-panel{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,0.04);padding:16px}.content-area{flex-direction:column}}
   </style>
 </head>
 <body>
@@ -139,7 +121,6 @@
   </div>
 
   <div class="main">
-
     <div class="top-bar">
       <div class="top-bar-left">
         <div class="aria-label-wrap">
@@ -156,135 +137,18 @@
     </div>
 
     <div class="content-area">
-
-      <!-- ORB PANEL -->
       <div class="orb-panel">
-        <div class="orb-wrap">
-          <svg id="aria-orb" width="240" height="280" viewBox="0 0 240 280" style="animation:orbGlow 3s ease-in-out infinite">
-  <defs>
-    <radialGradient id="og" cx="50%" cy="45%">
-      <stop offset="0%" stop-color="#00E5C3" stop-opacity="0.12"/>
-      <stop offset="100%" stop-color="#00E5C3" stop-opacity="0"/>
-    </radialGradient>
-    <clipPath id="faceClip">
-      <ellipse cx="120" cy="135" rx="62" ry="80"/>
-    </clipPath>
-  </defs>
-
-  <!-- Orbital rings -->
-  <g style="animation:spin 20s linear infinite;transform-origin:120px 135px">
-    <ellipse cx="120" cy="135" rx="112" ry="52" fill="none" stroke="#00E5C3" stroke-width="0.5" stroke-opacity="0.15" stroke-dasharray="4 8" transform="rotate(-28 120 135)"/>
-  </g>
-  <g style="animation:spin 14s linear reverse infinite;transform-origin:120px 135px">
-    <ellipse cx="120" cy="135" rx="112" ry="52" fill="none" stroke="#00E5C3" stroke-width="0.5" stroke-opacity="0.15" stroke-dasharray="4 8" transform="rotate(28 120 135)"/>
-  </g>
-
-  <!-- Face glow -->
-  <ellipse cx="120" cy="135" rx="62" ry="80" fill="url(#og)"/>
-
-  <!-- Face grid clipped -->
-  <g clip-path="url(#faceClip)" opacity="0.1">
-    <line x1="55" y1="75" x2="185" y2="75" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="87" x2="185" y2="87" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="99" x2="185" y2="99" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="111" x2="185" y2="111" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="123" x2="185" y2="123" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="135" x2="185" y2="135" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="147" x2="185" y2="147" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="159" x2="185" y2="159" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="171" x2="185" y2="171" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="183" x2="185" y2="183" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="55" y1="195" x2="185" y2="195" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="97" y1="55" x2="97" y2="215" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="120" y1="55" x2="120" y2="215" stroke="#00E5C3" stroke-width="0.6"/>
-    <line x1="143" y1="55" x2="143" y2="215" stroke="#00E5C3" stroke-width="0.6"/>
-  </g>
-
-  <!-- Scan line -->
-  <rect x="58" y="0" width="124" height="3" rx="1" fill="#00E5C3" opacity="0.3" clip-path="url(#faceClip)">
-    <animateTransform attributeName="transform" type="translate" from="0,-80" to="0,280" dur="3.5s" repeatCount="indefinite"/>
-  </rect>
-
-  <!-- Face outline -->
-  <ellipse cx="120" cy="135" rx="62" ry="80" fill="none" stroke="#00E5C3" stroke-width="1.5" stroke-opacity="0.75"/>
-
-  <!-- Eyebrows -->
-  <path d="M 88 97 Q 100 88 112 96" fill="none" stroke="#00E5C3" stroke-width="1.8" stroke-opacity="0.85" stroke-linecap="round"/>
-  <path d="M 128 96 Q 140 88 152 97" fill="none" stroke="#00E5C3" stroke-width="1.8" stroke-opacity="0.85" stroke-linecap="round"/>
-
-  <!-- Left eye -->
-  <path d="M 88 112 Q 100 104 112 112 Q 100 120 88 112 Z" fill="rgba(0,229,195,0.12)" stroke="#00E5C3" stroke-width="1.4" stroke-opacity="0.9"/>
-  <circle cx="100" cy="112" r="5" fill="#00E5C3" opacity="0.85" style="animation:pulse 2.2s ease-in-out infinite"/>
-  <circle cx="100" cy="112" r="2" fill="#060B18"/>
-  <circle cx="102" cy="110" r="1" fill="#00E5C3" opacity="0.5"/>
-
-  <!-- Right eye -->
-  <path d="M 128 112 Q 140 104 152 112 Q 140 120 128 112 Z" fill="rgba(0,229,195,0.12)" stroke="#00E5C3" stroke-width="1.4" stroke-opacity="0.9"/>
-  <circle cx="140" cy="112" r="5" fill="#00E5C3" opacity="0.85" style="animation:pulse 2.2s ease-in-out 0.5s infinite"/>
-  <circle cx="140" cy="112" r="2" fill="#060B18"/>
-  <circle cx="142" cy="110" r="1" fill="#00E5C3" opacity="0.5"/>
-
-  <!-- Nose bridge -->
-  <path d="M 116 124 L 111 142 L 114 146 L 126 146 L 129 142 L 124 124" fill="none" stroke="#00E5C3" stroke-width="1" stroke-opacity="0.55" stroke-linejoin="round"/>
-  <line x1="114" y1="146" x2="111" y2="150" stroke="#00E5C3" stroke-width="0.8" stroke-opacity="0.4"/>
-  <line x1="126" y1="146" x2="129" y2="150" stroke="#00E5C3" stroke-width="0.8" stroke-opacity="0.4"/>
-
-  <!-- Mouth -->
-  <path d="M 100 163 Q 110 157 120 158 Q 130 157 140 163 Q 130 172 120 173 Q 110 172 100 163 Z" fill="rgba(0,229,195,0.08)" stroke="#00E5C3" stroke-width="1.3" stroke-opacity="0.8"/>
-  <line x1="112" y1="163" x2="112" y2="170" stroke="#00E5C3" stroke-width="0.7" stroke-opacity="0.45"/>
-  <line x1="120" y1="162" x2="120" y2="171" stroke="#00E5C3" stroke-width="0.7" stroke-opacity="0.45"/>
-  <line x1="128" y1="163" x2="128" y2="170" stroke="#00E5C3" stroke-width="0.7" stroke-opacity="0.45"/>
-
-  <!-- Cheekbone accents -->
-  <path d="M 60 122 L 74 127 L 67 138" fill="none" stroke="#00E5C3" stroke-width="1" stroke-opacity="0.45" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M 180 122 L 166 127 L 173 138" fill="none" stroke="#00E5C3" stroke-width="1" stroke-opacity="0.45" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- Forehead marker -->
-  <line x1="120" y1="52" x2="120" y2="67" stroke="#00E5C3" stroke-width="1" stroke-opacity="0.55"/>
-  <circle cx="120" cy="50" r="3" fill="#00E5C3" opacity="0.7" style="animation:pulse 2.8s ease-in-out infinite"/>
-  <line x1="108" y1="57" x2="112" y2="68" stroke="#00E5C3" stroke-width="0.7" stroke-opacity="0.35"/>
-  <line x1="132" y1="57" x2="128" y2="68" stroke="#00E5C3" stroke-width="0.7" stroke-opacity="0.35"/>
-
-  <!-- Temple data lines -->
-  <line x1="58" y1="112" x2="73" y2="116" stroke="#00E5C3" stroke-width="0.8" stroke-opacity="0.4" stroke-dasharray="2 3"/>
-  <line x1="182" y1="112" x2="167" y2="116" stroke="#00E5C3" stroke-width="0.8" stroke-opacity="0.4" stroke-dasharray="2 3"/>
-
-  <!-- HUD corner brackets -->
-  <path d="M 16 46 L 16 22 L 40 22" fill="none" stroke="#00E5C3" stroke-width="1.5" stroke-opacity="0.5" stroke-linecap="round"/>
-  <path d="M 224 46 L 224 22 L 200 22" fill="none" stroke="#00E5C3" stroke-width="1.5" stroke-opacity="0.5" stroke-linecap="round"/>
-  <path d="M 16 230 L 16 256 L 40 256" fill="none" stroke="#00E5C3" stroke-width="1.5" stroke-opacity="0.5" stroke-linecap="round"/>
-  <path d="M 224 230 L 224 256 L 200 256" fill="none" stroke="#00E5C3" stroke-width="1.5" stroke-opacity="0.5" stroke-linecap="round"/>
-
-  <!-- HUD label lines -->
-  <line x1="40" y1="22" x2="58" y2="22" stroke="#00E5C3" stroke-width="0.7" stroke-opacity="0.3"/>
-  <line x1="182" y1="22" x2="200" y2="22" stroke="#00E5C3" stroke-width="0.7" stroke-opacity="0.3"/>
-  <text x="48" y="19" font-family="DM Mono,monospace" font-size="7" fill="#00E5C3" opacity="0.4" letter-spacing="1">ARIA.V1</text>
-  <text x="168" y="19" font-family="DM Mono,monospace" font-size="7" fill="#00E5C3" opacity="0.4" letter-spacing="1">ONLINE</text>
-  <text x="28" y="264" font-family="DM Mono,monospace" font-size="7" fill="#00E5C3" opacity="0.4" letter-spacing="1">MERIDIAN</text>
-  <text x="180" y="264" font-family="DM Mono,monospace" font-size="7" fill="#00E5C3" opacity="0.4" letter-spacing="1">ACTIVE</text>
-
-  <!-- Orbital node particles -->
-  <circle cx="22" cy="90" r="2.5" fill="#00E5C3" opacity="0.55" style="animation:pulse 3s ease-in-out infinite"/>
-  <circle cx="14" cy="135" r="3.5" fill="#00E5C3" opacity="0.65" style="animation:pulse 2.2s ease-in-out 0.5s infinite"/>
-  <circle cx="22" cy="185" r="2.5" fill="#00E5C3" opacity="0.45" style="animation:pulse 3.5s ease-in-out 1s infinite"/>
-  <circle cx="218" cy="90" r="2.5" fill="#00E5C3" opacity="0.55" style="animation:pulse 3s ease-in-out 0.7s infinite"/>
-  <circle cx="226" cy="135" r="3.5" fill="#00E5C3" opacity="0.65" style="animation:pulse 2.2s ease-in-out 0.2s infinite"/>
-  <circle cx="218" cy="185" r="2.5" fill="#00E5C3" opacity="0.45" style="animation:pulse 3.5s ease-in-out 1.5s infinite"/>
-</svg>
-        </div>
-
+        <canvas id="aria-canvas" width="260" height="300" style="border-radius:4px"></canvas>
         <div class="orb-status" id="orb-status">Ready</div>
         <div id="wave-bars" style="display:none" class="wave-bars">
           <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
           <div class="wave-bar"></div><div class="wave-bar"></div>
         </div>
-
         <button class="mic-btn" id="mic-btn" onclick="handleMic()">🎤</button>
-        <div class="mic-hint">Tap to speak<br>Tap again to stop</div>
+        <div class="mic-hint">Tap to speak · Tap again to stop</div>
         <div class="voice-transcript" id="voice-transcript"></div>
       </div>
 
-      <!-- CHAT PANEL -->
       <div class="chat-panel">
         <div class="messages" id="messages">
           <div class="empty-prompt">
@@ -299,7 +163,6 @@
           <button class="send-text-btn" onclick="sendText()">→</button>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -312,6 +175,7 @@
     var isSpeaking = false;
     var recognition = null;
     var voices = [];
+    var ariaState = 'idle'; // idle | listening | thinking | speaking
 
     if (sessionStorage.getItem('sr_access') !== 'true') {
       window.location.href = BASE + 'index.html';
@@ -325,6 +189,202 @@
     window.speechSynthesis.onvoiceschanged = function(){ voices = window.speechSynthesis.getVoices(); };
     setTimeout(function(){ voices = window.speechSynthesis.getVoices(); }, 600);
 
+    // ── MATRIX FACE CANVAS ──────────────────────────────────
+    function initARIAFace() {
+      var canvas = document.getElementById('aria-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var W = 260, H = 300;
+      canvas.width = W; canvas.height = H;
+      var cx = W / 2, cy = H / 2 - 5;
+
+      var chars = '01アイウエオカキクARIAMERIDIAN10ハヒフ'.split('');
+      var cols = Math.floor(W / 11);
+      var drops = Array.from({length: cols}, function(){ return Math.random() * -H; });
+      var scanY = 0, t = 0, blinkPhase = 0;
+      var mouthAnim = 0; // animate mouth when speaking
+
+      function glow(c, b) { ctx.shadowColor = c; ctx.shadowBlur = b; }
+      function noGlow() { ctx.shadowBlur = 0; }
+
+      function drawRain() {
+        ctx.fillStyle = 'rgba(6,11,24,0.18)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.font = '9px monospace';
+        drops.forEach(function(y, i) {
+          if (y > 0) {
+            glow('#00E5C3', 6);
+            ctx.fillStyle = 'rgba(0,229,195,0.9)';
+            ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 11, y);
+            noGlow();
+            for (var j = 1; j < 8; j++) {
+              if (y - j * 11 > 0) {
+                ctx.fillStyle = 'rgba(0,229,195,' + (0.35 - j * 0.04) + ')';
+                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 11, y - j * 11);
+              }
+            }
+          }
+          drops[i] += 11;
+          if (drops[i] > H) drops[i] = Math.random() * -H * 0.3;
+        });
+        noGlow();
+      }
+
+      function drawFace() {
+        var pulse = Math.sin(t * 0.025) * 0.1 + 0.9;
+        var eyeH = blinkPhase > 0 ? Math.max(0, 1 - Math.abs(Math.sin(blinkPhase * Math.PI))) : 1;
+        var tealA = function(a){ return 'rgba(0,229,195,' + a + ')'; };
+
+        // Face oval
+        glow('#00E5C3', 24);
+        ctx.strokeStyle = tealA(0.85 * pulse);
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.ellipse(cx, cy, 65, 86, 0, 0, Math.PI * 2); ctx.stroke();
+        noGlow();
+
+        // Clipped grid + scan
+        ctx.save();
+        ctx.beginPath(); ctx.ellipse(cx, cy, 65, 86, 0, 0, Math.PI * 2); ctx.clip();
+        ctx.strokeStyle = tealA(0.07); ctx.lineWidth = 0.7;
+        for (var gy = cy - 84; gy < cy + 84; gy += 13) {
+          ctx.beginPath(); ctx.moveTo(cx - 72, gy); ctx.lineTo(cx + 72, gy); ctx.stroke();
+        }
+        for (var gx = cx - 63; gx < cx + 63; gx += 21) {
+          ctx.beginPath(); ctx.moveTo(gx, cy - 94); ctx.lineTo(gx, cy + 94); ctx.stroke();
+        }
+        // scan line
+        var sl = cy - 86 + (scanY % 172);
+        var sg = ctx.createLinearGradient(0, sl - 12, 0, sl + 12);
+        sg.addColorStop(0, tealA(0));
+        sg.addColorStop(0.5, tealA(0.45));
+        sg.addColorStop(1, tealA(0));
+        ctx.fillStyle = sg; ctx.fillRect(cx - 74, sl - 12, 148, 24);
+        ctx.restore();
+
+        // Eyebrows — sharp angular
+        glow('#00E5C3', 16);
+        ctx.strokeStyle = tealA(0.9 * pulse); ctx.lineWidth = 2.4; ctx.lineJoin = 'round';
+        ctx.beginPath(); ctx.moveTo(cx - 48, cy - 45); ctx.lineTo(cx - 28, cy - 56); ctx.lineTo(cx - 8, cy - 47); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx + 8, cy - 47); ctx.lineTo(cx + 28, cy - 56); ctx.lineTo(cx + 48, cy - 45); ctx.stroke();
+        noGlow();
+
+        // Eyes
+        function drawEye(ex) {
+          var ey = cy - 29;
+          var eh = eyeH;
+          glow('#00E5C3', 20);
+          ctx.strokeStyle = tealA(0.95 * pulse); ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.moveTo(ex - 18, ey);
+          ctx.bezierCurveTo(ex - 10, ey - 11 * eh, ex + 10, ey - 11 * eh, ex + 18, ey);
+          ctx.bezierCurveTo(ex + 10, ey + 9 * eh, ex - 10, ey + 9 * eh, ex - 18, ey);
+          ctx.closePath();
+          ctx.fillStyle = tealA(0.08); ctx.fill(); ctx.stroke();
+          noGlow();
+          if (eh > 0.1) {
+            glow('#00E5C3', 14);
+            ctx.beginPath(); ctx.arc(ex, ey, 6 * eh, 0, Math.PI * 2);
+            ctx.fillStyle = tealA(0.95 * pulse); ctx.fill();
+            ctx.beginPath(); ctx.arc(ex, ey, 2.8 * eh, 0, Math.PI * 2);
+            ctx.fillStyle = '#060B18'; ctx.fill();
+            ctx.beginPath(); ctx.arc(ex + 2, ey - 2, 1.2, 0, Math.PI * 2);
+            ctx.fillStyle = tealA(0.7); ctx.fill();
+            noGlow();
+          }
+        }
+        drawEye(cx - 27);
+        drawEye(cx + 27);
+
+        // Nose bridge
+        ctx.strokeStyle = tealA(0.45); ctx.lineWidth = 1.2; ctx.lineJoin = 'round';
+        ctx.beginPath(); ctx.moveTo(cx, cy - 12); ctx.lineTo(cx - 10, cy + 12); ctx.lineTo(cx - 15, cy + 16); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx, cy - 12); ctx.lineTo(cx + 10, cy + 12); ctx.lineTo(cx + 15, cy + 16); ctx.stroke();
+
+        // Mouth — animates when speaking
+        glow('#00E5C3', 16);
+        ctx.strokeStyle = tealA(0.88 * pulse); ctx.lineWidth = 1.8;
+        var mOpen = ariaState === 'speaking' ? Math.abs(Math.sin(mouthAnim)) * 7 : 0;
+        ctx.beginPath();
+        ctx.moveTo(cx - 26, cy + 33);
+        ctx.bezierCurveTo(cx - 13, cy + 28, cx + 13, cy + 28, cx + 26, cy + 33);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx - 26, cy + 33);
+        ctx.bezierCurveTo(cx - 13, cy + 40 + mOpen, cx + 13, cy + 40 + mOpen, cx + 26, cy + 33);
+        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx - 26, cy + 33); ctx.lineTo(cx + 26, cy + 33); ctx.lineWidth = 0.9; ctx.stroke();
+        noGlow();
+
+        // Cheekbone data lines
+        ctx.strokeStyle = tealA(0.3); ctx.lineWidth = 0.9; ctx.setLineDash([3, 5]);
+        ctx.beginPath(); ctx.moveTo(cx - 65, cy - 5); ctx.lineTo(cx - 47, cy + 1); ctx.lineTo(cx - 42, cy + 18); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx + 65, cy - 5); ctx.lineTo(cx + 47, cy + 1); ctx.lineTo(cx + 42, cy + 18); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Forehead node
+        glow('#00E5C3', 16);
+        ctx.fillStyle = tealA(pulse);
+        ctx.beginPath(); ctx.arc(cx, cy - 98, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = tealA(0.45); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(cx, cy - 94); ctx.lineTo(cx, cy - 84); ctx.stroke();
+        ctx.setLineDash([2, 4]);
+        ctx.beginPath(); ctx.moveTo(cx - 14, cy - 91); ctx.lineTo(cx - 10, cy - 82); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx + 14, cy - 91); ctx.lineTo(cx + 10, cy - 82); ctx.stroke();
+        ctx.setLineDash([]);
+        noGlow();
+
+        // Temple data nodes
+        glow('#00E5C3', 8);
+        ctx.fillStyle = tealA(0.6 * pulse);
+        ctx.beginPath(); ctx.arc(cx - 68, cy - 10, 2.5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx + 68, cy - 10, 2.5, 0, Math.PI * 2); ctx.fill();
+        noGlow();
+
+        // HUD corners
+        ctx.strokeStyle = tealA(0.6); ctx.lineWidth = 1.6;
+        var b = 8, s = 16;
+        ctx.beginPath(); ctx.moveTo(b, b + s); ctx.lineTo(b, b); ctx.lineTo(b + s, b); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(W - b, b + s); ctx.lineTo(W - b, b); ctx.lineTo(W - b - s, b); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(b, H - b - s); ctx.lineTo(b, H - b); ctx.lineTo(b + s, H - b); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(W - b, H - b - s); ctx.lineTo(W - b, H - b); ctx.lineTo(W - b - s, H - b); ctx.stroke();
+
+        ctx.fillStyle = tealA(0.5);
+        ctx.font = '7px monospace';
+        ctx.fillText('ARIA.V1', b + 2, b - 1);
+        ctx.fillText('ONLINE', W - b - 40, b - 1);
+        ctx.fillText('MERIDIAN', b + 2, H - b + 9);
+        ctx.fillText('ACTIVE', W - b - 36, H - b + 9);
+      }
+
+      function loop() {
+        ctx.clearRect(0, 0, W, H);
+        drawRain();
+        drawFace();
+        scanY += 1.5;
+        t++;
+        mouthAnim += 0.18;
+        if (Math.random() < 0.004 && blinkPhase === 0) blinkPhase = 0.01;
+        if (blinkPhase > 0) { blinkPhase += 0.07; if (blinkPhase > 1.5) blinkPhase = 0; }
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
+
+    // ── VOICE ────────────────────────────────────────────────
+    function setOrbStatus(text, state) {
+      ariaState = state || 'idle';
+      var el = document.getElementById('orb-status');
+      el.innerText = text;
+      el.className = 'orb-status' + (state ? ' ' + state : '');
+      document.getElementById('wave-bars').style.display = state === 'listening' ? 'flex' : 'none';
+      var mic = document.getElementById('mic-btn');
+      mic.className = 'mic-btn' + (state ? ' ' + state : '');
+      if (state === 'listening') mic.innerText = '⏹';
+      else if (state === 'thinking') mic.innerText = '💭';
+      else if (state === 'speaking') mic.innerText = '🔊';
+      else mic.innerText = '🎤';
+    }
+
     function setMode(el, mode) {
       document.querySelectorAll('.mode-pill').forEach(function(p){ p.classList.remove('active'); });
       el.classList.add('active');
@@ -335,24 +395,9 @@
       setOrbStatus('Ready', '');
     }
 
-    function setOrbStatus(text, state) {
-      var el = document.getElementById('orb-status');
-      el.innerText = text;
-      el.className = 'orb-status' + (state ? ' ' + state : '');
-      var bars = document.getElementById('wave-bars');
-      bars.style.display = state === 'listening' ? 'flex' : 'none';
-      var mic = document.getElementById('mic-btn');
-      mic.className = 'mic-btn' + (state ? ' ' + state : '');
-      if (state === 'listening') mic.innerText = '⏹';
-      else if (state === 'thinking') mic.innerText = '💭';
-      else if (state === 'speaking') mic.innerText = '🔊';
-      else mic.innerText = '🎤';
-    }
-
     function addMessage(role, text, isTyping) {
       var container = document.getElementById('messages');
-      var empties = container.querySelectorAll('.empty-prompt');
-      empties.forEach(function(e){ e.remove(); });
+      container.querySelectorAll('.empty-prompt').forEach(function(e){ e.remove(); });
       var div = document.createElement('div');
       div.className = 'msg ' + (role === 'aria' ? 'msg-aria' : 'msg-you');
       var avatarHtml = role === 'aria'
@@ -380,9 +425,7 @@
       isSpeaking = true;
       setOrbStatus('Speaking...', 'speaking');
       var utt = new SpeechSynthesisUtterance(text);
-      utt.lang = 'en-IN';
-      utt.rate = 0.9;
-      utt.pitch = 1.05;
+      utt.lang = 'en-IN'; utt.rate = 0.9; utt.pitch = 1.05;
       if (voices.length > 0) {
         var v = voices.find(function(x){ return x.lang === 'en-IN'; }) ||
                 voices.find(function(x){ return x.lang.startsWith('en-GB'); }) ||
@@ -413,12 +456,12 @@
           addMessage('aria', response);
           speak(response);
         } else {
-          setOrbStatus('Error. Try again.', '');
+          setOrbStatus('Ready', '');
           addMessage('aria', 'Something went wrong. Please try again.');
         }
       } catch(err) {
         removeTyping();
-        setOrbStatus('Connection error.', '');
+        setOrbStatus('Ready', '');
         addMessage('aria', 'Connection error. Please check your network.');
       }
     }
@@ -427,12 +470,10 @@
       var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SR) { alert('Voice recognition requires Chrome.'); return null; }
       var r = new SR();
-      r.continuous = false;
-      r.interimResults = true;
-      r.lang = 'en-IN';
+      r.continuous = false; r.interimResults = true; r.lang = 'en-IN';
       r.onstart = function(){ isListening = true; setOrbStatus('Listening...', 'listening'); document.getElementById('voice-transcript').innerText = ''; };
       r.onresult = function(e) {
-        var interim = ''; var final = '';
+        var interim = '', final = '';
         for (var i = e.resultIndex; i < e.results.length; i++) {
           if (e.results[i].isFinal) final += e.results[i][0].transcript;
           else interim += e.results[i][0].transcript;
@@ -469,6 +510,8 @@
         '<div class="empty-prompt"><div class="empty-prompt-title">Session ended.</div>Tap the mic or type to start a new conversation.</div>';
       setOrbStatus('Ready', '');
     }
+
+    initARIAFace();
   </script>
 
 </body>

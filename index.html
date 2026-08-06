@@ -6,18 +6,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Virorah Situation Room</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:#060B18;color:#fff;font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background-image:linear-gradient(rgba(0,229,195,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.03) 1px,transparent 1px);background-size:48px 48px}
+    body{background:#060B18;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background-image:linear-gradient(rgba(0,229,195,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.03) 1px,transparent 1px);background-size:48px 48px}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
     @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
     @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
     .orb{width:72px;height:72px;margin:0 auto 24px;animation:float 3s ease-in-out infinite}
-    .brand-name{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;text-align:center}
-    .brand-name span{color:#00E5C3}
-    .sub{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-align:center;margin-top:6px}
+    .brand-name{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;text-align:center}
+    .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-align:center;margin-top:6px}
     .tagline{font-size:15px;color:rgba(255,255,255,0.5);text-align:center;margin-top:10px;margin-bottom:40px}
     .card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:36px 32px;width:100%;max-width:400px;text-align:center}
     .card h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px}
@@ -26,7 +25,7 @@
     input[type=password]{width:100%;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:'DM Mono',monospace;font-size:15px;outline:none;letter-spacing:.15em;transition:border .2s}
     input[type=password]:focus{border-color:rgba(0,229,195,0.4)}
     input[type=password]::placeholder{letter-spacing:.05em;color:rgba(255,255,255,0.2);font-size:13px}
-    .btn{display:block;width:100%;padding:14px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;letter-spacing:.01em}
+    .btn{display:block;width:100%;padding:14px;background:#00E5C3;color:#060B18;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;letter-spacing:.01em}
     .btn:hover{opacity:0.88}
     .btn:active{opacity:0.75}
     .error{font-family:'DM Mono',monospace;font-size:11px;color:#FF6B6B;margin-top:10px;min-height:16px;letter-spacing:.04em}
@@ -49,13 +48,13 @@
     </svg>
   </div>
 
-  <div class="brand-name">Vi<span>R</span>orah</div>
+  <div class="brand-name">Virorah</div>
   <div class="sub">Situation Room</div>
   <div class="tagline">Walk into any room ready for anything.</div>
 
   <div class="card">
     <h2>Early Access</h2>
-    <p>Enter your access code to enter the Situation Room.</p>
+    <p>You're in early. Enter your access code below and step into the Situation Room — HR intelligence built for Indian professionals who lead in the language of business.</p>
     <div class="input-wrap">
       <input type="password" id="pwd" placeholder="Enter access code" autocomplete="off" />
     </div>

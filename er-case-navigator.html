@@ -111,6 +111,27 @@
     ::-webkit-scrollbar{width:4px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
+    .humacity-card{background:linear-gradient(135deg,rgba(0,229,195,0.06),rgba(0,229,195,0.01));border:1px solid rgba(0,229,195,0.22);border-radius:14px;padding:24px;margin-bottom:24px;animation:fadeIn .4s ease}
+    .humacity-header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .humacity-badge{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.1em;text-transform:uppercase;background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.25);padding:4px 10px;border-radius:4px}
+    .humacity-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff}
+    .humacity-exposure{background:#0D1526;border:1px solid rgba(255,181,71,0.2);border-radius:10px;padding:16px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+    .humacity-exposure-label{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+    .humacity-exposure-value{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#FFB547}
+    .humacity-exposure-logic{font-size:12px;color:rgba(255,255,255,0.4);max-width:350px;line-height:1.5}
+    .humacity-ledger{background:#0D1526;border:1px solid rgba(0,229,195,0.15);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6}
+    .humacity-ledger-label{font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+    .humacity-assets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+    .humacity-asset{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 16px}
+    .humacity-asset-name{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+    .humacity-asset-impact{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:6px}
+    .humacity-asset-value{font-family:'DM Mono',monospace;font-size:11px;color:#FFB547}
+    .humacity-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .humacity-block{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 16px}
+    .humacity-block-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+    .humacity-block-label.red{color:#FF4D6D}
+    .humacity-block-label.green{color:#00E5C3}
+    .humacity-block-text{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5}
     @media(max-width:768px){.sidebar{display:none}.main{padding:20px 16px;overflow-y:auto}.case-types{grid-template-columns:repeat(2,1fr)}.pact-grid{grid-template-columns:1fr}.two-col-output{grid-template-columns:1fr}}
   </style>
 </head>
@@ -250,6 +271,35 @@
           <div class="output-card">
             <div class="output-card-title">Documentation Checklist</div>
             <div id="doc-checklist"></div>
+          </div>
+        </div>
+        <!-- HUMACITY FINANCIAL IMPACT -->
+        <div class="humacity-card" id="humacity-card" style="display:none">
+          <div class="humacity-header">
+            <div class="humacity-badge">HUMACITY</div>
+            <div class="humacity-title">Financial Impact Assessment</div>
+          </div>
+          <div class="humacity-exposure">
+            <div>
+              <div class="humacity-exposure-label">Total Financial Exposure</div>
+              <div class="humacity-exposure-value" id="h-exposure-value">—</div>
+            </div>
+            <div class="humacity-exposure-logic" id="h-exposure-logic">—</div>
+          </div>
+          <div class="humacity-ledger">
+            <div class="humacity-ledger-label">Value Ledger Entry</div>
+            <div id="h-ledger-entry">—</div>
+          </div>
+          <div class="humacity-assets" id="h-assets-grid"></div>
+          <div class="humacity-row">
+            <div class="humacity-block">
+              <div class="humacity-block-label red">Cost of Inaction</div>
+              <div class="humacity-block-text" id="h-cost-inaction">—</div>
+            </div>
+            <div class="humacity-block">
+              <div class="humacity-block-label green">Revenue Protected</div>
+              <div class="humacity-block-text" id="h-revenue-protected">—</div>
+            </div>
           </div>
         </div>
         <div class="action-row">
@@ -397,6 +447,24 @@
       document.getElementById('doc-checklist').innerHTML = (r.documentationChecklist||[]).map(function(item){
         return '<div class="check-item"><div class="check-box" onclick="this.classList.toggle(\'checked\')"></div><div class="check-text">'+item+'</div></div>';
       }).join('');
+      if (r.humacity) {
+        document.getElementById('humacity-card').style.display = 'block';
+        var h = r.humacity;
+        document.getElementById('h-exposure-value').innerText = h.financialExposure ? h.financialExposure.split(' ')[0] + ' ' + (h.financialExposure.split(' ')[1] || '') : '—';
+        document.getElementById('h-exposure-logic').innerText = h.financialExposure || '—';
+        document.getElementById('h-ledger-entry').innerText = h.valueLedgerEntry || '—';
+        document.getElementById('h-cost-inaction').innerText = h.costOfInaction || '—';
+        document.getElementById('h-revenue-protected').innerText = h.revenueProtected || '—';
+        if (h.assetsAtRisk && h.assetsAtRisk.length > 0) {
+          document.getElementById('h-assets-grid').innerHTML = h.assetsAtRisk.map(function(a){
+            return '<div class="humacity-asset">' +
+              '<div class="humacity-asset-name">' + (a.asset || '—') + '</div>' +
+              '<div class="humacity-asset-impact">' + (a.impact || '—') + '</div>' +
+              '<div class="humacity-asset-value">' + (a.estimatedValue || '—') + '</div>' +
+              '</div>';
+          }).join('');
+        }
+      }
       showView('output-view');
     }
 

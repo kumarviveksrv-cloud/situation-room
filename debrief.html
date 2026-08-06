@@ -93,7 +93,7 @@
     ::-webkit-scrollbar{width:4px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
-    @media(max-width:768px){.sidebar{display:none}.main{padding:20px 16px}.debrief-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}}
+    .humacity-card{background:linear-gradient(135deg,rgba(0,229,195,0.06),rgba(0,229,195,0.01));border:1px solid rgba(0,229,195,0.22);border-radius:14px;padding:24px;margin-bottom:24px;animation:fadeIn .4s ease} .humacity-header{display:flex;align-items:center;gap:12px;margin-bottom:18px} .humacity-badge{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.1em;text-transform:uppercase;background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.25);padding:4px 10px;border-radius:4px} .humacity-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff} .humacity-pnl{background:#0D1526;border:1px solid rgba(255,181,71,0.25);border-radius:10px;padding:16px 20px;margin-bottom:16px} .humacity-pnl-label{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px} .humacity-pnl-value{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#FFB547;line-height:1.6} .humacity-ledger{background:#0D1526;border:1px solid rgba(0,229,195,0.15);border-radius:10px;padding:14px 18px;margin-bottom:12px;font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.7;letter-spacing:.02em} .humacity-ledger-label{font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px} .humacity-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px} .humacity-block{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 16px} .humacity-block-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px} .humacity-block-label.teal{color:#00E5C3} .humacity-block-label.amber{color:#FFB547} .humacity-block-text{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5} @media(max-width:768px){.sidebar{display:none}.main{padding:20px 16px}.debrief-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.humacity-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -339,6 +339,24 @@
       html += '<div class="provocation-label"><span>🔥</span> Your Provocation — Sit with this</div>';
       html += '<div class="provocation-text">' + (d.provocation || '—') + '</div>';
       html += '</div>';
+
+      if (d.humacity) {
+        var h = d.humacity;
+        html += '<div class="humacity-card">';
+        html += '<div class="humacity-header"><div class="humacity-badge">HUMACITY</div><div class="humacity-title">Your Month in Rupees</div></div>';
+        html += '<div class="humacity-pnl"><div class="humacity-pnl-label">Human P&L · ' + monthName + ' ' + year + '</div><div class="humacity-pnl-value">' + (h.humanPnlEntry || '') + '</div></div>';
+        html += '<div class="humacity-ledger"><div class="humacity-ledger-label">Month in Rupees</div>' + (h.monthInRupees || '') + '</div>';
+        html += '<div class="humacity-ledger"><div class="humacity-ledger-label">Total Exposure Navigated</div>' + (h.totalExposureNavigated || '') + '</div>';
+        html += '<div class="humacity-row">';
+        html += '<div class="humacity-block"><div class="humacity-block-label teal">Trust Capital</div><div class="humacity-block-text">' + (h.trustCapitalChange || '') + '</div></div>';
+        html += '<div class="humacity-block"><div class="humacity-block-label amber">Culture Yield</div><div class="humacity-block-text">' + (h.cultureYieldImpact || '') + '</div></div>';
+        html += '</div>';
+        html += '<div style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:flex-start;gap:16px">';
+        html += '<div style="font-size:11px;color:rgba(255,255,255,0.3);line-height:1.6;max-width:520px"><span style="color:#00E5C3;font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase">What is Humacity?</span><br>Humacity is the philosophy that every people decision has a financial dimension. It translates HR outcomes into four asset classes: Trust Capital, Culture Yield, Signal Intelligence, and Belonging Premium, creating the organisation\'s Human P&L. HR is not a support function. It is a P&L operator.</div>';
+        html += '<a href="https://humacity.com" target="_blank" style="font-family:\'DM Mono\',monospace;font-size:11px;color:#00E5C3;text-decoration:none;border:1px solid rgba(0,229,195,0.25);padding:8px 14px;border-radius:6px;white-space:nowrap;flex-shrink:0">Explore Humacity &#8594;</a>';
+        html += '</div>';
+        html += '</div>';
+      }
 
       html += '<div class="share-row">';
       html += '<button class="btn-share" onclick="shareDebrief(\'' + monthName + ' ' + year + '\', \'' + (d.growthSignal||'').substring(0,80) + '\')">Share Growth Signal →</button>';

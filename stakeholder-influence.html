@@ -292,7 +292,7 @@
     function checkSubmit() {
       var obj = document.getElementById('objective').value.trim();
       var stk = document.getElementById('stakeholder').value.trim();
-      document.getElementById('submit-btn').disabled = !(obj.length > 20 && stk.length > 10 && selectedMotivator);
+      document.getElementById('submit-btn').disabled = !(obj.length > 20 && stk.length > 2 && selectedMotivator);
     }
 
     function showView(view) {

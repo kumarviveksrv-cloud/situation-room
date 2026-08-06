@@ -12,9 +12,6 @@
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.55}}
     @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
     @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-
-    /* SIDEBAR */
     .sidebar{width:220px;flex-shrink:0;background:rgba(13,21,38,0.98);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;padding:20px 12px;height:100vh;overflow-y:auto}
     .logo{display:flex;align-items:center;gap:10px;padding:6px 4px;margin-bottom:28px}
     .logo-dot{width:8px;height:8px;border-radius:50%;background:#00E5C3;box-shadow:0 0 10px #00E5C3;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
@@ -29,23 +26,17 @@
     .meridian-chip{margin-top:auto;padding:12px 14px;border-radius:10px;background:rgba(0,229,195,0.08);border:1px solid rgba(0,229,195,0.15)}
     .meridian-chip .label{font-family:'DM Mono',monospace;font-size:9px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
     .meridian-chip .val{font-size:11px;color:rgba(255,255,255,0.45)}
-
-    /* MAIN */
     .main{flex:1;overflow-y:auto;height:100vh;padding:28px 32px;background-image:linear-gradient(rgba(0,229,195,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.02) 1px,transparent 1px);background-size:48px 48px}
-
-    /* PAGE HEADER */
     .page-header{margin-bottom:28px;animation:fadeIn .3s ease}
     .breadcrumb{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.06em;margin-bottom:8px}
     .breadcrumb a{color:rgba(255,255,255,0.3);text-decoration:none}
     .breadcrumb a:hover{color:#00E5C3}
     .page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px}
     .page-sub{font-size:13px;color:rgba(255,255,255,0.45)}
-
-    /* INTAKE FORM */
     .intake-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;margin-bottom:24px;animation:fadeIn .3s ease}
     .form-section{margin-bottom:24px}
     .form-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;display:block}
-    .case-types{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
+    .case-types{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
     .case-type-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 10px;cursor:pointer;transition:all .2s;text-align:center;color:rgba(255,255,255,0.6);font-size:12px;font-family:'DM Sans',sans-serif}
     .case-type-btn:hover{border-color:rgba(0,229,195,0.3);color:#fff;background:rgba(0,229,195,0.05)}
     .case-type-btn.selected{background:rgba(0,229,195,0.12);border-color:rgba(0,229,195,0.4);color:#00E5C3;font-weight:500}
@@ -57,20 +48,16 @@
     input[type=text]:focus{border-color:rgba(0,229,195,0.35)}
     input[type=text]::placeholder{color:rgba(255,255,255,0.2)}
     .privacy-note{font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px;display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace}
-    .submit-btn{width:100%;padding:16px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:12px;cursor:pointer;transition:opacity .2s;letter-spacing:.01em}
+    .submit-btn{width:100%;padding:16px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:12px;cursor:pointer;transition:opacity .2s}
     .submit-btn:hover{opacity:.88}
     .submit-btn:disabled{opacity:.3;cursor:not-allowed}
-
-    /* LOADING */
     .loading-state{text-align:center;padding:60px 20px;animation:fadeIn .3s ease}
-    .loading-orb{width:64px;height:64px;margin:0 auto 24px;position:relative}
+    .loading-orb{width:64px;height:64px;margin:0 auto 24px}
     .loading-orb svg{animation:spin 2s linear infinite}
     .loading-text{font-family:'DM Mono',monospace;font-size:12px;color:#00E5C3;letter-spacing:.08em}
     .loading-steps{margin-top:16px;display:flex;flex-direction:column;gap:8px}
     .loading-step{font-size:12px;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace}
     .loading-step.active{color:rgba(255,255,255,0.6)}
-
-    /* PACT OUTPUT */
     .output-section{animation:fadeIn .4s ease}
     .risk-banner{border-radius:12px;padding:18px 22px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center}
     .risk-critical{background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.25)}
@@ -85,8 +72,6 @@
     .badge-high{color:#FFB547;background:rgba(255,181,71,0.15);border:1px solid rgba(255,181,71,0.3)}
     .badge-medium{color:#00E5C3;background:rgba(0,229,195,0.15);border:1px solid rgba(0,229,195,0.3)}
     .badge-low{color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)}
-
-    /* PACT GRID */
     .pact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
     .pact-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px}
     .pact-dimension{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
@@ -99,14 +84,10 @@
     .pact-points{display:flex;flex-direction:column;gap:8px}
     .pact-point{display:flex;gap:8px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5}
     .pact-dot{width:4px;height:4px;border-radius:50%;background:#00E5C3;margin-top:6px;flex-shrink:0}
-
-    /* MERIDIAN NOTE */
     .meridian-note{background:rgba(0,229,195,0.07);border:1px solid rgba(0,229,195,0.18);border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;gap:14px}
     .meridian-icon{font-size:18px;flex-shrink:0;margin-top:1px}
     .meridian-note-label{font-family:'DM Mono',monospace;font-size:10px;color:#00E5C3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
     .meridian-note-text{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.5}
-
-    /* NEXT STEPS */
     .two-col-output{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
     .output-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px}
     .output-card-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;margin-bottom:16px}
@@ -118,8 +99,6 @@
     .check-box.checked{background:#00E5C3;border-color:#00E5C3}
     .check-box.checked::after{content:'✓';font-size:10px;color:#060B18;font-weight:700}
     .check-text{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5}
-
-    /* ACTION BUTTONS */
     .action-row{display:flex;gap:12px;margin-bottom:32px}
     .btn-primary{padding:14px 28px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s}
     .btn-primary:hover{opacity:.88}
@@ -127,28 +106,16 @@
     .btn-secondary:hover{background:rgba(0,229,195,0.06)}
     .btn-ghost{padding:14px 28px;background:transparent;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;font-weight:400;font-size:14px;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;transition:all .2s}
     .btn-ghost:hover{border-color:rgba(255,255,255,0.15);color:#fff}
-
-    /* SAVED TOAST */
     .toast{position:fixed;bottom:24px;right:24px;background:#0D1526;border:1px solid rgba(0,229,195,0.3);border-radius:10px;padding:14px 20px;font-size:13px;color:#fff;display:flex;align-items:center;gap:10px;animation:fadeIn .3s ease;z-index:1000}
     .toast-icon{color:#00E5C3;font-size:16px}
-
-    /* SCROLLBAR */
     ::-webkit-scrollbar{width:4px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
-
-    @media(max-width:768px){
-      .sidebar{display:none}
-      .main{padding:20px 16px;overflow-y:auto}
-      .case-types{grid-template-columns:repeat(2,1fr)}
-      .pact-grid{grid-template-columns:1fr}
-      .two-col-output{grid-template-columns:1fr}
-    }
+    @media(max-width:768px){.sidebar{display:none}.main{padding:20px 16px;overflow-y:auto}.case-types{grid-template-columns:repeat(2,1fr)}.pact-grid{grid-template-columns:1fr}.two-col-output{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="logo">
       <div class="logo-dot"></div>
@@ -177,17 +144,14 @@
     </div>
   </div>
 
-  <!-- MAIN -->
-  <div class="main" id="main-content">
+  <div class="main">
 
-    <!-- INTAKE VIEW -->
     <div id="intake-view">
       <div class="page-header">
         <div class="breadcrumb"><a href="dashboard.html">Dashboard</a> · ER Case Navigator</div>
         <div class="page-title">⚡ ER Case Navigator</div>
         <div class="page-sub">Describe your situation. PACT will assess it. Every detail is anonymised before processing.</div>
       </div>
-
       <div class="intake-card">
         <div class="form-section">
           <label class="form-label">Case Type</label>
@@ -202,27 +166,21 @@
             <div class="case-type-btn" onclick="selectCase(this,'Counter-offer')"><span class="case-type-icon">💰</span>Counter-offer</div>
           </div>
         </div>
-
         <div class="form-section">
           <label class="form-label">What's happening?</label>
           <textarea id="narrative" placeholder="Tell me what's happening. Don't worry about structure — just describe the situation as you experienced it. Names and identifying details will be automatically anonymised before any processing." rows="6"></textarea>
           <div class="privacy-note">🔒 Anonymised before processing. Your data stays yours.</div>
         </div>
-
         <div class="form-section">
           <label class="form-label">Who's involved? (Roles only, no names needed)</label>
           <input type="text" id="stakeholders" placeholder="e.g. Senior manager, two junior team members, HR Director, Legal counsel" />
         </div>
-
         <button class="submit-btn" id="submit-btn" onclick="runPACT()" disabled>Run PACT Assessment →</button>
       </div>
     </div>
 
-    <!-- LOADING VIEW -->
     <div id="loading-view" style="display:none">
-      <div class="page-header">
-        <div class="page-title">⚡ ER Case Navigator</div>
-      </div>
+      <div class="page-header"><div class="page-title">⚡ ER Case Navigator</div></div>
       <div class="loading-state">
         <div class="loading-orb">
           <svg width="64" height="64" viewBox="0 0 64 64">
@@ -240,16 +198,13 @@
       </div>
     </div>
 
-    <!-- OUTPUT VIEW -->
     <div id="output-view" style="display:none">
       <div class="page-header">
         <div class="breadcrumb"><a href="dashboard.html">Dashboard</a> · <a href="er-case-navigator.html">ER Case Navigator</a> · PACT Assessment</div>
         <div class="page-title">PACT Assessment</div>
         <div class="page-sub" id="output-case-type">Case assessment complete</div>
       </div>
-
       <div class="output-section">
-        <!-- Risk Banner -->
         <div class="risk-banner" id="risk-banner">
           <div>
             <div class="risk-label" id="risk-label">Overall PACT Assessment</div>
@@ -258,32 +213,28 @@
           </div>
           <div class="risk-badge-lg" id="risk-badge">—</div>
         </div>
-
-        <!-- PACT Cards -->
         <div class="pact-grid">
-          <div class="pact-card" id="pact-process">
+          <div class="pact-card">
             <div class="pact-dimension">P — Process Integrity <span class="pact-score" id="score-process">—</span></div>
             <div class="pact-status" id="status-process"></div>
             <div class="pact-points" id="points-process"></div>
           </div>
-          <div class="pact-card" id="pact-accountability">
+          <div class="pact-card">
             <div class="pact-dimension">A — Accountability Clarity <span class="pact-score" id="score-accountability">—</span></div>
             <div class="pact-status" id="status-accountability"></div>
             <div class="pact-points" id="points-accountability"></div>
           </div>
-          <div class="pact-card" id="pact-consequence">
+          <div class="pact-card">
             <div class="pact-dimension">C — Consequence Mapping <span class="pact-score" id="score-consequence">—</span></div>
             <div class="pact-status" id="status-consequence"></div>
             <div class="pact-points" id="points-consequence"></div>
           </div>
-          <div class="pact-card" id="pact-trust">
+          <div class="pact-card">
             <div class="pact-dimension">T — Trust Preservation <span class="pact-score" id="score-trust">—</span></div>
             <div class="pact-status" id="status-trust"></div>
             <div class="pact-points" id="points-trust"></div>
           </div>
         </div>
-
-        <!-- MERIDIAN Note -->
         <div class="meridian-note">
           <div class="meridian-icon">🧭</div>
           <div>
@@ -291,8 +242,6 @@
             <div class="meridian-note-text" id="meridian-note-text">Loading...</div>
           </div>
         </div>
-
-        <!-- Next Steps + Checklist -->
         <div class="two-col-output">
           <div class="output-card">
             <div class="output-card-title">Recommended Next Steps</div>
@@ -303,8 +252,6 @@
             <div id="doc-checklist"></div>
           </div>
         </div>
-
-        <!-- Action Buttons -->
         <div class="action-row">
           <button class="btn-primary" onclick="saveCase()">Save to Case Library</button>
           <button class="btn-secondary" onclick="practiceConversation()">Practice the Conversation →</button>
@@ -331,6 +278,15 @@
     document.getElementById('meridian-chip-val').innerText =
       (meridian.state || 'Not set') + ' · ' + (meridian.industry || 'Not set');
 
+    function getUserId() {
+      var uid = localStorage.getItem('sr_user_id');
+      if (!uid) {
+        uid = 'usr_' + Math.random().toString(36).substr(2,9) + '_' + Date.now();
+        localStorage.setItem('sr_user_id', uid);
+      }
+      return uid;
+    }
+
     function selectCase(el, type) {
       document.querySelectorAll('.case-type-btn').forEach(function(b){ b.classList.remove('selected'); });
       el.classList.add('selected');
@@ -338,12 +294,11 @@
       checkSubmit();
     }
 
-    var narrative = document.getElementById('narrative');
-    narrative.addEventListener('input', checkSubmit);
+    document.getElementById('narrative').addEventListener('input', checkSubmit);
 
     function checkSubmit() {
-      var btn = document.getElementById('submit-btn');
-      btn.disabled = !(selectedCaseType && narrative.value.trim().length > 20);
+      document.getElementById('submit-btn').disabled =
+        !(selectedCaseType && document.getElementById('narrative').value.trim().length > 20);
     }
 
     function showView(view) {
@@ -403,24 +358,19 @@
     }
 
     function getRiskClass(level) {
-      var map = {Critical:'critical',High:'high',Medium:'medium',Low:'low'};
-      return map[level] || 'medium';
+      return {Critical:'critical',High:'high',Medium:'medium',Low:'low'}[level] || 'medium';
     }
 
     function getScoreClass(score) {
-      var map = {Critical:'score-critical',High:'score-high',Medium:'score-medium',Low:'score-low'};
-      return map[score] || 'score-medium';
+      return {'Critical':'score-critical','High':'score-high','Medium':'score-medium','Low':'score-low'}[score] || 'score-medium';
     }
 
     function renderPACTCard(dimension, data) {
-      var scoreEl = document.getElementById('score-' + dimension);
-      var statusEl = document.getElementById('status-' + dimension);
-      var pointsEl = document.getElementById('points-' + dimension);
-      scoreEl.className = 'pact-score ' + getScoreClass(data.score);
-      scoreEl.innerText = data.score + ' RISK';
-      statusEl.innerText = data.status;
-      pointsEl.innerHTML = (data.points || []).map(function(p){
-        return '<div class="pact-point"><div class="pact-dot"></div><div>' + p + '</div></div>';
+      document.getElementById('score-'+dimension).className = 'pact-score ' + getScoreClass(data.score);
+      document.getElementById('score-'+dimension).innerText = data.score + ' RISK';
+      document.getElementById('status-'+dimension).innerText = data.status;
+      document.getElementById('points-'+dimension).innerHTML = (data.points||[]).map(function(p){
+        return '<div class="pact-point"><div class="pact-dot"></div><div>'+p+'</div></div>';
       }).join('');
     }
 
@@ -440,35 +390,59 @@
       renderPACTCard('accountability', r.pact.accountability);
       renderPACTCard('consequence', r.pact.consequence);
       renderPACTCard('trust', r.pact.trust);
-      document.getElementById('meridian-note-text').innerText = r.meridianNote || 'No specific MERIDIAN context note.';
-      var stepsHtml = (r.nextSteps || []).map(function(s, i){
+      document.getElementById('meridian-note-text').innerText = r.meridianNote || '';
+      document.getElementById('next-steps-list').innerHTML = (r.nextSteps||[]).map(function(s,i){
         return '<div class="step-item"><div class="step-num">'+(i+1)+'</div><div class="step-text">'+s+'</div></div>';
       }).join('');
-      document.getElementById('next-steps-list').innerHTML = stepsHtml;
-      var checkHtml = (r.documentationChecklist || []).map(function(item){
+      document.getElementById('doc-checklist').innerHTML = (r.documentationChecklist||[]).map(function(item){
         return '<div class="check-item"><div class="check-box" onclick="this.classList.toggle(\'checked\')"></div><div class="check-text">'+item+'</div></div>';
       }).join('');
-      document.getElementById('doc-checklist').innerHTML = checkHtml;
       showView('output-view');
     }
 
     function saveCase() {
-      var cases = JSON.parse(sessionStorage.getItem('sr_cases') || '[]');
-      var newCase = {
-        id: Date.now(),
-        type: selectedCaseType,
-        narrative: currentNarrative.substring(0, 200) + '...',
-        result: currentResult,
-        date: new Date().toLocaleDateString('en-IN'),
-        status: 'Open'
-      };
-      cases.push(newCase);
-      sessionStorage.setItem('sr_cases', JSON.stringify(cases));
+      var userId = getUserId();
       var toast = document.createElement('div');
       toast.className = 'toast';
-      toast.innerHTML = '<span class="toast-icon">✓</span> Case saved to your library.';
+      toast.innerHTML = '<span class="toast-icon">⏳</span> Saving to your case library...';
       document.body.appendChild(toast);
-      setTimeout(function(){ toast.remove(); }, 3000);
+
+      fetch(WORKER, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          tool: 'save_case',
+          userId: userId,
+          caseType: selectedCaseType,
+          narrative: currentNarrative.substring(0, 900),
+          result: currentResult,
+          status: 'Open'
+        })
+      })
+      .then(function(res){ return res.json(); })
+      .then(function(data) {
+        toast.remove();
+        var t2 = document.createElement('div');
+        t2.className = 'toast';
+        if (data.success) {
+          t2.innerHTML = '<span class="toast-icon">✓</span> Case saved permanently to your library.';
+          if (data.data && data.data.airtableId) {
+            localStorage.setItem('sr_last_case_id', data.data.airtableId);
+          }
+        } else {
+          t2.innerHTML = '<span class="toast-icon">⚠️</span> Save failed: ' + (data.error || 'Unknown error');
+        }
+        document.body.appendChild(t2);
+        setTimeout(function(){ t2.remove(); }, 3000);
+      })
+      .catch(function(err) {
+        toast.remove();
+        var t3 = document.createElement('div');
+        t3.className = 'toast';
+        t3.innerHTML = '<span class="toast-icon">⚠️</span> Connection error. Case not saved.';
+        document.body.appendChild(t3);
+        setTimeout(function(){ t3.remove(); }, 3000);
+      });
     }
 
     function practiceConversation() {

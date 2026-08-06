@@ -11,6 +11,7 @@
     body{display:flex}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.55}}
     @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
     .sidebar{width:220px;flex-shrink:0;background:rgba(13,21,38,0.98);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;padding:20px 12px;height:100vh;overflow-y:auto}
     .logo{display:flex;align-items:center;gap:10px;padding:6px 4px;margin-bottom:28px}
     .logo-dot{width:8px;height:8px;border-radius:50%;background:#00E5C3;box-shadow:0 0 10px #00E5C3;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
@@ -32,20 +33,14 @@
     .breadcrumb a:hover{color:#00E5C3}
     .page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px}
     .page-sub{font-size:13px;color:rgba(255,255,255,0.45)}
-
-    /* STATS ROW */
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;animation:fadeIn .3s ease}
     .stat-mini{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 18px}
     .stat-mini-label{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
     .stat-mini-value{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:#00E5C3}
-
-    /* FILTERS */
     .filters-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;animation:fadeIn .3s ease .1s both}
     .filter-btn{padding:8px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;cursor:pointer;font-size:12px;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;transition:all .2s}
     .filter-btn:hover{border-color:rgba(0,229,195,0.2);color:#fff}
     .filter-btn.active{background:rgba(0,229,195,0.10);border-color:rgba(0,229,195,0.3);color:#00E5C3;font-weight:500}
-
-    /* CASE CARDS */
     .cases-grid{display:flex;flex-direction:column;gap:10px;animation:fadeIn .3s ease .15s both}
     .case-card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:18px 20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:16px}
     .case-card:hover{background:#111E35;border-color:rgba(0,229,195,0.2);transform:translateX(3px)}
@@ -65,15 +60,15 @@
     .risk-medium{color:#00E5C3;background:rgba(0,229,195,0.12);border:1px solid rgba(0,229,195,0.25)}
     .risk-low{color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)}
     .case-chevron{color:rgba(255,255,255,0.2);font-size:16px}
-
-    /* EMPTY STATE */
     .empty-state{text-align:center;padding:80px 20px;animation:fadeIn .4s ease}
     .empty-icon{font-size:52px;margin-bottom:20px;opacity:0.4}
     .empty-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;color:rgba(255,255,255,0.6)}
     .empty-sub{font-size:13px;color:rgba(255,255,255,0.3);margin-bottom:28px;line-height:1.6;max-width:360px;margin-left:auto;margin-right:auto}
     .empty-cta{padding:14px 28px;background:#00E5C3;color:#060B18;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block}
-
-    /* DETAIL PANEL */
+    .loading-state{text-align:center;padding:80px 20px}
+    .loading-spinner{width:40px;height:40px;margin:0 auto 16px}
+    .loading-spinner svg{animation:spin 1.5s linear infinite}
+    .loading-msg{font-family:'DM Mono',monospace;font-size:12px;color:#00E5C3;letter-spacing:.08em}
     .detail-overlay{position:fixed;inset:0;background:rgba(6,11,24,0.85);backdrop-filter:blur(4px);z-index:100;display:none;justify-content:flex-end}
     .detail-panel{width:620px;max-width:100%;background:#0A1220;border-left:1px solid rgba(255,255,255,0.07);height:100%;overflow-y:auto;padding:32px;animation:slideIn .3s ease}
     @keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -103,8 +98,6 @@
     .btn-sm-primary:hover{opacity:.88}
     .btn-sm-ghost{padding:10px 20px;background:transparent;color:rgba(255,255,255,0.4);font-family:'DM Sans',sans-serif;font-size:13px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;transition:all .2s}
     .btn-sm-ghost:hover{border-color:rgba(255,255,255,0.15);color:#fff}
-    .btn-sm-danger{padding:10px 20px;background:rgba(255,77,109,0.08);color:#FF4D6D;font-family:'DM Sans',sans-serif;font-size:13px;border:1px solid rgba(255,77,109,0.2);border-radius:8px;cursor:pointer;transition:all .2s}
-    .btn-sm-danger:hover{background:rgba(255,77,109,0.15)}
     ::-webkit-scrollbar{width:4px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:rgba(0,229,195,0.1);border-radius:2px}
@@ -142,29 +135,28 @@
   </div>
 
   <div class="main">
-
     <div class="page-header">
       <div class="breadcrumb"><a href="dashboard.html">Dashboard</a> · Case Library</div>
       <div class="page-title">◎ Case Library</div>
       <div class="page-sub">Every case you've navigated. Your permanent professional record.</div>
     </div>
 
-    <div class="stats-row" id="stats-row">
+    <div class="stats-row">
       <div class="stat-mini">
         <div class="stat-mini-label">Total Cases</div>
-        <div class="stat-mini-value" id="stat-total">0</div>
+        <div class="stat-mini-value" id="stat-total">—</div>
       </div>
       <div class="stat-mini">
         <div class="stat-mini-label">Open</div>
-        <div class="stat-mini-value" style="color:#FFB547" id="stat-open">0</div>
+        <div class="stat-mini-value" style="color:#FFB547" id="stat-open">—</div>
       </div>
       <div class="stat-mini">
-        <div class="stat-mini-label">Critical / High Risk</div>
-        <div class="stat-mini-value" style="color:#FF4D6D" id="stat-critical">0</div>
+        <div class="stat-mini-label">Critical / High</div>
+        <div class="stat-mini-value" style="color:#FF4D6D" id="stat-critical">—</div>
       </div>
       <div class="stat-mini">
         <div class="stat-mini-label">Case Types</div>
-        <div class="stat-mini-value" id="stat-types">0</div>
+        <div class="stat-mini-value" id="stat-types">—</div>
       </div>
     </div>
 
@@ -179,47 +171,50 @@
       <div class="filter-btn" onclick="filterCases(this,'Counter-offer')">Counter-offer</div>
     </div>
 
-    <div class="cases-grid" id="cases-grid"></div>
-
+    <div class="cases-grid" id="cases-grid">
+      <div class="loading-state">
+        <div class="loading-spinner">
+          <svg width="40" height="40" viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(0,229,195,0.15)" stroke-width="2"/>
+            <circle cx="20" cy="20" r="16" fill="none" stroke="#00E5C3" stroke-width="2" stroke-dasharray="28 76" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="loading-msg">LOADING YOUR CASES...</div>
+      </div>
+    </div>
   </div>
 
-  <!-- DETAIL OVERLAY -->
   <div class="detail-overlay" id="detail-overlay" onclick="closeDetail(event)">
     <div class="detail-panel" id="detail-panel">
       <button class="detail-close" onclick="closeDetailBtn()">✕</button>
       <div class="detail-type" id="detail-type">—</div>
       <div class="detail-title" id="detail-title">—</div>
       <div class="detail-date" id="detail-date">—</div>
-
       <div class="detail-section">
         <div class="detail-section-title">Situation summary</div>
         <div class="detail-narrative" id="detail-narrative">—</div>
       </div>
-
       <div class="detail-section" id="pact-section" style="display:none">
         <div class="detail-section-title">PACT Assessment</div>
         <div class="pact-mini-grid" id="pact-mini-grid"></div>
       </div>
-
       <div class="detail-section" id="steps-section" style="display:none">
         <div class="detail-section-title">Recommended next steps</div>
         <div class="steps-list" id="steps-list"></div>
       </div>
-
       <div class="retro-section">
         <div class="retro-label">What I'd do differently</div>
         <textarea class="retro-input" id="retro-input" placeholder="Add a retrospective note — what worked, what you'd change, what you learned..."></textarea>
       </div>
-
       <div class="detail-actions">
         <button class="btn-sm-primary" onclick="saveRetro()">Save note</button>
         <button class="btn-sm-ghost" onclick="window.location.href='er-case-navigator.html'">Open new case</button>
-        <button class="btn-sm-danger" onclick="deleteCase()">Delete case</button>
       </div>
     </div>
   </div>
 
   <script>
+    var WORKER = 'https://situation-room-api.kumarvivek-srv.workers.dev';
     var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
     var allCases = [];
     var currentFilter = 'all';
@@ -235,28 +230,59 @@
       (meridian.state || 'Not set') + ' · ' + (meridian.industry || 'Not set');
 
     var CASE_ICONS = {
-      'Disciplinary': '⚖️',
-      'Grievance': '📢',
-      'PIP': '📈',
-      'Termination': '🚪',
-      'Redundancy': '🔄',
-      'Harassment Investigation': '🛡️',
-      'Absence Management': '📅',
-      'Counter-offer': '💰'
+      'Disciplinary':'⚖️','Grievance':'📢','PIP':'📈','Termination':'🚪',
+      'Redundancy':'🔄','Harassment Investigation':'🛡️','Absence Management':'📅','Counter-offer':'💰'
     };
 
+    function getUserId() {
+      var uid = localStorage.getItem('sr_user_id');
+      if (!uid) {
+        uid = 'usr_' + Math.random().toString(36).substr(2,9) + '_' + Date.now();
+        localStorage.setItem('sr_user_id', uid);
+      }
+      return uid;
+    }
+
     function loadCases() {
-      var raw = sessionStorage.getItem('sr_cases');
-      allCases = raw ? JSON.parse(raw) : [];
-      updateStats();
-      renderCases();
+      var userId = getUserId();
+      fetch(WORKER, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ tool: 'get_cases', userId: userId })
+      })
+      .then(function(res){ return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          allCases = data.data.map(function(c){
+            return {
+              id: c.id,
+              type: c.type,
+              narrative: c.narrative,
+              overallRisk: c.overallRisk,
+              result: c.result,
+              status: c.status,
+              date: c.date,
+              retroNote: c.retroNote
+            };
+          });
+        } else {
+          allCases = [];
+        }
+        updateStats();
+        renderCases();
+      })
+      .catch(function(err) {
+        allCases = [];
+        document.getElementById('cases-grid').innerHTML =
+          '<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Could not load cases</div><div class="empty-sub">Connection error. Please check your network and refresh.</div></div>';
+      });
     }
 
     function updateStats() {
       document.getElementById('stat-total').innerText = allCases.length;
       document.getElementById('stat-open').innerText = allCases.filter(function(c){ return c.status === 'Open'; }).length;
       document.getElementById('stat-critical').innerText = allCases.filter(function(c){
-        return c.result && (c.result.overallRisk === 'Critical' || c.result.overallRisk === 'High');
+        return c.overallRisk === 'Critical' || c.overallRisk === 'High';
       }).length;
       var types = new Set(allCases.map(function(c){ return c.type; }));
       document.getElementById('stat-types').innerText = types.size;
@@ -277,36 +303,33 @@
         return c.type === currentFilter;
       });
 
-      filtered.sort(function(a,b){ return b.id - a.id; });
-
       if (filtered.length === 0) {
         grid.innerHTML = '<div class="empty-state">' +
           '<div class="empty-icon">◎</div>' +
           '<div class="empty-title">' + (currentFilter === 'all' ? 'No cases yet' : 'No ' + currentFilter + ' cases') + '</div>' +
           '<div class="empty-sub">' + (currentFilter === 'all'
-            ? 'Navigate your first ER case and it will appear here. Your case library builds over time — it\'s your permanent professional record.'
-            : 'No cases of this type saved yet. Run a case through the ER Case Navigator to add one.') +
-          '</div>' +
+            ? 'Navigate your first ER case and it will appear here permanently. Your case library is your professional record.'
+            : 'No cases of this type saved yet.') + '</div>' +
           '<a href="er-case-navigator.html" class="empty-cta">Open ER Case Navigator →</a>' +
           '</div>';
         return;
       }
 
       grid.innerHTML = filtered.map(function(c){
-        var risk = c.result ? c.result.overallRisk : 'Unknown';
-        var riskClass = 'risk-' + (risk || 'medium').toLowerCase().replace(' ','');
+        var risk = c.overallRisk || 'Unknown';
+        var riskClass = 'risk-' + (risk.toLowerCase().replace(' ','') || 'medium');
         var icon = CASE_ICONS[c.type] || '⚡';
         var statusClass = c.status === 'Open' ? 'status-open' : 'status-closed';
-        var retroNote = c.retroNote ? ' · <span style="color:#00E5C3;font-size:9px">✎ note</span>' : '';
-        return '<div class="case-card" onclick="openDetail(' + c.id + ')">' +
+        var retroMark = c.retroNote ? ' <span style="color:#00E5C3;font-size:9px">✎</span>' : '';
+        return '<div class="case-card" onclick="openDetail(\'' + c.id + '\')">' +
           '<div class="case-icon-wrap">' + icon + '</div>' +
           '<div class="case-info">' +
           '<div class="case-type-tag">' + (c.type || 'Unknown') + '</div>' +
-          '<div class="case-title">' + (c.narrative || 'Case ' + c.id) + '</div>' +
+          '<div class="case-title">' + (c.narrative || 'Case record').substring(0, 80) + '</div>' +
           '<div class="case-meta-row">' +
-          '<span class="case-date">' + (c.date || 'Today') + '</span>' +
+          '<span class="case-date">' + (c.date || 'Recent') + '</span>' +
           '<span class="case-status ' + statusClass + '">' + (c.status || 'Open') + '</span>' +
-          retroNote +
+          retroMark +
           '</div>' +
           '</div>' +
           '<div class="case-right">' +
@@ -323,8 +346,8 @@
       selectedCaseId = id;
 
       document.getElementById('detail-type').innerText = c.type || 'Case';
-      document.getElementById('detail-title').innerText = c.type + ' — ' + (c.date || 'Today');
-      document.getElementById('detail-date').innerText = 'Saved on ' + (c.date || 'today') + ' · Status: ' + (c.status || 'Open');
+      document.getElementById('detail-title').innerText = (c.type || 'Case') + ' · ' + (c.date || 'Recent');
+      document.getElementById('detail-date').innerText = 'Saved: ' + (c.date || 'Recent') + ' · Status: ' + (c.status || 'Open');
       document.getElementById('detail-narrative').innerText = c.narrative || 'No summary available.';
       document.getElementById('retro-input').value = c.retroNote || '';
 
@@ -350,11 +373,10 @@
       }
 
       var stepsSection = document.getElementById('steps-section');
-      var stepsList = document.getElementById('steps-list');
       if (c.result && c.result.nextSteps && c.result.nextSteps.length > 0) {
         stepsSection.style.display = 'block';
-        stepsList.innerHTML = c.result.nextSteps.map(function(s,i){
-          return '<div class="step-item"><div class="step-num">' + (i+1) + '</div><div class="step-text">' + s + '</div></div>';
+        document.getElementById('steps-list').innerHTML = c.result.nextSteps.map(function(s,i){
+          return '<div class="step-item"><div class="step-num">'+(i+1)+'</div><div class="step-text">'+s+'</div></div>';
         }).join('');
       } else {
         stepsSection.style.display = 'none';
@@ -375,26 +397,38 @@
     function saveRetro() {
       if (!selectedCaseId) return;
       var note = document.getElementById('retro-input').value.trim();
-      allCases = allCases.map(function(c){
-        if (c.id === selectedCaseId) c.retroNote = note;
-        return c;
-      });
-      sessionStorage.setItem('sr_cases', JSON.stringify(allCases));
-      renderCases();
-      var btn = event.target;
-      btn.innerText = 'Saved ✓';
-      btn.style.background = 'rgba(0,229,195,0.3)';
-      setTimeout(function(){ btn.innerText = 'Save note'; btn.style.background = ''; }, 2000);
-    }
+      var btn = document.querySelector('.btn-sm-primary');
+      btn.innerText = 'Saving...';
+      btn.disabled = true;
 
-    function deleteCase() {
-      if (!selectedCaseId) return;
-      if (!confirm('Delete this case from your library? This cannot be undone.')) return;
-      allCases = allCases.filter(function(c){ return c.id !== selectedCaseId; });
-      sessionStorage.setItem('sr_cases', JSON.stringify(allCases));
-      closeDetailBtn();
-      updateStats();
-      renderCases();
+      fetch(WORKER, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          tool: 'update_case',
+          airtableId: selectedCaseId,
+          retroNote: note
+        })
+      })
+      .then(function(res){ return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          allCases = allCases.map(function(c){
+            if (c.id === selectedCaseId) c.retroNote = note;
+            return c;
+          });
+          renderCases();
+          btn.innerText = 'Saved ✓';
+          btn.style.background = 'rgba(0,229,195,0.3)';
+        } else {
+          btn.innerText = 'Error — retry';
+        }
+        setTimeout(function(){ btn.innerText = 'Save note'; btn.style.background = ''; btn.disabled = false; }, 2000);
+      })
+      .catch(function(){
+        btn.innerText = 'Error — retry';
+        btn.disabled = false;
+      });
     }
 
     loadCases();

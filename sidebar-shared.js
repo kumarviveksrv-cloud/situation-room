@@ -24,6 +24,15 @@
     accountSection.parentNode.insertBefore(meridianLink, accountSection.nextSibling);
   }
 
+  // ── VIRORAH ATTRIBUTION ───────────────────────────────────
+  var chip = document.querySelector('.meridian-chip');
+  if (chip) {
+    var attribution = document.createElement('div');
+    attribution.style.cssText = 'padding-top:10px;margin-top:8px;border-top:1px solid rgba(255,255,255,0.06);text-align:center';
+    attribution.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.15)">A Virorah Product</div>';
+    chip.appendChild(attribution);
+  }
+
   // ── PWA META TAGS ─────────────────────────────────────────
   function addMeta(name, content) {
     if (!document.querySelector('meta[name="' + name + '"]')) {
@@ -100,4 +109,4 @@
     if (b) b.remove();
   };
 
-// ── VIRORAH ATTRIBUTION ───────────────────────────────────   var chip = document.querySelector('.meridian-chip');   if (chip) {     var attribution = document.createElement('div');     attribution.style.cssText = 'padding-top:10px;margin-top:8px;border-top:1px solid rgba(255,255,255,0.06);text-align:center';     attribution.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.15)">A Virorah Product</div>';     chip.appendChild(attribution);   }  })();
+})();

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#060B18">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virorah Situation Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#060B18;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background-image:linear-gradient(rgba(0,229,195,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,195,0.03) 1px,transparent 1px);background-size:48px 48px}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+    .orb{width:72px;height:72px;margin:0 auto 24px;animation:float 3s ease-in-out infinite}
+    .brand-name{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;text-align:center;color:#fff}
+    .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-align:center;margin-top:6px}
+    .tagline{font-size:15px;color:rgba(255,255,255,0.5);text-align:center;margin-top:10px;margin-bottom:40px}
+    .card{background:#0D1526;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:36px 32px;width:100%;max-width:400px;text-align:center}
+    .card h2{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px}
+    .card p{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:28px;line-height:1.6}
+    .input-wrap{position:relative;margin-bottom:16px}
+    input[type=password]{width:100%;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:'JetBrains Mono',monospace;font-size:15px;outline:none;letter-spacing:.15em;transition:border .2s}
+    input[type=password]:focus{border-color:rgba(0,229,195,0.4)}
+    input[type=password]::placeholder{letter-spacing:.05em;color:rgba(255,255,255,0.2);font-size:13px}
+    .btn{display:block;width:100%;padding:14px;background:#00E5C3;color:#060B18;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;letter-spacing:.01em}
+    .btn:hover{opacity:0.88}
+    .btn:active{opacity:0.75}
+    .error{font-family:'JetBrains Mono',monospace;font-size:11px;color:#FF6B6B;margin-top:10px;min-height:16px;letter-spacing:.04em}
+    .shake{animation:shake .4s ease}
+    .note{margin-top:20px;background:rgba(0,229,195,0.07);border:1px solid rgba(0,229,195,0.15);border-radius:10px;padding:12px 14px;font-size:12px;color:rgba(255,255,255,0.4);line-height:1.5;text-align:left}
+    .note strong{color:#00E5C3;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
+    .back-link{margin-top:20px;font-size:12px;color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;text-align:center}
+    .back-link a{color:rgba(0,229,195,0.5);text-decoration:none;transition:color .2s}
+    .back-link a:hover{color:#00E5C3}
+    .footer{margin-top:32px;font-size:11px;color:rgba(255,255,255,0.12);font-family:'JetBrains Mono',monospace}
+  </style>
+</head>
+<body>
+
+  <div class="orb">
+    <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" width="72" height="72">
+      <circle cx="36" cy="36" r="33" fill="none" stroke="#00E5C3" stroke-width="0.5" stroke-opacity="0.25" stroke-dasharray="4 8" style="animation:spin 14s linear infinite;transform-origin:36px 36px"/>
+      <circle cx="36" cy="36" r="22" fill="rgba(0,229,195,0.07)"/>
+      <polygon points="36,14 56,48 16,48" fill="none" stroke="#00E5C3" stroke-width="1" stroke-opacity="0.5"/>
+      <circle cx="27" cy="32" r="3.5" fill="#00E5C3" style="animation:pulse 2s ease-in-out infinite"/>
+      <circle cx="45" cy="32" r="3.5" fill="#00E5C3" style="animation:pulse 2s ease-in-out .3s infinite"/>
+      <line x1="24" y1="42" x2="48" y2="42" stroke="#00E5C3" stroke-width="1.2" stroke-opacity="0.4"/>
+    </svg>
+  </div>
+
+  <div class="brand-name">Virorah</div>
+  <div class="sub">Situation Room</div>
+  <div class="tagline">People decisions are financial decisions. Act like it.</div>
+
+  <div class="card">
+    <h2>Early Access</h2>
+    <p>You're in early. Enter your access code below and step into the Situation Room — HR intelligence built for Indian professionals who lead in the language of business.</p>
+    <div class="input-wrap">
+      <input type="password" id="pwd" placeholder="Enter access code" autocomplete="off" />
+    </div>
+    <button class="btn" id="enter-btn" onclick="checkAccess()">Enter Situation Room</button>
+    <div class="error" id="err"></div>
+    <div class="note">
+      <strong>MERIDIAN Active</strong>
+      Every tool calibrated to your exact professional reality. Not generic advice. Your advice.
+    </div>
+  </div>
+
+  <div class="back-link">Not signed up yet? <a href="index.html">See what's inside &rarr;</a></div>
+  <div class="footer">Virorah Private Limited &nbsp;&middot;&nbsp; Confidential &nbsp;&middot;&nbsp; 2026</div>
+
+  <script>
+    var PASS = 'virorah2026';
+    var BASE = 'https://kumarviveksrv-cloud.github.io/situation-room/';
+
+    if (sessionStorage.getItem('sr_access') === 'true') {
+      window.location.href = BASE + 'dashboard.html';
+    }
+
+    var input = document.getElementById('pwd');
+    var errEl = document.getElementById('err');
+    var card = document.querySelector('.card');
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkAccess();
+    });
+
+    input.focus();
+
+    function checkAccess() {
+      var val = input.value.trim();
+      if (val === PASS) {
+        sessionStorage.setItem('sr_access', 'true');
+        document.getElementById('enter-btn').innerText = 'Entering...';
+        setTimeout(function() {
+          window.location.href = BASE + 'dashboard.html';
+        }, 600);
+      } else {
+        errEl.innerText = 'Incorrect access code. Try again.';
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
+        input.value = '';
+        input.focus();
+        setTimeout(function() { errEl.innerText = ''; }, 3000);
+      }
+    }
+  </script>
+
+</body>
+</html>

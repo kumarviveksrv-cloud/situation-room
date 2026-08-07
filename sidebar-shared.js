@@ -100,4 +100,4 @@
     if (b) b.remove();
   };
 
-// ── VIRORAH ATTRIBUTION ───────────────────────────────────   var sidebar = document.querySelector('.sidebar');   if (sidebar) {     var attribution = document.createElement('div');     attribution.style.cssText = 'padding:14px 14px 8px;text-align:center;border-top:1px solid rgba(255,255,255,0.04);margin-top:12px';     attribution.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.15)">A Virorah Product</div>';     sidebar.appendChild(attribution);   }  })();
+// ── VIRORAH ATTRIBUTION ───────────────────────────────────   var chip = document.querySelector('.meridian-chip');   if (chip) {     var attribution = document.createElement('div');     attribution.style.cssText = 'padding-top:10px;margin-top:8px;border-top:1px solid rgba(255,255,255,0.06);text-align:center';     attribution.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.15)">A Virorah Product</div>';     chip.appendChild(attribution);   }  })();

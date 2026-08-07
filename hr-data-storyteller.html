@@ -89,7 +89,7 @@
 <body>
 
   <div class="sidebar">
-    <div class="logo">
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
       <div class="logo-dot"></div>
       <div>
         <div class="logo-name">Virorah</div>
@@ -109,7 +109,7 @@
     <a href="debrief.html" class="nav-item"><span class="icon">📋</span> The Debrief</a>
     <div class="nav-section">Account</div>
     <a href="data-dashboard.html" class="nav-item"><span class="icon">🔒</span> Data & Privacy</a>
-    <a href="index.html" class="nav-item" onclick="sessionStorage.clear()"><span class="icon">↩</span> Sign out</a>
+    <a href="access.html" class="nav-item" onclick="sessionStorage.clear()"><span class="icon">↩</span> Sign out</a>
     <div class="meridian-chip">
       <div class="label">MERIDIAN Active</div>
       <div class="val" id="meridian-chip-val">Loading...</div>
@@ -313,7 +313,7 @@
     var selectedContext = '';
 
     if (sessionStorage.getItem('sr_access') !== 'true') {
-      window.location.href = BASE + 'index.html';
+      window.location.href = BASE + 'access.html';
     }
 
     var meridianRaw = sessionStorage.getItem('sr_meridian');

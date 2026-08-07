@@ -13,7 +13,7 @@
     var meridianLink = document.createElement('a');
     meridianLink.href = 'onboarding.html';
     meridianLink.className = 'nav-item';
-    meridianLink.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;color:rgba(255,255,255,0.45);font-size:13px;font-family:DM Sans,sans-serif;margin-bottom:2px';
+    meridianLink.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;color:rgba(255,255,255,0.45);font-size:13px;font-family:Plus Jakarta Sans,sans-serif;margin-bottom:2px';
     meridianLink.innerHTML = '<span style="font-size:16px;flex-shrink:0">🧭</span> MERIDIAN Profile';
     if (window.location.pathname.includes('onboarding')) {
       meridianLink.style.background = 'rgba(0,229,195,0.10)';
@@ -75,10 +75,10 @@
     banner.id = 'pwa-banner';
     banner.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0D1526;border:1px solid rgba(0,229,195,0.3);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.4);max-width:380px;width:calc(100% - 48px)';
     banner.innerHTML = '<div style="font-size:28px;flex-shrink:0">📱</div>' +
-      '<div style="flex:1"><div style="font-family:Syne,sans-serif;font-weight:700;font-size:14px;color:#fff;margin-bottom:3px">Install Situation Room</div>' +
+      '<div style="flex:1"><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:700;font-size:14px;color:#fff;margin-bottom:3px">Install Situation Room</div>' +
       '<div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.4">Add to home screen for instant access — works offline too.</div></div>' +
       '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
-      '<button onclick="installPWA()" style="padding:8px 14px;background:#00E5C3;color:#060B18;font-family:Syne,sans-serif;font-weight:700;font-size:12px;border:none;border-radius:7px;cursor:pointer">Install</button>' +
+      '<button onclick="installPWA()" style="padding:8px 14px;background:#00E5C3;color:#060B18;font-family:Bricolage Grotesque,sans-serif;font-weight:700;font-size:12px;border:none;border-radius:7px;cursor:pointer">Install</button>' +
       '<button onclick="dismissPWA()" style="padding:6px 14px;background:transparent;color:rgba(255,255,255,0.35);font-size:11px;border:none;cursor:pointer">Not now</button>' +
       '</div>';
     document.body.appendChild(banner);
@@ -100,4 +100,4 @@
     if (b) b.remove();
   };
 
-})();
+// ── VIRORAH ATTRIBUTION ───────────────────────────────────   var sidebar = document.querySelector('.sidebar');   if (sidebar) {     var attribution = document.createElement('div');     attribution.style.cssText = 'padding:14px 14px 8px;text-align:center;border-top:1px solid rgba(255,255,255,0.04);margin-top:12px';     attribution.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.15)">A Virorah Product</div>';     sidebar.appendChild(attribution);   }  })();
